@@ -71,7 +71,7 @@ export default function RootLayout({
               <NavLink href="/team" text="Our Team" />
               <NavLink href="https://forms.gle/oL1gFnqQoqRPcb3q9" text="Sign Up" />
               <NavIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} />
-              <NavIcon href="https://github.com/Shortest-Path-to-IOI/" icon={faGithub} />
+              <NavIcon href="https://github.com/spoi-org/" icon={faGithub} />
               <NavIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} />
             </NavigationMenuList>
           </NavigationMenu>
