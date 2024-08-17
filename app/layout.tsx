@@ -48,7 +48,7 @@ function NavIcon({ href, icon } : NavIconProps){
   return (
     <NavigationMenuItem>
       <Link href={href} legacyBehavior passHref>
-        <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-2")}>
+        <NavigationMenuLink target="_blank" className={cn(navigationMenuTriggerStyle(), "px-2")}>
           <FontAwesomeIcon icon={icon} className="w-full h-full" />
         </NavigationMenuLink>
       </Link>
