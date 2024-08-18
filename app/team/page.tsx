@@ -34,17 +34,17 @@ export default function Home() {
             <h4 className="text-5xl font-bold mt-[3rem]">Trainers</h4>
             <div className="flex flex-wrap justify-center w-full items-stretch px-10">
                 <Tile heading="Oviyan Gandhi" rating={1917} user="oviyan_gandhi">
-                    IOITC'24 rank 5 | INOI Gold Medal | CodeChef 5*
+                    IOITC&#39;24 rank 5 | INOI Gold | CodeChef 5*
                 </Tile>
                 <Tile heading="Avighna Chhatrapati" rating={1817} user="avighnakc">
-                    IOITC'24 | INOI'24 Silver Medalist, top 30 in India
-                    
+                    IOITC&#39;24 | INOI&#39;24 Silver | Top 30 in India
+
                 </Tile>
                 <Tile heading="Samik Goyal" rating={2096} user="unforgettablepl">
-                    IOI Team Member + INOI Gold Medal + #4 in India + 0* on codechef + 36 rated on atcoder
+                    IOI | INOI&#39;24 Silver | #4 in India
                 </Tile>
                 <Tile heading="Shreyan Ray" rating={2760} user="Dominater069">
-                    IOI Silver + INOI Gold Medal + #1 in India
+                    IOI Silver | 2502 rated on Atcoder | #1 in India
                 </Tile>
                 <Tile heading="Aditya Jain" rating={2610} user="Everule">
                     🗿
@@ -57,7 +57,8 @@ export default function Home() {
                 </Tile>
 
                 <Tile heading="Yash Haresh Thakker" rating={2233} user="PoPularPlusPlus">
-                    🗿
+                    IOI&#39;24 Team | APIO&#39;23 Bronze | 3 x INOI Gold | 6* on CodeChef
+
                 </Tile>
                 <Tile heading="Hari Aakash K" rating={2229} user="hariaakash646">
                     🗿
@@ -65,6 +66,10 @@ export default function Home() {
 
                 <Tile heading="Jishnu Roychoudhury" rating={1976} user="astoria">
                     🗿
+                </Tile>
+                <Tile heading="Rushil Mathur" rating={1878} user="rm1729">
+                    IOITC&#39;24 | IMO Gold
+
                 </Tile>
                 <Tile heading="Vibhaas Nirantar Srivastava" rating={1826} user="accord">
                     🗿

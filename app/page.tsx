@@ -7,7 +7,7 @@ function Tile({ heading, children }: Readonly<{
 }>) {
     return (
         <div className="p-6 w-1/3">
-            <div className="shadow-md rounded-lg text-center bg-sky-100 h-full p-8 hover:scale-105 transition">
+            <div className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 h-full p-8 hover:scale-105 transition">
                 <h2 className="text-2xl font-bold mb-2">{heading}</h2>
                 <p className="text-lg">{children}</p>
             </div>
