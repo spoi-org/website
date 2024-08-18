@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { randomUUID } from "crypto";
-import { auths } from "@/lib/utils";
 import { cookies } from "next/headers";
+import { prisma } from "@/lib/utils";
 export async function GET(request: Request) {
     let params = new URL(request.url).searchParams;
     if (!params.has("code")) {
@@ -30,7 +30,6 @@ export async function GET(request: Request) {
             headers: new Headers([["Authorization", "Bearer " + data.access_token]])
         }
     ).then(req => req.json())
-    let ssid = randomUUID();
     let avatar = "";
     if (!req2.avatar) {
         const defaultAvatarIndex = (BigInt(req2.id) >> BigInt(22)) % BigInt(6);
@@ -38,9 +37,28 @@ export async function GET(request: Request) {
     } else {
         avatar = `https://cdn.discordapp.com/avatars/${req2.id}/${req2.avatar}.png?size=256`;
     }
-    auths[ssid] = { avatar, id: req2.id, name: req2.username}
+    let user = await prisma.user.upsert({
+        where: {
+            id: req2.id
+        },
+        update: {
+            avatar,
+            dcUserName: req2.username
+        },
+        create: {
+            id: req2.id,
+            avatar,
+            dcUserName: req2.username
+        }
+        
+    }) 
+    let ssid = await prisma.sessionId.create({
+        data: {
+            userId: user.id
+        }
+    })
     let store = cookies();
-    store.set("__ssid", ssid);
+    store.set("__ssid", ssid.id);
     return redirect("/")
 
 

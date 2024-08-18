@@ -31,7 +31,7 @@ export default function Home() {
                 <p className="text-2xl">The list of dedicated trainers who skillfully pass on their past experiences!</p>
             </main>
 
-            <h4 className="text-5xl font-bold mt-[3rem]">Trainers</h4>
+            <h4 className="text-5xl font-bold mt-[3rem]">Founders</h4>
             <div className="flex flex-wrap justify-center w-full items-stretch px-10">
                 <Tile heading="Oviyan Gandhi" rating={1917} user="oviyan_gandhi">
                     IOITC&#39;24 rank 5 | INOI Gold | CodeChef 5*
@@ -43,6 +43,10 @@ export default function Home() {
                 <Tile heading="Samik Goyal" rating={2096} user="unforgettablepl">
                     IOI | INOI&#39;24 Silver | #4 in India
                 </Tile>
+            </div>
+
+            <h4 className="text-5xl font-bold mt-[3rem]">Trainers</h4>
+            <div className="flex flex-wrap justify-center w-full items-stretch px-10">
                 <Tile heading="Shreyan Ray" rating={2760} user="Dominater069">
                     IOI Silver | 2502 rated on Atcoder | #1 in India
                 </Tile>

@@ -11,11 +11,11 @@ import {
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition, faGithub, faLinkedin, faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { auths, cn } from "@/lib/utils";
+import { cn, prisma } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import Brightness from "@/components/ui/dark-to-light";
+import { Brightness } from "@/components/ui/dark-to-light";
 import { cookies } from "next/headers";
-import Image from "next/image";
+import NavProfile from "./NavProfile";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -59,31 +59,43 @@ function NavIcon({ href, icon }: NavIconProps) {
   )
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   let cookieStore = cookies();
+  let ssid = await prisma.sessionId.findUnique({
+    where: {
+      id: cookieStore.get("__ssid")?.value || ""
+    },
+    select: {
+      user: true
+    }
+  }); 
+  console.log(ssid)
   
-  console.log(auths[cookieStore.get("__ssid")?.value as string])
+
   return (
     <html lang="en" className={cookieStore.get("mode")?.value == "true" ? "dark" : ""}>
       <body className={cn(inter.className, "bg-sky-50 dark:bg-[#101720]")}>
-        <div className="flex justify-center p-3 sticky top-0">
+        <div className="flex justify-center p-3 sticky top-0 z-[1000]">
           <NavigationMenu className="border p-2 rounded-md bg-white dark:bg-gray-900">
             <NavigationMenuList>
               <NavLink href="/" text="Home" />
               <NavLink href="/team" text="Our Team" />
               <NavLink href="https://forms.gle/oL1gFnqQoqRPcb3q9" text="Sign Up" />
-              <div className="!mx-2 text-gray-300 text-xl">|</div>
+              { !ssid &&
+                <NavLink href="https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Foauth2&scope=identify" text="Log In" />}
+              <div className="!mx-2 text-gray-300 text-xl select-none">|</div>
               <NavIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} />
               <NavIcon href="https://github.com/spoi-org/" icon={faGithub} />
               <NavIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} />
-              <Brightness />
-              <div className="!mx-2 text-gray-300 text-xl">|</div>
-              {(cookieStore.get("__ssid")?.value || "") in auths ? <div className="flex p-2 gap-2 rounded bg-black"><img src={auths[cookieStore.get("__ssid")?.value as string].avatar} className="h-7"  /> {auths[cookieStore.get("__ssid")?.value as string].name}</div> : <NavLink href="https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Foauth2&scope=identify" text="Sign In" />}
-
+              <div className="!mx-2 text-gray-300 text-xl select-none">|</div>
+              {ssid  ?
+              <NavProfile ssid={ssid.user} />
+              : <Brightness />
+              }
             </NavigationMenuList>
           </NavigationMenu>
         </div>
