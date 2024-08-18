@@ -19,6 +19,7 @@ model User {
   avatar String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  admin  Boolean @default(false)
 
   comments   Comment[]
   sessionIds SessionId[]
