@@ -32,24 +32,47 @@ model SessionId {
   userId String
 }
 
-model Topic {
-  id         String     @id @default(uuid())
-  category   Category   @relation(references: [id], fields: [categoryId])
-  categoryId String
-  name       String     @unique
-  blogPosts  BlogPost[]
-}
-
 model Category {
-  id     String  @id @default(uuid())
+  id     String  @id
   name   String  @unique
   topics Topic[]
 }
 
+model Topic {
+  id            String         @id
+  category      Category       @relation(references: [id], fields: [categoryId])
+  categoryId    String
+  name          String         @unique
+  resourceItems ResourceItem[]
+}
+
+model ResourceItem {
+  id        String   @id
+  title     String
+  topic     Topic    @relation(references: [id], fields: [topicId])
+  topicId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  content       String
+  comments      Comment[]
+  problems      Problem[]
+  focusProblems Problem[] @relation("FocusProblem")
+}
+
+model Problem {
+  id             String @id
+  title          String
+  url            String
+  ratingEstimate Int
+  resourceItems  ResourceItem[]
+  focusResources ResourceItem[] @relation("FocusProblem")
+}
+
 model Comment {
-  id     String   @id @default(uuid())
-  post   BlogPost @relation(fields: [postId], references: [id])
-  postId String
+  id         String       @id @default(uuid())
+  resource   ResourceItem @relation(fields: [resourceId], references: [id])
+  resourceId String
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
@@ -60,17 +83,4 @@ model Comment {
   subComments     Comment[] @relation("CommentToComment")
   parentComment   Comment?  @relation(fields: [parentCommentId], references: [id], name: "CommentToComment")
   parentCommentId String?
-}
-
-model BlogPost {
-  id        String   @id @default(uuid())
-  title     String
-  topic     Topic    @relation(references: [id], fields: [topicId])
-  topicId   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  url      String    @unique
-  content  String
-  comments Comment[]
 }
