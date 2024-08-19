@@ -1,5 +1,5 @@
 "use client";
-import { faChevronRight, faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   AlertDialog,
@@ -105,12 +105,8 @@ interface Category {
   name: string;
 }
 
-interface Topic extends Category {
-  categoryId: string;
-}
-
 export default function AdminCategories(
-  { currCategory, categories, topics } : { currCategory: string, categories: Category[], topics: Topic[] }
+  { categoryId, categories, topics } : { categoryId: string, categories: Category[], topics: Category[] }
 ) {
   const router = useRouter();
   async function createTopic(id: string, name: string, categoryId: string){
@@ -123,7 +119,7 @@ export default function AdminCategories(
     });
     router.refresh();
   }
-  const categoryName = categories.find(c => c.id === currCategory)?.name;
+  const categoryName = categories.find(c => c.id === categoryId)?.name;
   return (
     <div className="text-lg flex flex-col justify-center items-center">
       <h1 className="font-bold my-10 flex justify-center items-center">
@@ -148,7 +144,7 @@ export default function AdminCategories(
           button="Create"
           onClick={createTopic}
           categories={categories}
-          categoryId={currCategory}
+          categoryId={categoryId}
           asChild
         >
           <Button variant="outline" size="icon" className="ml-2 hover:bg-green-500 hover:text-white transition cursor-pointer">
@@ -181,7 +177,7 @@ export default function AdminCategories(
                 <TopicDialog
                   name={c.name}
                   id={c.id}
-                  categoryId={c.categoryId}
+                  categoryId={categoryId}
                   title="Edit Topic"
                   description={`Edit the ${c.name} topic`}
                   button="Save"

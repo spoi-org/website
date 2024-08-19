@@ -3,13 +3,18 @@ import AdminTopics from "./component";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export default async function TopicsPage({ params } : { params: { id: string } }){
+export default async function TopicsPage({ params } : { params: { categoryId: string } }){
     const topics = (await prisma.category.findUnique({
         where: {
-            id: params.id
+            id: params.categoryId
         },
         include: {
-            topics: true
+            topics: {
+                select: {
+                    id: true,
+                    name: true
+                }
+            }
         }
     }))?.topics;
     if (!topics){
@@ -29,5 +34,5 @@ export default async function TopicsPage({ params } : { params: { id: string } }
             name: true
         }
     });
-    return <AdminTopics currCategory={params.id} categories={categories} topics={topics!} />
+    return <AdminTopics categoryId={params.categoryId} categories={categories} topics={topics!} />
 }
