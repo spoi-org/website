@@ -172,7 +172,7 @@ export default function AdminCategories(
           }
           return (
             <li key={c.id} className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5 grid grid-cols-2">
-              <a href={`/admin/topics/${c.id}`}>{c.name}</a>
+              <a href={`/admin/categories/${categoryId}/${c.id}`}>{c.name}</a>
               <span className="flex justify-end items-center">
                 <TopicDialog
                   name={c.name}
