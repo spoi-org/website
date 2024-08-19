@@ -57,8 +57,6 @@ model ResourceItem {
   description   String?
   content       String
   comments      Comment[]
-  problems      Problem[]
-  focusProblems Problem[] @relation("FocusProblem")
 }
 
 model Problem {
@@ -66,8 +64,6 @@ model Problem {
   title          String
   url            String
   ratingEstimate Int
-  resourceItems  ResourceItem[]
-  focusResources ResourceItem[] @relation("FocusProblem")
 }
 
 model Comment {
