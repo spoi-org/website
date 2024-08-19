@@ -54,7 +54,7 @@ model ResourceItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  description   String
+  description   String?
   content       String
   comments      Comment[]
   problems      Problem[]
