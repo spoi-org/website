@@ -40,7 +40,7 @@ model Category {
 
 model Topic {
   id            String         @id
-  category      Category       @relation(references: [id], fields: [categoryId])
+  category      Category       @relation(references: [id], fields: [categoryId], onDelete: Cascade)
   categoryId    String
   name          String         @unique
   resourceItems ResourceItem[]
@@ -49,7 +49,7 @@ model Topic {
 model ResourceItem {
   id        String   @id
   title     String
-  topic     Topic    @relation(references: [id], fields: [topicId])
+  topic     Topic    @relation(references: [id], fields: [topicId], onDelete: Cascade)
   topicId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
