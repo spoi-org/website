@@ -1,5 +1,5 @@
 "use client";
-import { faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   AlertDialog,
@@ -29,6 +29,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -115,10 +123,25 @@ export default function AdminCategories(
     });
     router.refresh();
   }
+  const categoryName = categories.find(c => c.id === currCategory)?.name;
   return (
     <div className="text-lg flex flex-col justify-center items-center">
-      <h1 className="text-5xl font-bold mb-10 flex justify-center items-center">
-        Topics
+      <h1 className="font-bold my-10 flex justify-center items-center">
+        <Breadcrumb>
+          <BreadcrumbList className="text-4xl">
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/admin/categories">Categories</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="#">{categoryName}</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="font-bold">Topics</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <TopicDialog
           title="Create Topic"
           description="Create a new topic"
