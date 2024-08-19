@@ -71,7 +71,12 @@ export default async function RootLayout({
             <NavigationMenuList>
               <NavLink href="/" text="Home" />
               <NavLink href="/team" text="Our Team" />
-              {!ssid && (
+              {ssid ? (
+                <>
+                  <NavLink href="/resources" text="Resources" />
+                  {ssid.admin && <NavLink href="/admin" text="Admin" />}
+                </>
+              ) : (
                 <>
                   <NavLink href="https://forms.gle/oL1gFnqQoqRPcb3q9" text="Sign Up" />
                   <NavLink href="https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Foauth2&scope=identify" text="Log In" />
