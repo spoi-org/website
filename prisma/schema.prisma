@@ -16,10 +16,10 @@ datasource db {
 model User {
   id         String   @id
   dcUserName String
-  avatar String
+  avatar     String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  admin  Boolean @default(false)
+  admin      Boolean  @default(false)
 
   comments   Comment[]
   sessionIds SessionId[]
@@ -30,20 +30,19 @@ model SessionId {
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
-
 }
 
 model Topic {
   id         String     @id @default(uuid())
   category   Category   @relation(references: [id], fields: [categoryId])
   categoryId String
-  name       String
+  name       String     @unique
   blogPosts  BlogPost[]
 }
 
 model Category {
   id     String  @id @default(uuid())
-  name   String
+  name   String  @unique
   topics Topic[]
 }
 

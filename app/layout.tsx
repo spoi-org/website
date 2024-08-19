@@ -11,7 +11,8 @@ import {
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition, faGithub, faLinkedin, faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { cn, prisma } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { prisma } from "@/lib/utils.server";
 import { Button } from "@/components/ui/button";
 import { Brightness } from "@/components/ui/dark-to-light";
 import { cookies } from "next/headers";
@@ -73,7 +74,6 @@ export default async function RootLayout({
       user: true
     }
   }); 
-  console.log(ssid)
   
 
   return (
@@ -102,10 +102,11 @@ export default async function RootLayout({
         <div className="mb-10">
           {children}
         </div>
-        <footer className="bg-sky-100 w-full text-center p-5 text-2xl dark:bg-gray-700 flex items-center justify-center">
+        {!ssid && <footer className="bg-sky-100 w-full text-center p-5 text-2xl dark:bg-gray-700 flex items-center justify-center">
           <span className="pr-5">Ready to join?</span>
           <Button><Link href="https://forms.gle/oL1gFnqQoqRPcb3q9">Sign Up</Link></Button>
-        </footer>
+        </footer>}
+        
       </body>
     </html>
   );

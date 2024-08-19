@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { randomUUID } from "crypto";
 import { cookies } from "next/headers";
-import { prisma } from "@/lib/utils";
+import { prisma } from "@/lib/utils.server";
 export async function GET(request: Request) {
     let params = new URL(request.url).searchParams;
     if (!params.has("code")) {

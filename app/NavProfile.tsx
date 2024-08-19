@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 interface NavProfileProps {
