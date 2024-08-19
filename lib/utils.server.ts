@@ -1,4 +1,5 @@
-import {PrismaClient} from '@prisma/client'
+import {PrismaClient, User} from '@prisma/client'
+import { cookies } from 'next/headers';
 
 const prismaClientSingleton = () => {
   return new PrismaClient()
@@ -12,21 +13,25 @@ declare const globalThis: {
 
 export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
 if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
-prisma.blogPost.findMany().then(console.log)
-prisma.blogPost.create({
-  data: {
-    content: "# Hello\n\n$$ x = y^2 + x_0$$",
-    title: "Hello",
-    url: "hello",
-    topic: {
-      create: {
-        name: "INOI",
-        category: {
-          create: {
-            name: "Editorials"
-          }
-        }
-      }
-    }
+
+let auths: Record<string, User | undefined> = {}
+export const findUserBySessionId = async () => {
+  
+  const store = cookies();
+  let sessionId = store.get("__ssid")?.value;
+  if (!sessionId) {
+    return undefined;
   }
-})
+  if ( sessionId in auths) {
+    return auths[sessionId];
+  }
+  auths[sessionId] = (await prisma.sessionId.findUnique({
+    where: {
+      id: sessionId
+    },
+    select: {
+      user: true
+    }
+  }))?.user;
+  return auths[sessionId];
+}
