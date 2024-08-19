@@ -194,7 +194,8 @@ export default function AdminCategories(
                     <AlertDialogHeader>
                       <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete topic "{c.name}"
+                        This action cannot be undone. This will permanently delete topic "{c.name}"&nbsp;
+                        <span className="font-extrabold">and all resources within it.</span>
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

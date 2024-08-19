@@ -145,7 +145,8 @@ export default function AdminCategories({ categories } : { categories: Category[
                                         <AlertDialogHeader>
                                             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                                             <AlertDialogDescription>
-                                                This action cannot be undone. This will permanently delete category "{c.name}"
+                                                This action cannot be undone. This will permanently delete category "{c.name}"&nbsp;
+                                                <span className="font-extrabold">and all topics and resources within it.</span>
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
