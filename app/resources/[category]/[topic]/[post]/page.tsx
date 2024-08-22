@@ -1,11 +1,10 @@
 import { prisma } from "@/lib/utils.server"
 import { redirect } from "next/navigation"
 import { existsSync } from 'fs';
-import { readFile } from "fs/promises";
-import { exec, execSync } from "child_process";
-import internal, { Readable } from "stream";
+import { readFile, writeFile } from "fs/promises";
 import { Metadata } from "next";
-
+import * as marked from 'marked';
+import LatexRenderer from "@/components/ui/latex-renderer";
 export async function generateMetadata({ params }: {params: { post: string }}): Promise<Metadata> {
     let post = await prisma.resourceItem.findUnique({
         where: {
@@ -14,19 +13,19 @@ export async function generateMetadata({ params }: {params: { post: string }}): 
         select: {
             title: true,
             content: true,
-            createdAt: true,
-            topic: {
-                select: {
-                    id: true,
-                    name: true,
-                    category: {
-                        select: {
-                            id: true,
-                            name: true
-                        }
-                    }
-                }
-            }
+            // createdAt: true,
+            // topic: {
+            //     select: {
+            //         id: true,
+            //         name: true,
+            //         category: {
+            //             select: {
+            //                 id: true,
+            //                 name: true
+            //             }
+            //         }
+            //     }
+            // }
         }
     })
     if (!post) {
@@ -56,23 +55,15 @@ export default async function Page({ params }: { params: { post: string, topic: 
             }
         }
     })
-    console.log(!post);
     if (!post) {
         return redirect("/")
-    }
-    if (!existsSync("blogCache/"+post.id+".html")) {
-        execSync("pandoc -f markdown -o blogCache/"+post.id+".html", {
-            input: post.content
-        });
     }
 
     return <div>
         <div></div>
         <div>{post.topic.category.name} &gt; {post.topic.name} &gt; {post.title}</div>
         <div>{post.createdAt.toDateString()}</div>
-        <div dangerouslySetInnerHTML={{__html: (await readFile("blogCache/"+post.id+".html")).toString("utf8")}}>
-            
-        </div>
+        <LatexRenderer md={post.content} />
     </div>
     
 }
