@@ -27,10 +27,9 @@ export default function Rendered(opts: Options){
               <SyntaxHighlighter
                 {...rest}
                 PreTag="div"
-                children={String(children || "").replace(/\n$/, "")}
                 language={match[1]}
                 style={mode ? oneDark : oneLight}
-              />
+              >{String(children || "").replace(/\n$/, "")}</SyntaxHighlighter>
             ) : (
               <code {...rest} className={className}>
                 {children}

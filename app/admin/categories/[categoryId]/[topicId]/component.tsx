@@ -216,7 +216,7 @@ export default function AdminResources({ category, topicId, topics, resources } 
                     <AlertDialogHeader>
                       <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete resource "{c.title}".
+                        This action cannot be undone. This will permanently delete resource &ldquo;{c.title}&rdquo;.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
