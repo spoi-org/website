@@ -19,7 +19,7 @@ export default function LatexRenderer(props: { md: string }) {
 
     })
     return <div dangerouslySetInnerHTML={{ __html: marked.parse(props.md
-    ) }} ref={divRef} className="[&_h1]:text-6xl [&_h2]:text-5xl [&_h3]:text-4xl [&_h4]:text-3xl [&_h5]:text-2xl [&_h6]:text-xl">
+    ) }} ref={divRef}>
 
     </div>
 }
