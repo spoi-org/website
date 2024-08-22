@@ -1,13 +1,15 @@
-
+"use client";
 import { Button } from "@/components/ui/button";
-import { findUserBySessionId } from "@/lib/utils.server";
+import { UserContext } from "@/lib/context";
 import Link from "next/link";
+import { useContext } from "react";
+
 export default async function RootLayout({
   children,
 }: Readonly<{
     children: React.ReactNode;
   }>) {
-  let user = await findUserBySessionId();
+  const user = useContext(UserContext);
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center h-full flex-grow gap-y-3">
