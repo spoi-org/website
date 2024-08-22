@@ -1,7 +1,7 @@
 "use client";
-import { ThemeContext, UserContext } from "@/lib/context";
+import { ThemeContext } from "@/lib/context";
 import { getCookie } from "cookies-next";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Inter } from "next/font/google";
 import {
   NavigationMenu,
@@ -58,13 +58,14 @@ function NavIcon({ href, icon }: NavIconProps) {
 }
 
 export default function RootLayoutComponent({
+  user,
   children,
   initialMode
 }: Readonly<{
+  user?: User;
   children: React.ReactNode;
   initialMode: boolean
 }>) {
-  const user = useContext(UserContext);
   const [mode, setMode] = useState<boolean>(initialMode);
   return (
     <ThemeContext.Provider value={{ mode, setMode }}>
