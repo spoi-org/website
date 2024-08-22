@@ -12,7 +12,8 @@ export default async function ResourceEditor({ params } : { params: { resourceId
       id: true,
       title: true,
       description: true,
-      content: true
+      content: true,
+      topicId: true
     }
   });
   if (!resource){
