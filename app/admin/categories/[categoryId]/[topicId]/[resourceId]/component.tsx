@@ -1,5 +1,5 @@
 "use client";
-import Latex from "@/components/latex";
+import Rendered from "@/components/ui/rendered";
 import { useState } from "react";
 
 interface Resource {
@@ -25,7 +25,7 @@ export default function ResourceEditorComponent({ resource, authors } : { resour
           <h2 className="text-gray-500 mt-1">Authors:&nbsp;{authors.filter(a => a.name).map(a => a.name).join(", ")}</h2>
         </div>
         <p className="italic mb-4">{resource.description}</p>
-        <Latex>{content}</Latex>
+        <Rendered>{content}</Rendered>
       </div>
     </div>
   )

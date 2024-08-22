@@ -1,6 +1,5 @@
 import {PrismaClient, User} from '@prisma/client'
 import { cookies } from 'next/headers';
-import { spawn } from "child_process";
 
 const prismaClientSingleton = () => {
   return new PrismaClient()
@@ -36,24 +35,3 @@ export const findUserBySessionId = async () => {
   }))?.user;
   return auths[sessionId];
 }
-
-export function latexToHTML(content: string){
-  return new Promise<string>((resolve, reject) => {
-    const pandoc = spawn("pandoc", ["-f", "latex", "-t", "html"]);
-
-    let html = "";
-    let error = "";
-    pandoc.stdout.on("data", (data) => html += data.toString());
-    pandoc.stderr.on("data", (data) => error += data.toString());
-
-    pandoc.on("close", (code) => {
-        if (code === 0)
-          resolve(html);
-        else
-          reject(new Error(error));
-    });
-
-    pandoc.stdin.write(content);
-    pandoc.stdin.end();
-  });
-};
