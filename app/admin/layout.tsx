@@ -4,7 +4,7 @@ import { UserContext } from "@/lib/context";
 import Link from "next/link";
 import { useContext } from "react";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
     children: React.ReactNode;
