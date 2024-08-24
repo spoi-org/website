@@ -1,12 +1,7 @@
-import { prisma } from "@/lib/utils.server";
+import { cache } from "@/lib/utils.server";
 import AdminCategories from "./component";
 
 export default async function CategoriesPage(){
-    const categories = await prisma.category.findMany({
-        select: {
-            id: true,
-            name: true
-        }
-    });
+    const categories = cache.category.all();
     return <AdminCategories categories={categories} />
 }

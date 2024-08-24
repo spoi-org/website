@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { checkAdmin, getBody } from "./utils";
-import { prisma } from "@/lib/utils.server";
+import { cache } from "@/lib/utils.server";
 
 export async function POST(req : Request) {
     const admin = await checkAdmin();
@@ -8,7 +8,7 @@ export async function POST(req : Request) {
     const body = await getBody(req);
     if (body instanceof NextResponse) return body;
     try {
-        await prisma.resourceItem.create({
+        await cache.resourceItem.insert({
             data: {
                 title: body.title,
                 id: body.id,

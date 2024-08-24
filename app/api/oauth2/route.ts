@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { randomUUID } from "crypto";
 import { cookies } from "next/headers";
-import { prisma } from "@/lib/utils.server";
+import { cache } from "@/lib/utils.server";
 export async function GET(request: Request) {
     let params = new URL(request.url).searchParams;
     if (!params.has("code")) {
@@ -37,22 +37,23 @@ export async function GET(request: Request) {
     } else {
         avatar = `https://cdn.discordapp.com/avatars/${req2.id}/${req2.avatar}.png?size=256`;
     }
-    let user = await prisma.user.upsert({
-        where: {
-            id: req2.id
-        },
+    let user = await cache.user.upsert(req2.id, {
         update: {
-            avatar,
-            dcUserName: req2.username
+            data: {
+                avatar,
+                dcUserName: req2.username
+            }
         },
-        create: {
-            id: req2.id,
-            avatar,
-            dcUserName: req2.username
+        insert: {
+            data: {
+                id: req2.id,
+                avatar,
+                dcUserName: req2.username
+            }
         }
         
     }) 
-    let ssid = await prisma.sessionId.create({
+    let ssid = await cache.sessionId.insert({
         data: {
             userId: user.id
         }

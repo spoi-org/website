@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/utils.server";
+import { cache } from "@/lib/utils.server";
 import { NextResponse } from "next/server";
 import { checkAdmin, getBody } from "../utils";
 
@@ -8,10 +8,7 @@ export async function PATCH(req : Request, { params } : { params: { id: string }
     const body = await getBody(req);
     if (body instanceof NextResponse) return body;
     try {
-        await prisma.category.update({
-            where: {
-                id: params.id
-            },
+        await cache.category.update(params.id, {
             data: {
                 id: body.id,
                 name: body.name
@@ -31,11 +28,7 @@ export async function DELETE(req: Request, { params } : { params: { id: string }
     const admin = await checkAdmin();
     if (admin) return admin;
     try {
-        await prisma.category.delete({
-            where: {
-                id: params.id
-            }
-        });
+        await cache.category.delete(params.id);
     } catch (e){
         return NextResponse.json({
             error: "Category not found"

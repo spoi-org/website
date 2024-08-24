@@ -1,17 +1,10 @@
-import { prisma } from "@/lib/utils.server";
+import { cache } from "@/lib/utils.server";
 import AdminResources from "./component";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default async function ResourcesPage({ params } : { params: { categoryId: string, topicId: string } }){
-    const categoryName = (await prisma.category.findUnique({
-        where: {
-            id: params.categoryId
-        },
-        select: {
-            name: true
-        }
-    }))?.name;
+    const categoryName = cache.category.get(params.categoryId)?.name;
     if (!categoryName){
         <div className="flex flex-col items-center justify-center h-full flex-grow gap-y-3">
             <h1 className="text-4xl font-extrabold">404</h1>
@@ -23,21 +16,7 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
             </Link>
         </div>
     }
-    const resources = (await prisma.topic.findUnique({
-        where: {
-            id: params.topicId
-        },
-        include: {
-            resourceItems: {
-                select: {
-                    id: true,
-                    title: true,
-                    description: true
-                }
-            }
-        }
-    }))?.resourceItems;
-    if (!resources){
+    if (!cache.topic.get(params.topicId)){
         <div className="flex flex-col items-center justify-center h-full flex-grow gap-y-3">
             <h1 className="text-4xl font-extrabold">404</h1>
             <p className="text-xl">Topic not found</p>
@@ -48,11 +27,7 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
             </Link>
         </div>
     }
-    const topics = await prisma.topic.findMany({
-        select: {
-            id: true,
-            name: true
-        }
-    });
-    return <AdminResources category={{ name: categoryName!, id: params.categoryId }} topicId={params.topicId} topics={topics!} resources={resources!} />
+    const resources = cache.resourceItem.filter(r => r.topicId == params.topicId);
+    const topics = cache.topic.all();
+    return <AdminResources category={{ name: categoryName!, id: params.categoryId }} topicId={params.topicId} topics={topics} resources={resources} />
 }
