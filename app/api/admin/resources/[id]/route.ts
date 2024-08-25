@@ -23,6 +23,8 @@ export async function PATCH(req : Request, { params } : { params: { id: string }
             error: "Resource not found"
         }, { status: 404 });
     }
+    if (body.authors)
+        await cache.author.update(params.id, body.authors);
     return NextResponse.json({
         success: true
     });
@@ -38,6 +40,7 @@ export async function DELETE(req: Request, { params } : { params: { id: string }
             error: "Resource not found"
         }, { status: 404 });
     }
+    cache.author.delete(params.id);
     return NextResponse.json({
         success: true
     });

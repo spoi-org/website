@@ -14,7 +14,10 @@ export async function POST(req : Request) {
                 id: body.id,
                 topicId: body.topicId,
                 description: body.description,
-                content: body.content || `This is the content for resource ${body.title}`
+                content: body.content || `This is the content for resource ${body.title}`,
+                authors: {
+                    connect: body.authors?.map(a => ({ id: a }))
+                }
             }
         });
     } catch (e){

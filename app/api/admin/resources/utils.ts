@@ -22,6 +22,7 @@ interface Body {
     topicId: string;
     description: string;
     content?: string;
+    authors?: string[];
 }
 
 export async function getBody(req: Request) : Promise<Body | NextResponse> {
