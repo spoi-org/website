@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { prisma, cache } from "@/lib/utils.server";
+import { cache } from "@/lib/utils.server";
 import Link from "next/link";
 import ResourceEditorComponent from "./component";
 
@@ -16,18 +16,6 @@ export default async function ResourceEditor({ params } : { params: { resourceId
       </Link>
     </div>
   }
-  const authors = await prisma.resourceItem.findUnique({
-    where: {
-      id: params.resourceId
-    },
-    include: {
-      authors: {
-        select: {
-          id: true,
-          name: true
-        }
-      }
-    }
-  });
-  return <ResourceEditorComponent resource={resource!} authors={authors!.authors} />
+  const authors = cache.author.get(params.resourceId);
+  return <ResourceEditorComponent resource={resource!} authors={authors!} />
 }

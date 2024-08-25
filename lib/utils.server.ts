@@ -67,6 +67,56 @@ class Cache<
   }
 }
 
+// does not handle user updates
+class AuthorCache {
+  private cache: Record<string, User[]>;
+
+  constructor() {
+    this.cache = {};
+    this.init().then(() => console.log("Author cache initialized"));
+  }
+
+  async init() {
+    const data = await prisma.resourceItem.findMany({
+      select: { id: true, authors: true }
+    });
+    this.cache = Object.fromEntries(data.map(d => [d.id, d.authors]));
+  }
+
+  get(id: string): User[] | undefined {
+    return this.cache[id];
+  }
+
+  async update(id: string, authors: string[]) {
+    const toRemove = [];
+    for (const author of this.cache[id])
+      if (!authors.includes(author.id))
+        toRemove.push({ id: author.id });
+    const toAdd = [];
+    for (const author of authors)
+      if (!this.cache[id].find(a => a.id === author))
+        toAdd.push({ id: author });
+    if (toAdd.length === 0 && toRemove.length === 0) return;
+    const data = await prisma.resourceItem.update({
+      where: { id },
+      data: {
+        authors: {
+          disconnect: toRemove,
+          connect: toAdd
+        }
+      },
+      include: {
+        authors: true
+      }
+    });
+    this.cache[id] = data.authors;
+  }
+
+  delete(id: string){
+    delete this.cache[id];
+  }
+}
+
 function cacheSingleton(){
   return {
     user: new Cache<User, Prisma.UserCreateArgs, Omit<Prisma.UserUpdateArgs, "where">>("user"),
@@ -75,7 +125,8 @@ function cacheSingleton(){
     topic: new Cache<Topic, Prisma.TopicCreateArgs, Omit<Prisma.TopicUpdateArgs, "where">>("topic"),
     resourceItem: new Cache<ResourceItem, Prisma.ResourceItemCreateArgs, Omit<Prisma.ResourceItemUpdateArgs, "where">>("resourceItem"),
     problem: new Cache<Problem, Prisma.ProblemCreateArgs, Omit<Prisma.ProblemUpdateArgs, "where">>("problem"),
-    comment: new Cache<Comment, Prisma.CommentCreateArgs, Omit<Prisma.CommentUpdateArgs, "where">>("comment")
+    comment: new Cache<Comment, Prisma.CommentCreateArgs, Omit<Prisma.CommentUpdateArgs, "where">>("comment"),
+    author: new AuthorCache()
   }
 }
 
