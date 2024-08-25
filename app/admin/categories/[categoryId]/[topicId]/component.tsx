@@ -1,5 +1,5 @@
 "use client";
-import { faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronRight, faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   AlertDialog,
@@ -40,6 +40,32 @@ import {
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ResourceItem, User } from "@prisma/client";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
+function AuthorList({ admins, authors } : {
+  admins: User[], authors: React.MutableRefObject<string[]>
+}){
+  const [authorIds, setAuthorIds] = useState(authors.current);
+  const [open, setOpen] = useState(false);
+  authors.current = authorIds;
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <CollapsibleTrigger className="font-bold hover:text-gray-500 dark:hover:text-gray-300 transition">
+        Authors
+        <FontAwesomeIcon icon={open ? faChevronDown : faChevronRight} className="ml-2" />
+      </CollapsibleTrigger>
+      <CollapsibleContent asChild>
+        <ToggleGroup type="multiple" value={authorIds} onValueChange={setAuthorIds} className="justify-start">
+          {admins.map(a => (
+            <ToggleGroupItem key={a.id} value={a.id}>{a.name || a.dcUserName}</ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
 
 interface DialogProps {
   asChild?: boolean;
@@ -52,17 +78,20 @@ interface DialogProps {
   dialogDescription: string;
   button: string;
   children: React.ReactNode;
-  onClick: (id: string, title: string, description: string | null, categoryId: string) => any;
+  authors: User[];
+  admins: User[];
+  onClick: (id: string, title: string, description: string | null, categoryId: string, authors: string[]) => any;
 }
 
-function ResourceDialog({ asChild = false, title, description, id, topicId, topics, dialogTitle, dialogDescription, button, children, onClick } : DialogProps){
+function ResourceDialog({ asChild = false, title, description, id, topicId, topics, authors, admins, dialogTitle, dialogDescription, button, children, onClick } : DialogProps){
   const titleRef = useRef<HTMLInputElement>(null);
   const idRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
+  const authorsRef = useRef<string[]>(authors.map(a => a.id));
   const [topic, setTopic] = useState<string | undefined>(topicId);
   function handleClick(){
     if (!titleRef.current!.value.trim() || !idRef.current!.value.trim() || !topic) return;
-    onClick(idRef.current!.value.trim(), titleRef.current!.value.trim(), descRef.current!.value.trim() || null, topic!);
+    onClick(idRef.current!.value.trim(), titleRef.current!.value.trim(), descRef.current!.value.trim() || null, topic!, authorsRef.current);
   }
   return (
     <Dialog>
@@ -92,6 +121,7 @@ function ResourceDialog({ asChild = false, title, description, id, topicId, topi
             ))}
           </SelectContent>
         </Select>
+        <AuthorList authors={authorsRef} admins={admins} />
         <div className="mt-1">
           <label htmlFor={`description-${id}`} className="block font-bold">Description</label>
           <textarea ref={descRef} id={`description-${id}`} className="w-full p-2 border border-gray-300 dark:bg-[#101720] rounded-lg mt-1" defaultValue={description} />
@@ -111,28 +141,23 @@ interface Topic {
   name: string;
 }
 
-interface Resource {
-  id: string;
-  title: string;
-  description: string | null;
-}
-
 interface AdminTopicsProps {
   category: Topic,
   topicId: string,
   topics: Topic[],
-  resources: Resource[]
+  resources: (ResourceItem & { authors: User[] })[]
+  admins: User[]
 }
 
-export default function AdminResources({ category, topicId, topics, resources } : AdminTopicsProps) {
+export default function AdminResources({ category, topicId, topics, resources, admins } : AdminTopicsProps) {
   const router = useRouter();
-  async function createResource(id: string, title: string, description: string | null, topicId: string){
+  async function createResource(id: string, title: string, description: string | null, topicId: string, authors: string[]){
     await fetch("/api/admin/resources", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ id, title, description, topicId })
+      body: JSON.stringify({ id, title, description, topicId, authors })
     });
     router.refresh();
   }
@@ -166,6 +191,8 @@ export default function AdminResources({ category, topicId, topics, resources } 
           onClick={createResource}
           topics={topics}
           topicId={topicId}
+          authors={[]}
+          admins={admins}
           asChild
         >
           <Button variant="outline" size="icon" className="ml-2 hover:bg-green-500 hover:text-white transition cursor-pointer">
@@ -175,13 +202,13 @@ export default function AdminResources({ category, topicId, topics, resources } 
       </h1>
       <ul className="grid">
         {resources.map(c => {
-          async function editResource(id: string, title: string, description: string | null, topicId: string){
+          async function editResource(id: string, title: string, description: string | null, topicId: string, authors: string[]){
             await fetch(`/api/admin/resources/${c.id}`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json"
               },
-              body: JSON.stringify({id, title, description, topicId})
+              body: JSON.stringify({id, title, description, topicId, authors})
             });
             router.refresh();
           }
@@ -204,6 +231,8 @@ export default function AdminResources({ category, topicId, topics, resources } 
                   dialogDescription={`Edit the ${c.title} resource`}
                   button="Save"
                   topics={topics}
+                  authors={c.authors}
+                  admins={admins}
                   onClick={editResource}
                 >
                   <FontAwesomeIcon icon={faPenToSquare} className="ml-2 h-4 hover:text-blue-500 transition cursor-pointer" />
