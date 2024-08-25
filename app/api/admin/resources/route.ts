@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { checkAdmin, getBody } from "./utils";
 import { cache } from "@/lib/utils.server";
+import { ResourceItem, User } from "@prisma/client";
 
 export async function POST(req : Request) {
     const admin = await checkAdmin();
@@ -8,7 +9,7 @@ export async function POST(req : Request) {
     const body = await getBody(req);
     if (body instanceof NextResponse) return body;
     try {
-        await cache.resourceItem.insert({
+        const data = (await cache.resourceItem.insert({
             data: {
                 title: body.title,
                 id: body.id,
@@ -18,8 +19,12 @@ export async function POST(req : Request) {
                 authors: {
                     connect: body.authors?.map(a => ({ id: a }))
                 }
+            },
+            select: {
+                authors: true
             }
-        });
+        }) as ResourceItem & { authors: User[] });
+        cache.author.insert(data.id, data.authors);
     } catch (e){
         return NextResponse.json({
             error: "Resource already exists"

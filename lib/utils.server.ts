@@ -87,6 +87,10 @@ class AuthorCache {
     return this.cache[id];
   }
 
+  insert(id: string, authors: User[]) {
+    this.cache[id] = authors;
+  }
+
   async update(id: string, authors: string[]) {
     const toRemove = [];
     for (const author of this.cache[id])
