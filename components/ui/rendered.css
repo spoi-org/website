@@ -1,0 +1,23 @@
+.rendered-list ul {
+    list-style: circle;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.rendered-list ul ul {
+    list-style: square;
+}
+
+.rendered-list ol {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.rendered details {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+sup a {
+    text-decoration: none !important;
+}
