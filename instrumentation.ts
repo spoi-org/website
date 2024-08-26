@@ -1,20 +1,15 @@
 import { cache } from "./lib/utils.server";
-
-function reset(){
-  process.stdout.clearLine(0);
-  process.stdout.cursorTo(0);
-}
+import ora from "ora";
 
 export async function register(){
   const instances = Object.values(cache);
   const message = `Initializing cache instances [$/${instances.length}]`;
+  const spinner = ora({ text: message.replace("$", "0"), indent: 1 }).start();
   let cnt = 0;
   await Promise.all(instances.map(async (instance) => {
     await instance.init();
     cnt++;
-    reset();
-    process.stdout.write(message.replace("$", cnt.toString()));
+    spinner.text = message.replace("$", cnt.toString());
   }));
-  reset();
-  console.log("All cache instances initialized");
+  spinner.succeed("All cache instances initialized");
 }
