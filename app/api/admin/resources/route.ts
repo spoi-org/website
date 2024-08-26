@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { checkAdmin, getBody } from "./utils";
+import { getBody } from "./utils";
 import { cache } from "@/lib/utils.server";
 import { ResourceItem, User } from "@prisma/client";
+import { checkAdmin } from "../utils";
 
 export async function POST(req : Request) {
-    const admin = await checkAdmin();
+    const admin = checkAdmin();
     if (admin) return admin;
     const body = await getBody(req);
     if (body instanceof NextResponse) return body;

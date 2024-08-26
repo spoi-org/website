@@ -1,12 +1,10 @@
-import { redirect } from "next/navigation";
-import { randomUUID } from "crypto";
-import { cookies } from "next/headers";
-import { cache, findUserBySessionId } from "@/lib/utils.server";
+import { cache } from "@/lib/utils.server";
 import { NextResponse } from "next/server";
+import { checkAdmin } from "../utils";
+
 export async function GET(request: Request) {
-    let user = await findUserBySessionId();
-    if (!user || !user.admin) 
-        return NextResponse.json([])
+    const admin = checkAdmin();
+    if (admin) return admin;
     let params = new URL(request.url).searchParams;
     const skip = (+(params.get("skip") as string) || 0)*50;
     if (skip < 0)
