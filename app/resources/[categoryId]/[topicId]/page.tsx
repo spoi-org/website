@@ -61,12 +61,15 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
           </BreadcrumbList>
         </Breadcrumb>
       </h1>
-      <ul className="grid">
+      <ul className="grid max-w-[90%] lg:max-w-[70%]">
         {resources.map(c => {
+          const authors = cache.author.get(c.id)!;
           return (
             <Link key={c.id} href={`/resources/${params.categoryId}/${params.topicId}/${c.id}`}>
-              <li className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5">
-                {c.title}
+              <li className="shadow-md rounded-lg bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5">
+                <h2 className="text-2xl font-bold">{c.title}</h2>
+                {authors.length > 0 && <span className="text-sm">By {authors.map((x)=>x.name).join(", ")}</span>}
+                <p className="text-lg italic">{c.description}</p>
               </li>
             </Link>
           );
