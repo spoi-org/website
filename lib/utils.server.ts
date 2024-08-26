@@ -9,12 +9,10 @@ class Cache<
   UpdateArgs
 > {
   private resource: string;
-  private cache: Record<string, T>;
+  private cache: Record<string, T> = {};
 
   constructor(resource: string) {
-    this.cache = {};
     this.resource = resource;
-    this.init().then(() => console.log(`Cache for ${resource} initialized`));
   }
 
   async init() {
@@ -69,12 +67,7 @@ class Cache<
 
 // does not handle user updates
 class AuthorCache {
-  private cache: Record<string, User[]>;
-
-  constructor() {
-    this.cache = {};
-    this.init().then(() => console.log("Author cache initialized"));
-  }
+  private cache: Record<string, User[]> = {};
 
   async init() {
     const data = await prisma.resourceItem.findMany({
