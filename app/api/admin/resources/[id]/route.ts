@@ -14,7 +14,8 @@ export async function PATCH(req : Request, { params } : { params: { id: string }
                 title: body.title,
                 description: body.description,
                 content: body.content,
-                topicId: body.topicId
+                topicId: body.topicId,
+                public: body.public
             }
         });
     } catch (e){

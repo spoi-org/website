@@ -1,4 +1,4 @@
-import { cache } from "@/lib/utils.server";
+import { cache, findUserBySessionId } from "@/lib/utils.server";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -34,9 +34,11 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
       </Link>
     </div>
   }
-  const resources = cache.resourceItem.filter(r => r.topicId == params.topicId);
+  const admin = findUserBySessionId()!.admin;
+  const resources = cache.resourceItem.filter(r => (
+    r.topicId == params.topicId && (r.public || admin)
+  ));
   const topics = cache.topic.all();
-  const admins = cache.user.filter(u => u.admin);
   const topicName = topics.find(c => c.id === params.topicId)?.name;
   return (
     <div className="text-lg flex flex-col justify-center items-center">

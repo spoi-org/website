@@ -16,6 +16,7 @@ export async function POST(req : Request) {
                 topicId: body.topicId,
                 description: body.description,
                 content: body.content || `This is the content for resource ${body.title}`,
+                public: body.public,
                 authors: {
                     connect: body.authors?.map(a => ({ id: a }))
                 }

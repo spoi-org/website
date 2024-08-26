@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import Rendered from "@/components/ui/rendered";
-import { cache } from "@/lib/utils.server";
+import { cache, findUserBySessionId } from "@/lib/utils.server";
 import Link from "next/link";
 
 export default async function ResourceEditor({ params } : { params: { resourceId: string } }){
   const resource = cache.resourceItem.get(params.resourceId);
-  if (resource === undefined){
+  if (resource === undefined || (!resource.public && !findUserBySessionId()!.admin)){
     return (
       <div className="flex flex-col items-center justify-center h-full flex-grow gap-y-3">
         <h1 className="text-4xl font-extrabold">404</h1>

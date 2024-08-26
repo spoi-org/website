@@ -43,6 +43,7 @@ import { Button } from "@/components/ui/button";
 import { ResourceItem, User } from "@prisma/client";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Checkbox } from "@/components/ui/checkbox";
 
 function AuthorList({ admins, authors } : {
   admins: User[], authors: React.MutableRefObject<string[]>
@@ -72,6 +73,7 @@ interface DialogProps {
   title?: string;
   id?: string;
   description?: string;
+  isPublic?: boolean;
   topicId?: string;
   topics: Topic[];
   dialogTitle: string;
@@ -80,18 +82,19 @@ interface DialogProps {
   children: React.ReactNode;
   authors: User[];
   admins: User[];
-  onClick: (id: string, title: string, description: string | null, categoryId: string, authors: string[]) => any;
+  onClick: (id: string, title: string, description: string | null, categoryId: string, pub: boolean, authors: string[]) => any;
 }
 
-function ResourceDialog({ asChild = false, title, description, id, topicId, topics, authors, admins, dialogTitle, dialogDescription, button, children, onClick } : DialogProps){
+function ResourceDialog({ asChild = false, isPublic = false, title, description, id, topicId, topics, authors, admins, dialogTitle, dialogDescription, button, children, onClick } : DialogProps){
   const titleRef = useRef<HTMLInputElement>(null);
   const idRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
   const authorsRef = useRef<string[]>(authors.map(a => a.id));
   const [topic, setTopic] = useState<string | undefined>(topicId);
+  const [pub, setPub] = useState(isPublic);
   function handleClick(){
     if (!titleRef.current!.value.trim() || !idRef.current!.value.trim() || !topic) return;
-    onClick(idRef.current!.value.trim(), titleRef.current!.value.trim(), descRef.current!.value.trim() || null, topic!, authorsRef.current);
+    onClick(idRef.current!.value.trim(), titleRef.current!.value.trim(), descRef.current!.value.trim() || null, topic!, pub, authorsRef.current);
   }
   return (
     <Dialog>
@@ -110,6 +113,10 @@ function ResourceDialog({ asChild = false, title, description, id, topicId, topi
         <div className="mt-1">
           <label htmlFor={`id-${id}`} className="block font-bold">ID</label>
           <input ref={idRef} id={`id-${id}`} type="text" defaultValue={id} className="w-full p-2 border border-gray-300 dark:bg-[#101720] rounded-lg mt-1" />
+        </div>
+        <div>
+          <Checkbox id={`checkbox-${id}`} checked={pub} onCheckedChange={pub => setPub(typeof pub === "boolean" ? pub : false)} />
+          <label htmlFor={`checkbox-${id}`} className="ml-2">Public</label>
         </div>
         <Select value={topic} onValueChange={setTopic}>
           <SelectTrigger>
@@ -151,13 +158,13 @@ interface AdminTopicsProps {
 
 export default function AdminResources({ category, topicId, topics, resources, admins } : AdminTopicsProps) {
   const router = useRouter();
-  async function createResource(id: string, title: string, description: string | null, topicId: string, authors: string[]){
+  async function createResource(id: string, title: string, description: string | null, topicId: string, pub: boolean, authors: string[]){
     await fetch("/api/admin/resources", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ id, title, description, topicId, authors })
+      body: JSON.stringify({ id, title, description, topicId, public: pub, authors })
     });
     router.refresh();
   }
@@ -202,13 +209,13 @@ export default function AdminResources({ category, topicId, topics, resources, a
       </h1>
       <ul className="grid">
         {resources.map(c => {
-          async function editResource(id: string, title: string, description: string | null, topicId: string, authors: string[]){
+          async function editResource(id: string, title: string, description: string | null, topicId: string, pub: boolean, authors: string[]){
             await fetch(`/api/admin/resources/${c.id}`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json"
               },
-              body: JSON.stringify({id, title, description, topicId, authors})
+              body: JSON.stringify({id, title, description, topicId, public: pub, authors})
             });
             router.refresh();
           }
@@ -227,6 +234,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
                   id={c.id}
                   topicId={topicId}
                   description={c.description || undefined}
+                  isPublic={c.public}
                   dialogTitle="Edit Resource"
                   dialogDescription={`Edit the ${c.title} resource`}
                   button="Save"

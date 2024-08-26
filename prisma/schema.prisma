@@ -52,6 +52,7 @@ model Topic {
 model ResourceItem {
   id        String   @id
   title     String
+  public    Boolean  @default(false)
   topic     Topic    @relation(references: [id], fields: [topicId], onDelete: Cascade)
   topicId   String
   authors   User[]
