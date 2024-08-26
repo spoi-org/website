@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 let admin = true;
 let id = "-1";
-let name = null;
+let name = undefined;
 
 for (const arg of process.argv){
     if (arg.startsWith("--id="))
