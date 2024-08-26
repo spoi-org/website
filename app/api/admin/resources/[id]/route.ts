@@ -24,7 +24,7 @@ export async function PATCH(req : Request, { params } : { params: { id: string }
         }, { status: 404 });
     }
     if (body.authors)
-        await cache.author.update(params.id, body.authors);
+        await cache.author.update(body.id, body.authors);
     return NextResponse.json({
         success: true
     });
