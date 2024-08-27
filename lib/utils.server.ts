@@ -38,6 +38,10 @@ class Cache<
     });
   }
 
+  getCache() {
+    return this.cache;
+  }
+
   async insert(args: InsertArgs){
     // @ts-ignore
     const data: T = await prisma[this.resource].create(args);
@@ -114,6 +118,63 @@ class AuthorCache {
   }
 }
 
+class SolverCache {
+  private cache: Record<string, string[]> = {};
+
+  async init() {
+    const data = await prisma.user.findMany({
+      select: { id: true, solved: true }
+    });
+    this.cache = Object.fromEntries(data.map(d => [d.id, d.solved.map(s => s.id)]));
+  }
+
+  get(id: string): string[] | undefined {
+    return this.cache[id];
+  }
+
+  insert(id: string, solved: string[]) {
+    this.cache[id] = solved;
+  }
+
+  async add(uid: string, pid: string) {
+    const data = await prisma.user.update({
+      where: { id: uid },
+      data: {
+        solved: {
+          connect: { id: pid }
+        }
+      },
+      include: {
+        solved: {
+          select: { id: true }
+        }
+      }
+    });
+    this.cache[uid] = data.solved.map(s => s.id);
+  }
+
+  async remove(uid: string, pid: string) {
+    const data = await prisma.user.update({
+      where: { id: uid },
+      data: {
+        solved: {
+          disconnect: { id: pid }
+        }
+      },
+      include: {
+        solved: {
+          select: { id: true }
+        }
+      }
+    });
+    this.cache[uid] = data.solved.map(s => s.id);
+  }
+
+  delete(id: string){
+    delete this.cache[id];
+  }
+}
+
 function cacheSingleton(){
   return {
     user: new Cache<User, Prisma.UserCreateArgs, Omit<Prisma.UserUpdateArgs, "where">>("user"),
@@ -123,7 +184,8 @@ function cacheSingleton(){
     resourceItem: new Cache<ResourceItem, Prisma.ResourceItemCreateArgs, Omit<Prisma.ResourceItemUpdateArgs, "where">>("resourceItem"),
     problem: new Cache<Problem, Prisma.ProblemCreateArgs, Omit<Prisma.ProblemUpdateArgs, "where">>("problem"),
     comment: new Cache<Comment, Prisma.CommentCreateArgs, Omit<Prisma.CommentUpdateArgs, "where">>("comment"),
-    author: new AuthorCache()
+    author: new AuthorCache(),
+    solves: new SolverCache()
   }
 }
 

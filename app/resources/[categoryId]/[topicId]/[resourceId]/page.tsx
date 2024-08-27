@@ -19,6 +19,8 @@ export default async function ResourceEditor({ params } : { params: { resourceId
     );
   }
   const authors = cache.author.get(params.resourceId)!;
+  const problems = cache.problem.getCache();
+  const solved = cache.solves.get(findUserBySessionId()!.id)!;
   return (
     <div className="text-lg flex-grow mx-[10%]">
       <div className="mb-4">
@@ -26,7 +28,7 @@ export default async function ResourceEditor({ params } : { params: { resourceId
         <h2 className="text-gray-500 mt-1">Authors:&nbsp;{authors.filter(a => a.name).map(a => a.name).join(", ")}</h2>
       </div>
       <p className="italic mb-4">{resource.description}</p>
-      <Rendered>{resource.content}</Rendered>
+      <Rendered problems={problems} solved={solved}>{resource.content}</Rendered>
     </div>
   )
 }

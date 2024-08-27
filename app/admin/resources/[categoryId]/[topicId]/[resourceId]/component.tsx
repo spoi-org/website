@@ -1,6 +1,7 @@
 "use client";
 import LoaderButton from "@/components/ui/loader-button";
 import Rendered from "@/components/ui/rendered";
+import { Problem } from "@prisma/client";
 import { useState } from "react";
 
 interface Resource {
@@ -16,7 +17,14 @@ interface Author {
   name: string | null;
 }
 
-export default function ResourceEditorComponent({ resource, authors } : { resource: Resource, authors: Author[] }){
+interface Props {
+  problems: Record<string, Problem>;
+  solved: string[];
+  resource: Resource;
+  authors: Author[];
+}
+
+export default function ResourceEditorComponent({ resource, authors, problems, solved } : Props){
   const [content, setContent] = useState(resource.content);
   resource.content = content;
   async function save(){
@@ -40,7 +48,7 @@ export default function ResourceEditorComponent({ resource, authors } : { resour
           <h2 className="text-gray-500 mt-1">Authors:&nbsp;{authors.filter(a => a.name).map(a => a.name).join(", ")}</h2>
         </div>
         <p className="italic mb-4">{resource.description}</p>
-        <Rendered>{content}</Rendered>
+        <Rendered problems={problems} solved={solved}>{content}</Rendered>
       </div>
     </div>
   )

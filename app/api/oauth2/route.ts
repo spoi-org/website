@@ -58,6 +58,8 @@ export async function GET(request: Request) {
             userId: user.id
         }
     })
+    if (!cache.solves.get(user.id))
+        cache.solves.insert(user.id, []);
     let store = cookies();
     store.set("__ssid", ssid.id);
     return redirect("/")

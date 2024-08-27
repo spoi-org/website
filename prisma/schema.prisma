@@ -24,6 +24,7 @@ model User {
   name       String?
   resources  ResourceItem[]
 
+  solved     Problem[]
   comments   Comment[]
   sessionIds SessionId[]
 }
@@ -69,6 +70,7 @@ model Problem {
   title          String
   url            String
   ratingEstimate Int
+  solvers        User[]
 }
 
 model Comment {

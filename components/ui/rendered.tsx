@@ -8,13 +8,54 @@ import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import "katex/dist/katex.min.css";
-import { HTMLAttributes, useContext } from "react";
+import { ComponentProps, HTMLAttributes, useContext, useState } from "react";
 import { ThemeContext } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "./table";
+import { Problem } from "@prisma/client";
+import { Checkbox } from "./checkbox";
+import { Rating } from "./rating";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "./button";
+import { useToast } from "./use-toast";
 
-export default function Rendered({ className, ...opts } : Options){
+interface RenderedProps extends Options {
+  problems: Record<string, Problem>;
+  solved: string[];
+}
+
+interface ProblemCheckboxProps {
+  className?: string
+  size?: number;
+  problem: Problem;
+  solves: string[];
+  setSolves: (solves: string[]) => void;
+}
+
+function ProblemCheckbox({ problem, solves, setSolves, className, size } : ProblemCheckboxProps){
+  async function onCheck(checked: boolean){
+    if (checked === true){
+      fetch(`/api/problems/${problem.id}`, { method: "POST" });
+      setSolves([...solves, problem.id]);
+    }
+    else {
+      fetch(`/api/problems/${problem.id}`, { method: "DELETE" });
+      setSolves(solves.filter(s => s !== problem.id));
+    }
+  }
+  return (
+    <Checkbox
+      checked={solves.includes(problem.id)} onCheckedChange={onCheck}
+      className={cn(`h-${size} w-${size} data-[state=checked]:bg-green-500 !text-white rounded-full`, className)}
+    />
+  )
+}
+
+export default function Rendered({ className, problems, solved, ...opts } : RenderedProps){
   const { mode }  = useContext(ThemeContext);
+  const { toast } = useToast();
+  const [solves, setSolves] = useState(solved);
   try {
     return (
       <Markdown
@@ -26,16 +67,27 @@ export default function Rendered({ className, ...opts } : Options){
           code(props) {
             const {children, className, node, ...rest} = props;
             const match = /language-(\w+)/.exec(className || "");
+            const content = String(children || "").replace(/\n$/, "");
+            function copy(){
+              navigator.clipboard.writeText(content);
+              const { dismiss } = toast({ title: "Copied!" });
+              setTimeout(dismiss, 3000);
+            }
             return match ? (
-              // @ts-ignore
-              <SyntaxHighlighter
-                {...rest}
-                PreTag="div"
-                language={match[1]}
-                style={mode ? oneDark : oneLight}
-              >{String(children || "").replace(/\n$/, "")}</SyntaxHighlighter>
+              <span className="relative">
+                { /* @ts-ignore */ }
+                <SyntaxHighlighter 
+                  {...rest}
+                  PreTag="div"
+                  language={match[1]}
+                  style={mode ? oneDark : oneLight}
+                >{content}</SyntaxHighlighter>
+                <Button className="absolute top-0 right-0" onClick={copy}>
+                  Copy
+                </Button>
+              </span>
             ) : (
-              <code {...rest} className={cn("bg-gray-300 dark:bg-gray-700 p-1 rounded-md", className)}>
+              <code {...rest} className={cn("bg-gray-300 dark:bg-gray-700 p-1 rounded-md relative", className)}>
                 {children}
               </code>
             );
@@ -55,6 +107,68 @@ export default function Rendered({ className, ...opts } : Options){
               />
             </span>
           )},
+          // problems
+          problem: ({ children, className, ...props } : ComponentProps<"div">) => {
+            const problem = problems[children as string];
+            if (problem === undefined)
+              return <div className={cn("text-red-500", className)} {...props}>Problem not found</div>;
+            return (
+              <span className={cn("flex justify-center items-center", className)} {...props}>
+                <span className="border-2 rounded-md bg-sky-100 dark:bg-gray-800 hover:-translate-y-1 transition p-5 flex justify-center items-center w-full md:w-[80%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%]">
+                  <a href={problem.url} target="_blank" className="flex-1 text-xl font-bold">
+                    <span className="inline-flex flex-col">
+                      {problem.title}
+                      <Rating rating={problem.ratingEstimate} className="text-base" />
+                    </span>
+                    <FontAwesomeIcon icon={faLink} className="ml-2" />
+                  </a>
+                  <ProblemCheckbox size={10} className="text-xl mr-2 flex-shrink-0" problem={problem} solves={solves} setSolves={setSolves} />
+                </span>
+              </span>
+            );
+          },
+          ptable: ({ children, className, ...props } : ComponentProps<"table">) => {
+            return (
+              <div className="flex justify-center items-center">
+                <div className="w-full md:w-[80%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%]">
+                  <Table className={cn("my-5 border", className)} {...props}>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Problem</TableHead>
+                        <TableHead>Rating</TableHead>
+                        <TableHead className="text-center">Solved</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {children}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            );
+          },
+          prow: ({ children, ...props } : ComponentProps<"tr">) => {
+            const problem = problems[children as string];
+            if (problem === undefined){
+              return (
+                <TableRow className={cn("text-red-500", className)} {...props}>
+                  <TableCell>Problem not found</TableCell>
+                  <TableCell /><TableCell />
+                </TableRow>
+              );
+            }
+            return (
+              <TableRow {...props}>
+                <TableCell>
+                  <a href={problem.url}>{problem.title}</a>
+                </TableCell>
+                <TableCell><Rating rating={problem.ratingEstimate} /></TableCell>
+                <TableCell className="text-center !pr-4">
+                  <ProblemCheckbox size={6} problem={problem} solves={solves} setSolves={setSolves} />
+                </TableCell>
+              </TableRow>
+            );
+          },
           // table
           table: ({ className, ...props }) => <Table className={cn("my-5", className)} {...props} />,
           thead: props => <TableHeader {...props} />,

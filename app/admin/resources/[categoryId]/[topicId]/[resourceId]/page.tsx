@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { cache } from "@/lib/utils.server";
+import { cache, findUserBySessionId } from "@/lib/utils.server";
 import Link from "next/link";
 import ResourceEditorComponent from "./component";
 
@@ -17,5 +17,7 @@ export default async function ResourceEditor({ params } : { params: { resourceId
     </div>
   }
   const authors = cache.author.get(params.resourceId);
-  return <ResourceEditorComponent resource={resource!} authors={authors!} />
+  const problems = cache.problem.getCache();
+  const solved = cache.solves.get(findUserBySessionId()!.id)!;
+  return <ResourceEditorComponent resource={resource!} authors={authors!} problems={problems} solved={solved} />
 }
