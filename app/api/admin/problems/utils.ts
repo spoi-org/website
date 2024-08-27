@@ -16,7 +16,7 @@ export async function getBody(req: Request) : Promise<Body | NextResponse> {
             error: "Invalid JSON"
         }, {status: 400});
     }
-    const fields = ["id", "title", "url", "ratingEstimate"];
+    const fields = ["id", "title", "url"];
     for (const field of fields){
         if (typeof body[field] !== "string"){
             return NextResponse.json({
@@ -24,7 +24,7 @@ export async function getBody(req: Request) : Promise<Body | NextResponse> {
             }, {status: 400});
         }
     }
-    if (typeof body.ratingEstimate !== "boolean"){
+    if (typeof body.ratingEstimate !== "number"){
         return NextResponse.json({
             error: "Invalid or missing field: ratingEstimate"
         }, {status: 400});
