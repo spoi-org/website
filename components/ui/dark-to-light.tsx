@@ -10,30 +10,30 @@ import { setCookie } from 'cookies-next'
 import { ThemeContext } from "@/lib/context"
 
 export function Brightness() {
-    const { mode, setMode }  = useContext(ThemeContext);
-    return (
-        <NavigationMenuItem>
-            <div className={cn(navigationMenuTriggerStyle(), "px-2")}  onClick={()=>{
-                setCookie("mode", !mode + "");
-                setMode(!mode);
-            }}>
-                <FontAwesomeIcon icon={mode ? faMoon : faSun} className="!h-8 cursor-pointer"/>
-            </div>
-        </NavigationMenuItem>
-    );
+  const { mode, setMode }  = useContext(ThemeContext);
+  return (
+    <NavigationMenuItem>
+      <div className={cn(navigationMenuTriggerStyle(), "px-2")}  onClick={()=>{
+        setCookie("mode", !mode + "");
+        setMode(!mode);
+      }}>
+        <FontAwesomeIcon icon={mode ? faMoon : faSun} className="!h-8 cursor-pointer"/>
+      </div>
+    </NavigationMenuItem>
+  );
 }
 
 export function BrightnessText(){
-    const { mode, setMode }  = useContext(ThemeContext);
-    return (
-        <div className="cursor-pointer flex justify-center items-center font-bold w-full text-base" onClick={()=>{
-            setCookie("mode", !mode + "");
-            setMode(!mode);
-        }}>
-            <div className="flex justify-center items-center">
-                <FontAwesomeIcon icon={mode ? faMoon : faSun} className="fa-1x mr-1"/>
-                <span>{mode ? "Dark Mode" : "Light Mode"}</span>
-            </div>
-        </div>
-    )
+  const { mode, setMode }  = useContext(ThemeContext);
+  return (
+    <div className="cursor-pointer flex justify-center items-center font-bold w-full text-base" onClick={()=>{
+      setCookie("mode", !mode + "");
+      setMode(!mode);
+    }}>
+      <div className="flex justify-center items-center">
+        <FontAwesomeIcon icon={mode ? faMoon : faSun} className="fa-1x mr-1"/>
+        <span>{mode ? "Dark Mode" : "Light Mode"}</span>
+      </div>
+    </div>
+  )
 }
