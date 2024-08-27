@@ -8,7 +8,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await findUserBySessionId();
+  const user = findUserBySessionId();
   const cookieStore = cookies();
   return (
     <LayoutComponent user={user} initialMode={cookieStore.get("mode")?.value === "true"}>{children}</LayoutComponent>

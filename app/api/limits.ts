@@ -29,7 +29,7 @@ export class RateLimiter {
 export function ratelimit(per: number, func: Function) {
   const limiter = new RateLimiter(per);
   return async function (...args: any[]) {
-    const user = await findUserBySessionId();
+    const user = findUserBySessionId();
     if (!user)
       return NextResponse.json({ error: "You are not logged in" }, { status: 401 });
     if (!limiter.hit(user.id))
