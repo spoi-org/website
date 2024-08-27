@@ -15,7 +15,6 @@ export function Brightness() {
         <NavigationMenuItem>
             <div className={cn(navigationMenuTriggerStyle(), "px-2")}  onClick={()=>{
                 setCookie("mode", !mode + "");
-                console.log("setMode", !mode);
                 setMode(!mode);
             }}>
                 <FontAwesomeIcon icon={mode ? faMoon : faSun} className="!h-8 cursor-pointer"/>
@@ -29,7 +28,6 @@ export function BrightnessText(){
     return (
         <div className="cursor-pointer flex justify-center items-center font-bold w-full text-base" onClick={()=>{
             setCookie("mode", !mode + "");
-            console.log("setMode", !mode);
             setMode(!mode);
         }}>
             <div className="flex justify-center items-center">
