@@ -8,7 +8,7 @@ const rankToColor: Record<number, string> = {
     0: "gray",
     1200: "green",
     1400: "#03a89e",
-    1600: "blue",
+    1600: "rgb(29 78 216)",
     1900: "#a0a",
     2100: "#f08400",
     2400: "red"
