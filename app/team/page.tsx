@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Rating } from "../rating";
+import { Rating } from "@/components/ui/rating";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { Metadata } from "next";
