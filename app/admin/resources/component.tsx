@@ -125,7 +125,7 @@ export default function AdminCategories({ categories } : { categories: Category[
                     }
                     return (
                         <li key={c.id} className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5 grid grid-cols-2">
-                            <a href={`/admin/categories/${c.id}`}>{c.name}</a>
+                            <a href={`/admin/resources/${c.id}`}>{c.name}</a>
                             <span className="flex justify-end items-center">
                                 <CategoryDialog
                                     name={c.name}

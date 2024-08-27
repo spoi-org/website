@@ -175,11 +175,11 @@ export default function AdminResources({ category, topicId, topics, resources, a
         <Breadcrumb>
           <BreadcrumbList className="text-4xl">
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admin/categories">Categories</BreadcrumbLink>
+              <BreadcrumbLink href="/admin/resources">Categories</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/admin/categories/${category.id}`}>{category.name}</BreadcrumbLink>
+              <BreadcrumbLink href={`/admin/resources/${category.id}`}>{category.name}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -227,7 +227,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
           }
           return (
             <li key={c.id} className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5 grid grid-cols-2">
-              <a href={`/admin/categories/${category.id}/${topicId}/${c.id}`}>{c.title}</a>
+              <a href={`/admin/resources/${category.id}/${topicId}/${c.id}`}>{c.title}</a>
               <span className="flex justify-end items-center">
                 <ResourceDialog
                   title={c.title}
