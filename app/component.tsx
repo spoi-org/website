@@ -1,6 +1,5 @@
 "use client";
 import { ThemeContext, UserContext } from "@/lib/context";
-import { getCookie } from "cookies-next";
 import { useState } from "react";
 import { Inter } from "next/font/google";
 import {
@@ -18,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Brightness } from "@/components/ui/dark-to-light";
 import NavProfile from "@/components/ui/nav-profile";
 import { User } from "@prisma/client";
+import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -107,6 +107,7 @@ export default function RootLayoutComponent({
               <span className="pr-5">Ready to join?</span>
               <Button><Link href="https://forms.gle/oL1gFnqQoqRPcb3q9">Sign Up</Link></Button>
             </footer>}
+            <Toaster />
           </body>
         </html>
       </ThemeContext.Provider>
