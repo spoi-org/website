@@ -3,9 +3,6 @@ import {
 } from '@prisma/client'
 import { cookies } from 'next/headers';
 
-
-export const BASE_URL = "http://localhost:3000";
-
 class Cache<
   T extends { id: string },
   InsertArgs,

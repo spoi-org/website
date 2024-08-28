@@ -1,6 +1,7 @@
-import { BASE_URL, cache, prisma } from "@/lib/utils.server"
+import { cache, prisma } from "@/lib/utils.server"
 import { MetadataRoute } from "next/types"
 
+const BASE_URL = process.env.URL!;
 
 export async function generateSitemaps() {
     
