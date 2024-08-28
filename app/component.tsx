@@ -81,7 +81,7 @@ function NavIcon({ href, icon }: NavIconProps) {
 
 function SheetIcon({ href, icon } : NavIconProps) {
   return (
-    <Link href={href}>
+    <Link href={href} target="_blank">
       <Button variant="outline" className="h-12 w-12">
         <FontAwesomeIcon icon={icon} className="text-2xl" />
       </Button>
