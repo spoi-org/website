@@ -4,9 +4,8 @@ import { cache } from "@/lib/utils.server";
 
 export async function GET(request: Request) {
   let params = new URL(request.url).searchParams;
-  const redirect_uri = `${process.env.URL}/api/oauth2`;
   if (!params.has("code")) {
-    return redirect(`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${redirect_uri}&scope=identify`);
+    return redirect("/");
   }
 
   let req = await fetch("https://discord.com/api/v10/oauth2/token", {
@@ -14,7 +13,7 @@ export async function GET(request: Request) {
     body: new URLSearchParams([
       ["grant_type", "authorization_code"],
       ["code", params.get("code") as string],
-      ["redirect_uri", redirect_uri]
+      ["redirect_uri", `${process.env.URL}/api/oauth2`]
     ]),
     headers: new Headers([
       ["Authorization", "Basic " + process.env.CLIENT_AUTH]
