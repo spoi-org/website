@@ -25,31 +25,31 @@ export default function AdminHome({ users } : { users: User[] }){
           <TableCaption className="caption-top text-2xl font-bold">Users</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="border">ID</TableHead>
+              <TableHead className="border hidden sm:table-cell">ID</TableHead>
               <TableHead className="border">Username</TableHead>
-              <TableHead className="border">Joined At</TableHead>
+              <TableHead className="border hidden md:table-cell">Joined At</TableHead>
               <TableHead className="border">Admin</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {users.slice(10*skip, 10*(skip+1)).map(user => (
               <TableRow key={user.id}>
-                <TableCell className="border">{user.id}</TableCell>
+                <TableCell className="border hidden sm:table-cell">{user.id}</TableCell>
                 <TableCell className="border flex justify-between items-center">
-                  <span>{user.dcUserName}</span>
+                  <span className="mr-2">{user.dcUserName}</span>
                   <img src={user.avatar} className="h-10 rounded-full" />
                 </TableCell>
-                <TableCell className="border">{user.createdAt.toDateString()}</TableCell>
+                <TableCell className="border hidden md:table-cell">{user.createdAt.toDateString()}</TableCell>
                 <TableCell className="border"><Checkbox checked={user.admin} disabled /></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
         <div className="flex justify-center items-center mt-5">
-          <span className="mr-5">{skip+1}/{pages}</span>
           <Button onClick={() => setSkip(skip-1)} disabled={skip == 0} className="mr-5">
             <FontAwesomeIcon icon={faChevronLeft} />
           </Button>
+          <span className="mr-5">{skip+1}/{pages}</span>
           <Button onClick={() => setSkip(skip+1)} disabled={skip == pages-1}>
             <FontAwesomeIcon icon={faChevronRight} />
           </Button>
