@@ -26,14 +26,13 @@ interface RenderedProps extends Options {
 }
 
 interface ProblemCheckboxProps {
-  className?: string
-  size?: number;
+  className?: string;
   problem: Problem;
   solves: string[];
   setSolves: (solves: string[]) => void;
 }
 
-function ProblemCheckbox({ problem, solves, setSolves, className, size } : ProblemCheckboxProps){
+function ProblemCheckbox({ problem, solves, setSolves, className } : ProblemCheckboxProps){
   async function onCheck(checked: boolean){
     if (checked === true){
       fetch(`/api/problems/${problem.id}`, { method: "POST" });
@@ -47,7 +46,7 @@ function ProblemCheckbox({ problem, solves, setSolves, className, size } : Probl
   return (
     <Checkbox
       checked={solves.includes(problem.id)} onCheckedChange={onCheck}
-      className={cn(`h-${size} w-${size} data-[state=checked]:bg-green-500 !text-white rounded-full`, className)}
+      className={cn("data-[state=checked]:bg-green-500 !text-white rounded-full", className)}
     />
   )
 }
@@ -122,7 +121,7 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
                     </span>
                     <FontAwesomeIcon icon={faLink} className="ml-2" />
                   </a>
-                  <ProblemCheckbox size={10} className="text-xl mr-2 flex-shrink-0" problem={problem} solves={solves} setSolves={setSolves} />
+                  <ProblemCheckbox className="h-10 w-10 text-xl mr-2 flex-shrink-0" problem={problem} solves={solves} setSolves={setSolves} />
                 </span>
               </span>
             );
@@ -164,7 +163,7 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
                 </TableCell>
                 <TableCell><Rating rating={problem.ratingEstimate} /></TableCell>
                 <TableCell className="text-center !pr-4">
-                  <ProblemCheckbox size={6} problem={problem} solves={solves} setSolves={setSolves} />
+                  <ProblemCheckbox className="h-6 w-6" problem={problem} solves={solves} setSolves={setSolves} />
                 </TableCell>
               </TableRow>
             );
