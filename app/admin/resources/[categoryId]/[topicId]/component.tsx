@@ -1,17 +1,6 @@
 "use client";
-import { faChevronDown, faChevronRight, faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronRight, faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogClose,
@@ -21,7 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+  AlertDialog
+} from "@/components/ui/responsive-dialog";
 import {
   Select,
   SelectContent,
@@ -246,22 +236,8 @@ export default function AdminResources({ category, topicId, topics, resources, a
                 >
                   <FontAwesomeIcon icon={faPenToSquare} className="ml-2 h-4 hover:text-blue-500 transition cursor-pointer" />
                 </ResourceDialog>
-                <AlertDialog>
-                  <AlertDialogTrigger>
-                  <FontAwesomeIcon icon={faTrash} className="ml-2 h-4 hover:text-red-500 transition cursor-pointer" />
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete resource &ldquo;{c.title}&rdquo;.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={deleteResource}>Continue</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
+                <AlertDialog onClick={deleteResource}>
+                  This action cannot be undone. This will permanently delete resource &ldquo;{c.title}&rdquo;.
                 </AlertDialog>
               </span>
             </li>

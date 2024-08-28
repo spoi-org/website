@@ -1,17 +1,6 @@
 "use client";
-import { faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogClose,
@@ -21,7 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+  AlertDialog
+} from "@/components/ui/responsive-dialog";
 import {
   Select,
   SelectContent,
@@ -187,23 +177,9 @@ export default function AdminCategories(
                 >
                   <FontAwesomeIcon icon={faPenToSquare} className="ml-2 h-4 hover:text-blue-500 transition cursor-pointer" />
                 </TopicDialog>
-                <AlertDialog>
-                  <AlertDialogTrigger>
-                  <FontAwesomeIcon icon={faTrash} className="ml-2 h-4 hover:text-red-500 transition cursor-pointer" />
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete topic &ldquo;{c.name}&rdquo;&nbsp;
-                        <span className="font-extrabold">and all resources within it.</span>
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={deleteTopic}>Continue</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
+                <AlertDialog onClick={deleteTopic}>
+                  This action cannot be undone. This will permanently delete topic &ldquo;{c.name}&rdquo;&nbsp;
+                  <span className="font-extrabold">and all resources within it.</span>
                 </AlertDialog>
               </span>
             </li>
