@@ -60,11 +60,13 @@ function NavIcon({ href, icon }: NavIconProps) {
 export default function RootLayoutComponent({
   user,
   children,
-  initialMode
+  initialMode,
+  url
 }: Readonly<{
   user?: User;
   children: React.ReactNode;
-  initialMode: boolean
+  initialMode: boolean;
+  url: string;
 }>) {
   const [mode, setMode] = useState<boolean>(initialMode);
   return (
@@ -85,7 +87,7 @@ export default function RootLayoutComponent({
                   ) : (
                     <>
                       <NavLink href="https://forms.gle/oL1gFnqQoqRPcb3q9" text="Sign Up" />
-                      <NavLink href="https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Foauth2&scope=identify" text="Log In" />
+                      <NavLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" />
                     </>
                   )}
                   <div className="!mx-2 text-gray-300 text-xl select-none">|</div>

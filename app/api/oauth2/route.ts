@@ -4,8 +4,9 @@ import { cache } from "@/lib/utils.server";
 
 export async function GET(request: Request) {
   let params = new URL(request.url).searchParams;
+  const redirect_uri = `${process.env.URL}/api/oauth2`;
   if (!params.has("code")) {
-    return redirect("https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Foauth2&scope=identify");
+    return redirect(`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${redirect_uri}&scope=identify`);
   }
 
   let req = await fetch("https://discord.com/api/v10/oauth2/token", {
@@ -13,7 +14,7 @@ export async function GET(request: Request) {
     body: new URLSearchParams([
       ["grant_type", "authorization_code"],
       ["code", params.get("code") as string],
-      ["redirect_uri", "http://localhost:3000/api/oauth2"]
+      ["redirect_uri", redirect_uri]
     ]),
     headers: new Headers([
       ["Authorization", "Basic " + process.env.CLIENT_AUTH]
@@ -21,8 +22,7 @@ export async function GET(request: Request) {
   })
   let data = await req.json();
   if (!req.ok) {
-    console.log(data);
-    return redirect("https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Foauth2&scope=identify");
+    return redirect("/");
   }
 
   let req2 = await fetch("https://discord.com/api/v10/users/@me",
@@ -63,7 +63,4 @@ export async function GET(request: Request) {
   let store = cookies();
   store.set("__ssid", ssid.id);
   return redirect("/")
-
-
-
 }

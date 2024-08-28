@@ -11,6 +11,8 @@ export default async function RootLayout({
   const user = findUserBySessionId();
   const cookieStore = cookies();
   return (
-    <LayoutComponent user={user} initialMode={cookieStore.get("mode")?.value === "true"}>{children}</LayoutComponent>
+    <LayoutComponent user={user} initialMode={cookieStore.get("mode")?.value === "true"} url={process.env.URL!}>
+      {children}
+    </LayoutComponent>
   );
 }
