@@ -11,4 +11,9 @@ npm install
     - `URL` - The url base to which the user should be redirected after finishing the discord OAuth2 (e.g. `http://localhost:3000`)
     - `DATABASE_URL` - The url of the PostgreSQL database.
 
+3. Generate the prisma client
+```
+npx prisma db push
+```
+
 3. Use `npm run dev` to start the development server.
