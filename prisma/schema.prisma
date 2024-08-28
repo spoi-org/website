@@ -20,9 +20,9 @@ model User {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  admin      Boolean  @default(false)
-  name       String?
-  resources  ResourceItem[]
+  admin     Boolean        @default(false)
+  name      String?
+  resources ResourceItem[]
 
   solved     Problem[]
   comments   Comment[]
@@ -37,15 +37,19 @@ model SessionId {
 }
 
 model Category {
-  id     String  @id
-  name   String  @unique
-  topics Topic[]
+  id        String   @id
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  topics    Topic[]
 }
 
 model Topic {
   id            String         @id
   category      Category       @relation(references: [id], fields: [categoryId], onDelete: Cascade)
   categoryId    String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
   name          String         @unique
   resourceItems ResourceItem[]
 }
@@ -60,9 +64,9 @@ model ResourceItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  description   String?
-  content       String
-  comments      Comment[]
+  description String?
+  content     String
+  comments    Comment[]
 }
 
 model Problem {
