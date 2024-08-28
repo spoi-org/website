@@ -1,124 +1,111 @@
 import Link from "next/link";
 import { Rating } from "@/components/ui/rating";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { Metadata } from "next";
+
 export const metadata: Metadata = {
+  title: "SPOI | Our Team",
+  description: "The team behind the training program for Indian students preparing for the International Olympiad in Informatics",
+  openGraph: {
+    type: "website",
     title: "SPOI | Our Team",
-    description: "The team behind the training program for Indian students preparing for the International Olympiad in Informatics",
-    openGraph: {
-        type: "website",
-        title: "SPOI | Our Team",
-        description: "The team behind the training program for Indian students preparing for the International Olympiad in Informatics"
-    },
-    
+    description: "The team behind the training program for Indian students preparing for the International Olympiad in Informatics"
+  }
 };
 
 function Tile({ rating, heading, children, user }: Readonly<{
-    rating: number;
-    user: string;
-    heading: string;
-    children: React.ReactNode;
+  rating: number;
+  user: string;
+  heading: string;
+  children: React.ReactNode;
 }>) {
-    return (
-        <div className="py-6 md:px-6 w-full md:w-1/3">
-            <div className="shadow-md rounded-lg text-center bg-gray-100 dark:bg-gray-800 h-full p-8 hover:scale-105 transition flex flex-col justify-center items-center dark:shadow-gray-70">
-                <h2 className="text-2xl font-bold mb-2">{heading}</h2>
-                <Link href={"https://codeforces.com/profile/" + user} target="_blank" className="p-4 bg-blue-200 dark:bg-[#0b1215] rounded-md w-max flex justify-center items-center gap-3">
-                    <span>Codeforces:&nbsp;<Rating rating={rating} className="font-bold" /></span>
-                    <FontAwesomeIcon icon={faLink} className="h-3" />
-                </Link>
-                <p className="text-lg">{children}</p>
-            </div>
+  return (
+    <div className="py-3 md:px-6 w-full md:w-1/2 xl:w-1/3">
+      <div className="shadow-md rounded-lg bg-cyan-100 dark:bg-gray-800 h-full p-8 hover:scale-105 transition flex flex-col justify-center dark:shadow-gray-70">
+        <div className="w-full flex items-center justify-between">
+          <h2 className="text-2xl font-bold">{heading}</h2>
+          <Link href={"https://codeforces.com/profile/" + user} target="_blank" className="rounded-md w-max flex justify-center items-center gap-1 mb-2 float-right">
+            <svg fill="currentColor" className="w-5 h-5" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4.5 7.5A1.5 1.5 0 0 1 6 9v10.5A1.5 1.5 0 0 1 4.5 21h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5A1.5 1.5 0 0 1 15 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5A1.5 1.5 0 0 1 24 12v7.5a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5h3z"/>
+            </svg>
+            <Rating rating={rating} className="font-bold" />
+          </Link>
         </div>
-    );
+        <p className="text-lg">{children}</p>
+      </div>
+    </div>
+  );
 }
 
 export default function Home() {
-    return (
-        <div className="flex flex-col items-center justify-center">
-            <main className="py-5 text-center px-10">
-                <h1 className="text-8xl font-bold">Our Team</h1>
-                <p className="text-2xl">The list of dedicated trainers who skillfully pass on their past experiences!</p>
-            </main>
-
-            <h4 className="text-5xl font-bold mt-[3rem]">Founders</h4>
-            <div className="flex flex-wrap justify-center w-full items-stretch px-10">
-                <Tile heading="Oviyan Gandhi" rating={1917} user="oviyan_gandhi">
-                    IOITC&#39;24 rank 5 | INOI Gold | CodeChef 5*
-                </Tile>
-                <Tile heading="Avighna Chhatrapati" rating={1817} user="avighnakc">
-                    IOITC&#39;24 | INOI&#39;24 Silver | Top 30 in India
-
-                </Tile>
-                <Tile heading="Samik Goyal" rating={2096} user="unforgettablepl">
-                    IOI | INOI&#39;24 Silver | #4 in India
-                </Tile>
-            </div>
-
-            <h4 className="text-5xl font-bold mt-[3rem]">Trainers</h4>
-            <div className="flex flex-wrap justify-center w-full items-stretch px-10">
-                <Tile heading="Shreyan Ray" rating={2760} user="Dominater069">
-                    IOI Silver | 2502 rated on Atcoder | #1 in India
-                </Tile>
-                <Tile heading="Aditya Jain" rating={2610} user="Everule">
-                    🗿
-                </Tile>
-                <Tile heading="Paras Kasmalkar" rating={2281} user="blue">
-                    🗿
-                </Tile>
-                <Tile heading="Naveen Kulkarni" rating={2236} user="evenvalue">
-                    🤮
-                </Tile>
-
-                <Tile heading="Yash Haresh Thakker" rating={2233} user="PoPularPlusPlus">
-                    IOI&#39;24 Team | APIO&#39;23 Bronze | 3 x INOI Gold | 6* on CodeChef
-
-                </Tile>
-                <Tile heading="Hari Aakash K" rating={2229} user="hariaakash646">
-                    🗿
-                </Tile>
-
-                <Tile heading="Jishnu Roychoudhury" rating={1976} user="astoria">
-                    🗿
-                </Tile>
-                <Tile heading="Rushil Mathur" rating={1878} user="rm1729">
-                    IOITC&#39;24 | IMO Gold
-
-                </Tile>
-                <Tile heading="Vibhaas Nirantar Srivastava" rating={1826} user="accord">
-                    🗿
-                </Tile>
-
-                <Tile heading="Saarang Srinivasan" rating={1810} user="saarang">
-                    🗿
-                </Tile>
-
-                <Tile heading="Adhish Kancharla" rating={1748} user="ak2006">
-                    🗿
-                </Tile>
-            </div>
-            <h4 className="text-5xl font-bold mt-[3rem]">Contributors</h4>
-            <div className="flex flex-wrap justify-center w-full items-stretch px-10">
-
-                <Tile heading="OIaspirant2307" rating={1405} user="OIaspirant2307">
-                    🗿
-                </Tile>
-                <Tile heading="Aarav Malani" rating={1035} user="aaravmalani">
-                    Website Developer + ultra skill issue
-                </Tile>
-
-                <Tile heading="Kumar Akshat" rating={1216} user="oddvalue">
-                    Nepotism
-                </Tile>
-
-
-                <Tile heading="Harsh Sharma" rating={1476} user="codula">
-                    🗿
-                </Tile>
-
-            </div>
-
-        </div>
-    );
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <main className="py-5 text-center px-10">
+        <h1 className="text-8xl font-bold">Our Team</h1>
+        <p className="text-2xl">The list of dedicated trainers who skillfully pass on their past experiences!</p>
+      </main>
+      <h4 className="text-5xl font-bold mt-8 mb-4">Founders</h4>
+      <div className="flex flex-wrap justify-center w-full items-stretch px-10">
+        <Tile heading="Samik Goyal" rating={2096} user="unforgettablepl">
+          IOI&#39;24 Team | IOITC&#39;24
+        </Tile>
+        <Tile heading="Oviyan Gandhi" rating={1917} user="oviyan_gandhi">
+          IOITC&#39;24 | INOI&#39;24 Gold
+        </Tile>
+        <Tile heading="Avighna Chhatrapati" rating={1817} user="avighnakc">
+          IOITC&#39;24 | INOI&#39;24 Silver
+        </Tile>
+      </div>
+      <h4 className="text-5xl font-bold mt-8 mb-4">Trainers</h4>
+      <div className="flex flex-wrap justify-center w-full items-stretch px-10">
+        <Tile heading="Shreyan Ray" rating={2754} user="Dominater069">
+          ICO Scientific Committee | IOI&#39;23 Silver
+        </Tile>
+        <Tile heading="Aditya Jain" rating={2610} user="Everule">
+          ICO Scientific Committee | IOI&#39;21 Team
+        </Tile>
+        <Tile heading="Paras Kasmalkar" rating={2281} user="blue">
+          ICO Scientific Committee | 2x IOI Silver
+        </Tile>
+        <Tile heading="Naveen Kulkarni" rating={2236} user="evenvalue">
+          IOITC&#39;24 | INOI&#39;24 Silver
+        </Tile>
+        <Tile heading="Yash Haresh Thakker" rating={2233} user="PoPularPlusPlus">
+          IOI&#39;24 Team | 3x INOI Gold
+        </Tile>
+        <Tile heading="Hari Aakash K" rating={2229} user="hariaakash646">
+          IOITC&#39;24 | INOI&#39;24 Gold
+        </Tile>
+        <Tile heading="Jishnu Roychoudhury" rating={1976} user="astoria">
+          ICO Scientific Committee | NOI Gold
+        </Tile>
+        <Tile heading="Rushil Mathur" rating={1878} user="rm1729">
+          IMO&#39;24 Gold | IOITC&#39;24
+        </Tile>
+        <Tile heading="Vibhaas Nirantar Srivastava" rating={1826} user="accord">
+          INOI&#39;22 Bronze
+        </Tile>
+        <Tile heading="Saarang Srinivasan" rating={1810} user="saarang">
+          IOITC&#39;22 | INOI&#39;22 Gold
+        </Tile>
+        <Tile heading="Adhish Kancharla" rating={1748} user="ak2006">
+          IOITC&#39;23 | INOI&#39;24 Silver
+        </Tile>
+      </div>
+      <h4 className="text-5xl font-bold mt-8 mb-4">Contributors</h4>
+      <div className="flex flex-wrap justify-center w-full items-stretch px-10">
+        <Tile heading="Harsh Sharma" rating={1476} user="codula">
+          INOI&#39;23 Silver
+        </Tile>
+        <Tile heading="OIaspirant2307" rating={1446} user="OIaspirant2307">
+          INOI&#39;24 Bronze
+        </Tile>
+        <Tile heading="Kumar Akshat" rating={1216} user="oddvalue">
+          Codeforces Problem Tester
+        </Tile>
+        <Tile heading="Aarav Malani" rating={1035} user="aaravmalani">
+          Assistant Website Developer
+        </Tile>
+      </div>
+    </div>
+  );
 }
