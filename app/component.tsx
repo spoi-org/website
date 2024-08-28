@@ -54,11 +54,12 @@ function NavLink({ href, text }: NavLinkProps) {
 
 interface LinkProps extends NavLinkProps {
   icon?: IconDefinition;
+  setOpen: (open: boolean) => void;
 }
 
-function SheetLink({ href, text, icon } : LinkProps) {
+function SheetLink({ href, text, icon, setOpen } : LinkProps) {
   return (
-    <Link href={href}>
+    <Link href={href} onClick={() => setOpen(false)}>
       <Button variant="ghost" className="text-xl items-center">
         {icon && <FontAwesomeIcon icon={icon} className="mr-3 fa-fw" />}
         {text}
@@ -86,6 +87,45 @@ function SheetIcon({ href, icon } : NavIconProps) {
         <FontAwesomeIcon icon={icon} className="text-2xl" />
       </Button>
     </Link>
+  )
+}
+
+function MobileMenu({ user, url } : { user?: User, url: string }){
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="md:hidden m-5 mb-0 flex justify-between items-center">
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button variant="outline">
+            <FontAwesomeIcon icon={faBars} />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="flex flex-col">
+          <SheetLink href="/" text="Home" icon={faHome} setOpen={setOpen} />
+          <SheetLink href="/team" text="Our Team" icon={faUsers} setOpen={setOpen} />
+          {user ? (
+            <>
+              <SheetLink href="/resources" text="Resources" icon={faBookOpen} setOpen={setOpen} />
+              {user.admin && <SheetLink href="/admin" text="Admin" icon={faUserTie} setOpen={setOpen} />}
+            </>
+          ) : (
+            <>
+              <SheetLink href="https://forms.gle/oL1gFnqQoqRPcb3q9" text="Sign Up" icon={faUserPlus} setOpen={setOpen} />
+              <SheetLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" icon={faRightToBracket} setOpen={setOpen} />
+            </>
+          )}
+          <SheetFooter className="flex-row justify-center gap-3 absolute w-full left-0 bottom-3">
+            <SheetIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} />
+            <SheetIcon href="https://github.com/spoi-org/" icon={faGithub} />
+            <SheetIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} />
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+      {user ?
+        <NavProfile ssid={user} />
+        : <Brightness />
+      }
+    </div>
   )
 }
 
@@ -137,39 +177,7 @@ export default function RootLayoutComponent({
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
-            <div className="md:hidden m-5 mb-0 flex justify-between items-center">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline">
-                    <FontAwesomeIcon icon={faBars} />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="flex flex-col">
-                  <SheetLink href="/" text="Home" icon={faHome} />
-                  <SheetLink href="/team" text="Our Team" icon={faUsers} />
-                  {user ? (
-                    <>
-                      <SheetLink href="/resources" text="Resources" icon={faBookOpen} />
-                      {user.admin && <SheetLink href="/admin" text="Admin" icon={faUserTie} />}
-                    </>
-                  ) : (
-                    <>
-                      <SheetLink href="https://forms.gle/oL1gFnqQoqRPcb3q9" text="Sign Up" icon={faUserPlus} />
-                      <SheetLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" icon={faRightToBracket} />
-                    </>
-                  )}
-                  <SheetFooter className="flex-row justify-center gap-3 absolute w-full left-0 bottom-3">
-                    <SheetIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} />
-                    <SheetIcon href="https://github.com/spoi-org/" icon={faGithub} />
-                    <SheetIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} />
-                  </SheetFooter>
-                </SheetContent>
-              </Sheet>
-              {user ?
-                <NavProfile ssid={user} />
-                : <Brightness />
-              }
-            </div>
+            <MobileMenu user={user} url={url} />
             <div className="mb-10 flex flex-col flex-grow h-full">
               {children}
             </div>
