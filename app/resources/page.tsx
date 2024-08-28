@@ -17,7 +17,7 @@ export default function CategoriesPage() {
   return (
     <div className="text-lg flex flex-col justify-center items-center">
       <h1 className="text-5xl font-bold mb-10 flex justify-center items-center">Categories</h1>
-      <ul className="grid">
+      <ul className="mx-5">
         {cache.category.all().map(c => (
           <Link key={c.id} href={`/resources/${c.id}`}>
             <li className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5">

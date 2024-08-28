@@ -105,7 +105,7 @@ export default function AdminCategories({ categories } : { categories: Category[
           </Button>
         </CategoryDialog>
       </h1>
-      <ul className="grid">
+      <ul className="mx-5">
         {categories.map(c => {
           async function editCategory(id: string, name: string){
             await fetch(`/api/admin/categories/${c.id}`, {
@@ -124,7 +124,7 @@ export default function AdminCategories({ categories } : { categories: Category[
             router.refresh();
           }
           return (
-            <li key={c.id} className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5 grid grid-cols-2">
+            <li key={c.id} className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5 flex items-center justify-between">
               <a href={`/admin/resources/${c.id}`}>{c.name}</a>
               <span className="flex justify-end items-center">
                 <CategoryDialog

@@ -43,7 +43,7 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
   return (
     <div className="text-lg flex flex-col justify-center items-center">
       <h1 className="font-bold my-10 flex justify-center items-center">
-        <Breadcrumb>
+        <Breadcrumb className="hidden md:block">
           <BreadcrumbList className="text-4xl">
             <BreadcrumbItem>
               <BreadcrumbLink href="/resources">Categories</BreadcrumbLink>
@@ -62,8 +62,9 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        <span className="md:hidden text-4xl">{categoryName}</span>
       </h1>
-      <ul className="grid max-w-[90%] lg:max-w-[70%]">
+      <ul className="mx-5">
         {resources.map(c => {
           const authors = cache.author.get(c.id)!;
           return (

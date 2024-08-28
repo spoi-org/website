@@ -27,7 +27,7 @@ export default async function TopicsPage({ params } : { params: { categoryId: st
   return (
     <div className="text-lg flex flex-col justify-center items-center">
       <h1 className="font-bold my-10 flex justify-center items-center">
-        <Breadcrumb>
+        <Breadcrumb className="hidden md:block">
           <BreadcrumbList className="text-4xl">
             <BreadcrumbItem>
               <BreadcrumbLink href="/resources">Categories</BreadcrumbLink>
@@ -42,8 +42,9 @@ export default async function TopicsPage({ params } : { params: { categoryId: st
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        <span className="md:hidden text-4xl">{categoryName}</span>
       </h1>
-      <ul className="grid">
+      <ul className="mx-5">
         {topics.map(c => (
           <Link key={c.id} href={`/resources/${params.categoryId}/${c.id}`}>
             <li className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5">

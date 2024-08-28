@@ -172,7 +172,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
   return (
     <div className="text-lg flex flex-col justify-center items-center">
       <h1 className="font-bold my-10 flex justify-center items-center">
-        <Breadcrumb>
+        <Breadcrumb className="hidden md:block">
           <BreadcrumbList className="text-4xl">
             <BreadcrumbItem>
               <BreadcrumbLink href="/admin/resources">Categories</BreadcrumbLink>
@@ -191,6 +191,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        <span className="md:hidden text-4xl">{topicName}</span>
         <ResourceDialog
           dialogTitle="Create Resource"
           dialogDescription="Create a new resource"
@@ -207,7 +208,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
           </Button>
         </ResourceDialog>
       </h1>
-      <ul className="grid">
+      <ul className="mx-5">
         {resources.map(c => {
           async function editResource(id: string, title: string, description: string | null, topicId: string, pub: boolean, authors: string[]){
             await fetch(`/api/admin/resources/${c.id}`, {
@@ -226,7 +227,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
             router.refresh();
           }
           return (
-            <li key={c.id} className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5 grid grid-cols-2">
+            <li key={c.id} className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5 flex items-center justify-between">
               <a href={`/admin/resources/${category.id}/${topicId}/${c.id}`}>{c.title}</a>
               <span className="flex justify-end items-center">
                 <ResourceDialog

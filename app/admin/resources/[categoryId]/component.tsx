@@ -123,7 +123,7 @@ export default function AdminCategories(
   return (
     <div className="text-lg flex flex-col justify-center items-center">
       <h1 className="font-bold my-10 flex justify-center items-center">
-        <Breadcrumb>
+        <Breadcrumb className="hidden md:block">
           <BreadcrumbList className="text-4xl">
             <BreadcrumbItem>
               <BreadcrumbLink href="/admin/resources">Categories</BreadcrumbLink>
@@ -138,6 +138,7 @@ export default function AdminCategories(
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        <span className="md:hidden text-4xl">{categoryName}</span>
         <TopicDialog
           title="Create Topic"
           description="Create a new topic"
@@ -152,7 +153,7 @@ export default function AdminCategories(
           </Button>
         </TopicDialog>
       </h1>
-      <ul className="grid">
+      <ul className="mx-5">
         {topics.map(c => {
           async function editTopic(id: string, name: string, categoryId: string){
             await fetch(`/api/admin/topics/${c.id}`, {
@@ -171,7 +172,7 @@ export default function AdminCategories(
             router.refresh();
           }
           return (
-            <li key={c.id} className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5 grid grid-cols-2">
+            <li key={c.id} className="shadow-md rounded-lg text-center bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5 flex items-center justify-between">
               <a href={`/admin/resources/${categoryId}/${c.id}`}>{c.name}</a>
               <span className="flex justify-end items-center">
                 <TopicDialog
