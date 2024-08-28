@@ -3,6 +3,9 @@ import {
 } from '@prisma/client'
 import { cookies } from 'next/headers';
 
+
+export const BASE_URL = "http://localhost:3000";
+
 class Cache<
   T extends { id: string },
   InsertArgs,
@@ -67,6 +70,11 @@ class Cache<
     await prisma[this.resource].delete({ where: { id } });
     delete this.cache[id];
   }
+
+  count() {
+    return Object.keys(this.cache).length
+
+  }
 }
 
 // does not handle user updates
@@ -115,6 +123,9 @@ class AuthorCache {
 
   delete(id: string){
     delete this.cache[id];
+  }
+  count() {
+    return Object.keys(this.cache).length
   }
 }
 
@@ -172,6 +183,10 @@ class SolverCache {
 
   delete(id: string){
     delete this.cache[id];
+  }
+
+  count() {
+    return Object.keys(this.cache).length
   }
 }
 

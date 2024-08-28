@@ -9,10 +9,24 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next/types";
+export async function generateMetadata({ params }: { params: { topicId: string } }): Promise<Metadata> {
 
-export default async function ResourcesPage({ params } : { params: { categoryId: string, topicId: string } }){
+  return {
+    title: "SPOI | " + cache.topic.get(params.topicId)?.name,
+    description: "A list of resources with the topic " + cache.topic.get(params.topicId)?.name,
+    openGraph: {
+      type: "website",
+      title: "SPOI | " + cache.topic.get(params.topicId)?.name,
+      description: "A list of resources with the topic " + cache.topic.get(params.topicId)?.name,
+
+    },
+
+  };
+}
+export default async function ResourcesPage({ params }: { params: { categoryId: string, topicId: string } }) {
   const categoryName = cache.category.get(params.categoryId)?.name;
-  if (!categoryName){
+  if (!categoryName) {
     <div className="flex flex-col items-center justify-center h-full flex-grow gap-y-3">
       <h1 className="text-4xl font-extrabold">404</h1>
       <p className="text-xl">Category not found</p>
@@ -23,7 +37,7 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
       </Link>
     </div>
   }
-  if (!cache.topic.get(params.topicId)){
+  if (!cache.topic.get(params.topicId)) {
     <div className="flex flex-col items-center justify-center h-full flex-grow gap-y-3">
       <h1 className="text-4xl font-extrabold">404</h1>
       <p className="text-xl">Topic not found</p>
@@ -71,7 +85,7 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
             <Link key={c.id} href={`/resources/${params.categoryId}/${params.topicId}/${c.id}`}>
               <li className="shadow-md rounded-lg bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5">
                 <h2 className="text-2xl font-bold">{c.title}</h2>
-                {authors.length > 0 && <span className="text-sm">By {authors.map((x)=>x.name).join(", ")}</span>}
+                {authors.length > 0 && <span className="text-sm">By {authors.map((x) => x.name).join(", ")}</span>}
                 <p className="text-lg italic">{c.description}</p>
               </li>
             </Link>

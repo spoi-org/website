@@ -37,7 +37,7 @@ export default function AdminHome({ users } : { users: User[] }){
                 <TableCell className="border hidden sm:table-cell">{user.id}</TableCell>
                 <TableCell className="border flex justify-between items-center">
                   <span className="mr-2">{user.dcUserName}</span>
-                  <img src={user.avatar} className="h-10 rounded-full" />
+                  <img src={user.avatar} className="h-10 rounded-full" alt={user.dcUserName+"'s Avatar"} />
                 </TableCell>
                 <TableCell className="border hidden md:table-cell">{user.createdAt.toDateString()}</TableCell>
                 <TableCell className="border"><Checkbox checked={user.admin} disabled /></TableCell>

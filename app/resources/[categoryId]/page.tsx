@@ -9,8 +9,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { cache } from "@/lib/utils.server";
 import Link from "next/link";
+import { Metadata } from "next/types";
+export async function generateMetadata({ params }: { params: { categoryId: string } }): Promise<Metadata> {
 
-export default async function TopicsPage({ params } : { params: { categoryId: string } }){
+  return {
+    title: "SPOI | " + cache.topic.get(params.categoryId)?.name,
+    description: "A list of topics with the category " + cache.topic.get(params.categoryId)?.name,
+    openGraph: {
+      type: "website",
+      title: "SPOI | " + cache.topic.get(params.categoryId)?.name,
+      description: "A list of topics with the category " + cache.topic.get(params.categoryId)?.name,
+
+    },
+
+  };
+}
+export default async function Topics({ params } : { params: { categoryId: string } }){
   if (!cache.category.get(params.categoryId)){
       <div className="flex flex-col items-center justify-center h-full flex-grow gap-y-3">
           <h1 className="text-4xl font-extrabold">404</h1>
