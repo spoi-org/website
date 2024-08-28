@@ -9,6 +9,12 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition, faGithub, faLinkedin, faYoutube } from "@fortawesome/free-brands-svg-icons";
@@ -18,6 +24,7 @@ import { Brightness } from "@/components/ui/dark-to-light";
 import NavProfile from "@/components/ui/nav-profile";
 import { User } from "@prisma/client";
 import { Toaster } from "@/components/ui/toaster";
+import { faBars, faBookOpen, faHome, faRightToBracket, faUserPlus, faUserTie, faUsers } from "@fortawesome/free-solid-svg-icons";
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -45,6 +52,21 @@ function NavLink({ href, text }: NavLinkProps) {
   )
 }
 
+interface LinkProps extends NavLinkProps {
+  icon?: IconDefinition;
+}
+
+function SheetLink({ href, text, icon } : LinkProps) {
+  return (
+    <Link href={href}>
+      <Button variant="ghost" className="text-xl items-center">
+        {icon && <FontAwesomeIcon icon={icon} className="mr-3 fa-fw" />}
+        {text}
+      </Button>
+    </Link>
+  )
+}
+
 function NavIcon({ href, icon }: NavIconProps) {
   return (
     <NavigationMenuItem>
@@ -54,6 +76,16 @@ function NavIcon({ href, icon }: NavIconProps) {
         </NavigationMenuLink>
       </Link>
     </NavigationMenuItem>
+  )
+}
+
+function SheetIcon({ href, icon } : NavIconProps) {
+  return (
+    <Link href={href}>
+      <Button variant="outline" className="h-12 w-12">
+        <FontAwesomeIcon icon={icon} className="text-2xl" />
+      </Button>
+    </Link>
   )
 }
 
@@ -97,10 +129,46 @@ export default function RootLayoutComponent({
                   <div className="!mx-2 text-gray-300 text-xl select-none">|</div>
                   {user ?
                   <NavProfile ssid={user} />
-                  : <Brightness />
-                  }
+                  : (
+                    <NavigationMenuItem>
+                      <Brightness />
+                    </NavigationMenuItem>
+                  )}
                 </NavigationMenuList>
               </NavigationMenu>
+            </div>
+            <div className="md:hidden m-5 mb-0 flex justify-between items-center">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline">
+                    <FontAwesomeIcon icon={faBars} />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="flex flex-col">
+                  <SheetLink href="/" text="Home" icon={faHome} />
+                  <SheetLink href="/team" text="Our Team" icon={faUsers} />
+                  {user ? (
+                    <>
+                      <SheetLink href="/resources" text="Resources" icon={faBookOpen} />
+                      {user.admin && <SheetLink href="/admin" text="Admin" icon={faUserTie} />}
+                    </>
+                  ) : (
+                    <>
+                      <SheetLink href="https://forms.gle/oL1gFnqQoqRPcb3q9" text="Sign Up" icon={faUserPlus} />
+                      <SheetLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" icon={faRightToBracket} />
+                    </>
+                  )}
+                  <SheetFooter className="flex-row justify-center gap-3 absolute w-full left-0 bottom-3">
+                    <SheetIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} />
+                    <SheetIcon href="https://github.com/spoi-org/" icon={faGithub} />
+                    <SheetIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} />
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
+              {user ?
+                <NavProfile ssid={user} />
+                : <Brightness />
+              }
             </div>
             <div className="mb-10 flex flex-col flex-grow h-full">
               {children}

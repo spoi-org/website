@@ -12,14 +12,12 @@ import { ThemeContext } from "@/lib/context"
 export function Brightness() {
   const { mode, setMode }  = useContext(ThemeContext);
   return (
-    <NavigationMenuItem>
-      <div className={cn(navigationMenuTriggerStyle(), "px-2")}  onClick={()=>{
-        setCookie("mode", !mode + "");
-        setMode(!mode);
-      }}>
-        <FontAwesomeIcon icon={mode ? faMoon : faSun} className="!h-8 cursor-pointer"/>
-      </div>
-    </NavigationMenuItem>
+    <div className={cn(navigationMenuTriggerStyle(), "px-2")}  onClick={()=>{
+      setCookie("mode", !mode + "");
+      setMode(!mode);
+    }}>
+      <FontAwesomeIcon icon={mode ? faMoon : faSun} className="!h-8 cursor-pointer"/>
+    </div>
   );
 }
 
