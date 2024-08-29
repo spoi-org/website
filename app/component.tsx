@@ -163,18 +163,14 @@ export default function RootLayoutComponent({
                       <NavLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" />
                     </>
                   )}
-                  <li><div className="!mx-2 text-gray-300 text-xl select-none">|</div></li>
+                  <NavigationMenuItem className="!mx-2 text-gray-300 text-xl select-none">|</NavigationMenuItem>
                   <NavIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} altText="Youtube Channel" />
                   <NavIcon href="https://github.com/spoi-org/" icon={faGithub} altText="Github Page" />
                   <NavIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} altText="Linkedin Page" />
-                  <li><div className="!mx-2 text-gray-300 text-xl select-none">|</div></li>
-                  {user ?
-                    <li><NavProfile ssid={user} /></li>
-                    : (
-                      <NavigationMenuItem>
-                        <Brightness />
-                      </NavigationMenuItem>
-                    )}
+                  <NavigationMenuItem className="!mx-2 text-gray-300 text-xl select-none">|</NavigationMenuItem>
+                  <NavigationMenuItem>
+                    {user ? <NavProfile ssid={user} /> : <Brightness />}
+                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
@@ -184,7 +180,7 @@ export default function RootLayoutComponent({
             </div>
             {!user && <footer className="bg-sky-100 w-full text-center p-5 text-2xl dark:bg-gray-700 flex items-center justify-center">
               <span className="pr-5">Ready to join?</span>
-              <Link href="https://forms.gle/oL1gFnqQoqRPcb3q9" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Sign Up</Link>
+              <Button asChild><Link href="https://forms.gle/oL1gFnqQoqRPcb3q9">Sign Up</Link></Button>
             </footer>}
             <Toaster />
           </body>
