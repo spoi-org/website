@@ -18,7 +18,7 @@ export function Rating({ rating, ...props }: RatingProps) {
   let color = rankToColor[0];
   let last = rankToColor[0];
   for (const key in rankToColor) {
-    if (rating <= parseInt(key)) {
+    if (rating < parseInt(key)) {
       color = rankToColor[last as any];
       break;
     }
