@@ -1,3 +1,3 @@
 User-agent: *
 Disallow: /admin/
-Sitemap: https://spoi.org.in/sitemap_index.xml
+Sitemap: https://www.spoi.org.in/sitemap_index.xml
