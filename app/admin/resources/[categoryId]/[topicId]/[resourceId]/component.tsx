@@ -4,7 +4,7 @@ import Rendered from "@/components/ui/rendered";
 import { useToast } from "@/components/ui/use-toast";
 import { withToast, request } from "@/lib/utils";
 import { Problem } from "@prisma/client";
-import { useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 
 interface Resource {
   id: string;
@@ -26,19 +26,28 @@ interface Props {
   authors: Author[];
 }
 
+function TextArea({ contentRef } : { contentRef: MutableRefObject<string> }){
+  const [content, setContent] = useState(contentRef.current);
+  useEffect(() => {
+    contentRef.current = content;
+  }, [content]);
+  return (
+    <textarea defaultValue={content} onInput={e => setContent(e.currentTarget.value)} className="w-full h-full dark:bg-gray-900 font-mono resize-none p-3 outline-none" />
+  );
+}
+
 export default function ResourceEditorComponent({ resource, authors, problems, solved } : Props){
   const { toast } = useToast();
+  const currContent = useRef(resource.content);
   const [content, setContent] = useState(resource.content);
-
-  const lastSaved = useRef(resource.content);
   function onBeforeUnload(event: BeforeUnloadEvent){
-    if (lastSaved.current !== content){
+    if (content !== currContent.current){
       event.preventDefault();
       return "You have unsaved changes. Are you sure you want to leave?";
     }
   }
   function onLinkClick(event: MouseEvent){
-    if (lastSaved.current !== content){
+    if (content !== currContent.current){
       const leave = confirm("You have unsaved changes. Are you sure you want to leave?");
       if (!leave) event.preventDefault();
     }
@@ -59,14 +68,14 @@ export default function ResourceEditorComponent({ resource, authors, problems, s
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ ...resource, content })
+      body: JSON.stringify({ ...resource, content: currContent.current })
     });
-    lastSaved.current = content;
+    setContent(currContent.current);
   }
   return (
     <div className="grid grid-cols-2 flex-grow">
       <div className="relative w-full h-full">
-        <textarea defaultValue={content} onInput={e => setContent(e.currentTarget.value)} className="w-full h-full dark:bg-gray-900 font-mono resize-none p-3 outline-none" />
+        <TextArea contentRef={currContent} />
         <LoaderButton className="absolute top-3 right-3" loadingText="Saving..." onClick={withToast(toast, save, "Saved Problem successfully!")}>
           Save
         </LoaderButton>
