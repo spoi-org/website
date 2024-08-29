@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Rating } from "@/components/ui/rating";
 import { Metadata } from "next";
+import { cfCache } from "@/lib/utils.server";
 
 export const metadata: Metadata = {
-  title: "SPOI | Our Team",
+  title: "SPOI - Our Team",
   description: "The team behind the training program for Indian students preparing for the International Olympiad in Informatics",
   openGraph: {
     type: "website",
-    title: "SPOI | Our Team",
+    title: "SPOI - Our Team",
     description: "The team behind the training program for Indian students preparing for the International Olympiad in Informatics"
   },
   keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"
@@ -46,64 +47,64 @@ export default function Home() {
       </main>
       <h4 className="text-5xl font-bold mt-8 mb-4">Founders</h4>
       <div className="flex flex-wrap justify-center w-full items-stretch px-10">
-        <Tile heading="Samik Goyal" rating={2096} user="unforgettablepl">
+        <Tile heading="Samik Goyal" rating={cfCache["unforgettablepl"].maxRating} user="unforgettablepl">
           IOI&#39;24 Team | IOITC&#39;24
         </Tile>
-        <Tile heading="Oviyan Gandhi" rating={1917} user="oviyan_gandhi">
+        <Tile heading="Oviyan Gandhi" rating={cfCache["oviyan_gandhi"].maxRating} user="oviyan_gandhi">
           IOITC&#39;24 | INOI&#39;24 Gold
         </Tile>
-        <Tile heading="Avighna Chhatrapati" rating={1817} user="avighnakc">
+        <Tile heading="Avighna Chhatrapati" rating={cfCache["avighnakc"].maxRating} user="avighnakc">
           IOITC&#39;24 | INOI&#39;24 Silver
         </Tile>
       </div>
       <h4 className="text-5xl font-bold mt-8 mb-4">Trainers</h4>
       <div className="flex flex-wrap justify-center w-full items-stretch px-10">
-        <Tile heading="Shreyan Ray" rating={2754} user="Dominater069">
+        <Tile heading="Shreyan Ray" rating={cfCache["Dominater069"].maxRating} user="Dominater069">
           ICO Scientific Committee | IOI&#39;23 Silver
         </Tile>
-        <Tile heading="Aditya Jain" rating={2610} user="Everule">
+        <Tile heading="Aditya Jain" rating={cfCache["Everule"].maxRating} user="Everule">
           ICO Scientific Committee | IOI&#39;21 Team
         </Tile>
-        <Tile heading="Paras Kasmalkar" rating={2281} user="blue">
+        <Tile heading="Paras Kasmalkar" rating={cfCache["blue"].maxRating} user="blue">
           ICO Scientific Committee | 2x IOI Silver
         </Tile>
-        <Tile heading="Naveen Kulkarni" rating={2236} user="evenvalue">
+        <Tile heading="Naveen Kulkarni" rating={cfCache["evenvalue"].maxRating} user="evenvalue">
           IOITC&#39;24 | INOI&#39;24 Silver
         </Tile>
-        <Tile heading="Yash Haresh Thakker" rating={2233} user="PoPularPlusPlus">
+        <Tile heading="Yash Haresh Thakker" rating={cfCache["PoPularPlusPlus"].maxRating} user="PoPularPlusPlus">
           IOI&#39;24 Team | 3x INOI Gold
         </Tile>
-        <Tile heading="Hari Aakash K" rating={2229} user="hariaakash646">
+        <Tile heading="Hari Aakash K" rating={cfCache["hariaakash646"].maxRating} user="hariaakash646">
           IOITC&#39;24 | INOI&#39;24 Gold
         </Tile>
-        <Tile heading="Jishnu Roychoudhury" rating={1976} user="astoria">
+        <Tile heading="Jishnu Roychoudhury" rating={cfCache["astoria"].maxRating} user="astoria">
           ICO Scientific Committee | NOI Gold
         </Tile>
-        <Tile heading="Rushil Mathur" rating={1878} user="rm1729">
+        <Tile heading="Rushil Mathur" rating={cfCache["rm1729"].maxRating} user="rm1729">
           IMO&#39;24 Gold | IOITC&#39;24
         </Tile>
-        <Tile heading="Vibhaas Nirantar Srivastava" rating={1826} user="accord">
+        <Tile heading="Vibhaas Nirantar Srivastava" rating={cfCache["accord"].maxRating} user="accord">
           INOI&#39;22 Bronze
         </Tile>
-        <Tile heading="Saarang Srinivasan" rating={1810} user="saarang">
+        <Tile heading="Saarang Srinivasan" rating={cfCache["saarang"].maxRating} user="saarang">
           IOITC&#39;22 | INOI&#39;22 Gold
         </Tile>
-        <Tile heading="Adhish Kancharla" rating={1748} user="ak2006">
+        <Tile heading="Adhish Kancharla" rating={cfCache["ak2006"].maxRating} user="ak2006">
           IOITC&#39;23 | INOI&#39;24 Silver
         </Tile>
       </div>
       <h4 className="text-5xl font-bold mt-8 mb-4">Contributors</h4>
       <div className="flex flex-wrap justify-center w-full items-stretch px-10">
-        <Tile heading="Harsh Sharma" rating={1476} user="codula">
+        <Tile heading="Harsh Sharma" rating={cfCache["Codula"].maxRating} user="codula">
           INOI&#39;23 Silver
         </Tile>
-        <Tile heading="OIaspirant2307" rating={1446} user="OIaspirant2307">
+        <Tile heading="OIaspirant2307" rating={cfCache["OIaspirant2307"].maxRating} user="OIaspirant2307">
           INOI&#39;24 Bronze
         </Tile>
-        <Tile heading="Kumar Akshat" rating={1216} user="oddvalue">
+        <Tile heading="Kumar Akshat" rating={cfCache["oddvalue"].maxRating} user="oddvalue">
           Codeforces Problem Tester
         </Tile>
-        <Tile heading="Aarav Malani" rating={1035} user="aaravmalani">
+        <Tile heading="Aarav Malani" rating={cfCache["aaravmalani"].maxRating} user="aaravmalani">
           SEO Specialist | Website Co-Developer
         </Tile>
       </div>

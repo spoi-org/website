@@ -13,11 +13,11 @@ import { Metadata } from "next/types";
 export async function generateMetadata({ params }: { params: { topicId: string } }): Promise<Metadata> {
 
   return {
-    title: "SPOI | " + cache.topic.get(params.topicId)?.name,
+    title: "SPOI - " + cache.topic.get(params.topicId)?.name,
     description: "A list of resources with the topic " + cache.topic.get(params.topicId)?.name,
     openGraph: {
       type: "website",
-      title: "SPOI | " + cache.topic.get(params.topicId)?.name,
+      title: "SPOI - " + cache.topic.get(params.topicId)?.name,
       description: "A list of resources with the topic " + cache.topic.get(params.topicId)?.name,
 
     },

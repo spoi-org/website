@@ -2,7 +2,24 @@ import {
   Category, PrismaClient, Problem, ResourceItem, SessionId, Topic, User, Comment, Prisma
 } from '@prisma/client'
 import { cookies } from 'next/headers';
-
+const TO_TRACK = ["unforgettablepl",
+  "oviyan_gandhi",
+  "avighnakc",
+  "Dominater069",
+  "Everule",
+  "blue",
+  "evenvalue",
+  "PoPularPlusPlus",
+  "hariaakash646",
+  "astoria",
+  "rm1729",
+  "accord",
+  "saarang",
+  "ak2006",
+  "codula",
+  "OIaspirant2307",
+  "oddvalue",
+  "aaravmalani"]
 class Cache<
   T extends { id: string },
   InsertArgs,
@@ -42,13 +59,13 @@ class Cache<
     return this.cache;
   }
 
-  async insert(args: InsertArgs){
+  async insert(args: InsertArgs) {
     // @ts-ignore
     const data: T = await prisma[this.resource].create(args);
     return this.cache[data.id] = data;
   }
 
-  async update(id: string, args: UpdateArgs){
+  async update(id: string, args: UpdateArgs) {
     // @ts-ignore
     const data: T = (await prisma[this.resource].update({ where: { id }, ...args }));
     if (id !== data.id)
@@ -118,7 +135,7 @@ class AuthorCache {
     this.cache[id] = data.authors;
   }
 
-  delete(id: string){
+  delete(id: string) {
     delete this.cache[id];
   }
   count() {
@@ -178,7 +195,7 @@ class SolverCache {
     this.cache[uid] = data.solved.map(s => s.id);
   }
 
-  delete(id: string){
+  delete(id: string) {
     delete this.cache[id];
   }
 
@@ -187,7 +204,35 @@ class SolverCache {
   }
 }
 
-function cacheSingleton(){
+type CFUser = {
+  handle: string;
+  email?: string;
+  vkId?: string;
+  openId?: string;
+  firstName?: string;
+  lastName?: string;
+  country?: string;
+  city?: string;
+  organization?: string;
+  contribution: number;
+  rank: string;
+  rating: number;
+  maxRank: string;
+  maxRating: number;
+  lastOnlineTimeSeconds: number;
+  registrationTimeSeconds: number;
+  friendOfCount: number;
+  avatar: string;
+  titlePhoto: string;
+
+
+
+
+}
+
+
+
+function cacheSingleton() {
   return {
     user: new Cache<User, Prisma.UserCreateArgs, Omit<Prisma.UserUpdateArgs, "where">>("user"),
     sessionId: new Cache<SessionId, Prisma.SessionIdCreateArgs, Omit<Prisma.SessionIdUpdateArgs, "where">>("sessionId"),
@@ -205,17 +250,41 @@ const prismaClientSingleton = () => {
   return new PrismaClient()
 }
 
+const cfCacheSingleton = () => {
+  let cache: Record<string, CFUser> = {};
+  fetch("https://codeforces.com/api/user.info?handles=" + TO_TRACK.join(";")).then(x=>x.json()).then(x=>{
+    if (x.status !== "OK") {
+      console.error("[cf] ERROR: " + x.comment);
+      return;
+    }
+    Object.assign(cache, Object.fromEntries(x.result.map((y: CFUser) => [y.handle, y])))
+  })
+  setInterval(async () => {
+    let x = await (await fetch("https://codeforces.com/api/user.info?handles=" + TO_TRACK.join(";"))).json()
+    if (x.status !== "OK") {
+      console.error("[cf] ERROR: " + x.comment);
+      return;
+    }
+    Object.assign(cache, Object.fromEntries(x.result.map((y: CFUser) => [y.handle, y])))
+  }, 86400000)
+  return cache;
+}
+
 declare const globalThis: {
   prismaGlobal: ReturnType<typeof prismaClientSingleton>;
   cacheGlobal: ReturnType<typeof cacheSingleton>;
+  cfCacheGlobal: ReturnType<typeof cfCacheSingleton>;
+
 } & typeof global;
 
 
 export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
 export const cache = globalThis.cacheGlobal ?? cacheSingleton();
+export const cfCache = globalThis.cfCacheGlobal ?? cfCacheSingleton();
+
 globalThis.prismaGlobal = prisma;
 globalThis.cacheGlobal = cache;
-
+globalThis.cfCacheGlobal = cfCache;
 let auths: Record<string, User | undefined> = {}
 export function findUserBySessionId() {
   const store = cookies();
@@ -227,3 +296,4 @@ export function findUserBySessionId() {
   auths[sessionId] = cache.user.get(cache.sessionId.get(sessionId)?.userId || "");
   return auths[sessionId];
 }
+

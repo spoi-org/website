@@ -3,11 +3,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "SPOI | Resources",
+  title: "SPOI - Resources",
   description: "The resources created by the training program for Indian students preparing for the International Olympiad in Informatics",
   openGraph: {
     type: "website",
-    title: "SPOI | Resources",
+    title: "SPOI - Resources",
     description: "The resources created by the training program for Indian students preparing for the International Olympiad in Informatics"
   },
   keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"

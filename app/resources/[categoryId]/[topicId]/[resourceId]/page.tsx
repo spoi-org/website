@@ -6,7 +6,7 @@ import Link from "next/link";
 export async function generateMetadata({ params }: { params: { resourceId: string } }): Promise<Metadata> {
 
   return {
-    title: "SPOI | " + cache.resourceItem.get(params.resourceId)?.title,
+    title: "SPOI - " + cache.resourceItem.get(params.resourceId)?.title,
     description: "" + cache.resourceItem.get(params.resourceId)?.description,
     openGraph: {
       type: "article",
