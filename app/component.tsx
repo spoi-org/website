@@ -119,6 +119,13 @@ function MobileMenu({ user, url }: { user?: User, url: string }) {
             <SheetIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} altText="Youtube Channel" />
             <SheetIcon href="https://github.com/spoi-org/" icon={faGithub} altText="Github Page" />
             <SheetIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} altText="Linkedin Page" />
+            <Link href="https://codeforces.com/blog/entry/132041" target="_blank" aria-label="Codeforces Blog">
+              <Button variant="outline" className="h-12 w-12 p-3" aria-label="Codeforces Blog">
+                <svg fill="currentColor" className="text-2xl" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.5 7.5A1.5 1.5 0 0 1 6 9v10.5A1.5 1.5 0 0 1 4.5 21h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5A1.5 1.5 0 0 1 15 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5A1.5 1.5 0 0 1 24 12v7.5a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5h3z"/>
+                </svg>
+              </Button>
+            </Link>
           </SheetFooter>
         </SheetContent>
       </Sheet>
@@ -167,6 +174,15 @@ export default function RootLayoutComponent({
                   <NavIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} altText="Youtube Channel" />
                   <NavIcon href="https://github.com/spoi-org/" icon={faGithub} altText="Github Page" />
                   <NavIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} altText="Linkedin Page" />
+                  <NavigationMenuItem>
+                    <Link href="https://codeforces.com/blog/entry/132041" legacyBehavior passHref>
+                      <NavigationMenuLink target="_blank" className={cn(navigationMenuTriggerStyle(), "px-2 block")} aria-label="Codeforces Blog">
+                        <svg fill="currentColor" className="w-8 h-8" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4.5 7.5A1.5 1.5 0 0 1 6 9v10.5A1.5 1.5 0 0 1 4.5 21h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5A1.5 1.5 0 0 1 15 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5A1.5 1.5 0 0 1 24 12v7.5a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5h3z"/>
+                        </svg>
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
                   <NavigationMenuItem className="!mx-2 text-gray-300 text-xl select-none">|</NavigationMenuItem>
                   <NavigationMenuItem>
                     {user ? <NavProfile ssid={user} /> : <Brightness />}
