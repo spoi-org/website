@@ -2,24 +2,7 @@ import {
   Category, PrismaClient, Problem, ResourceItem, SessionId, Topic, User, Comment, Prisma
 } from '@prisma/client'
 import { cookies } from 'next/headers';
-const TO_TRACK = ["unforgettablepl",
-  "oviyan_gandhi",
-  "avighnakc",
-  "Dominater069",
-  "Everule",
-  "blue",
-  "evenvalue",
-  "PoPularPlusPlus",
-  "hariaakash646",
-  "astoria",
-  "rm1729",
-  "accord",
-  "saarang",
-  "ak2006",
-  "codula",
-  "OIaspirant2307",
-  "oddvalue",
-  "aaravmalani"]
+
 class Cache<
   T extends { id: string },
   InsertArgs,
@@ -204,34 +187,6 @@ class SolverCache {
   }
 }
 
-type CFUser = {
-  handle: string;
-  email?: string;
-  vkId?: string;
-  openId?: string;
-  firstName?: string;
-  lastName?: string;
-  country?: string;
-  city?: string;
-  organization?: string;
-  contribution: number;
-  rank: string;
-  rating: number;
-  maxRank: string;
-  maxRating: number;
-  lastOnlineTimeSeconds: number;
-  registrationTimeSeconds: number;
-  friendOfCount: number;
-  avatar: string;
-  titlePhoto: string;
-
-
-
-
-}
-
-
-
 function cacheSingleton() {
   return {
     user: new Cache<User, Prisma.UserCreateArgs, Omit<Prisma.UserUpdateArgs, "where">>("user"),
@@ -250,41 +205,44 @@ const prismaClientSingleton = () => {
   return new PrismaClient()
 }
 
-const cfCacheSingleton = () => {
-  let cache: Record<string, CFUser> = {};
-  fetch("https://codeforces.com/api/user.info?handles=" + TO_TRACK.join(";")).then(x=>x.json()).then(x=>{
-    if (x.status !== "OK") {
-      console.error("[cf] ERROR: " + x.comment);
-      return;
-    }
-    Object.assign(cache, Object.fromEntries(x.result.map((y: CFUser) => [y.handle, y])))
-  })
-  setInterval(async () => {
-    let x = await (await fetch("https://codeforces.com/api/user.info?handles=" + TO_TRACK.join(";"))).json()
-    if (x.status !== "OK") {
-      console.error("[cf] ERROR: " + x.comment);
-      return;
-    }
-    Object.assign(cache, Object.fromEntries(x.result.map((y: CFUser) => [y.handle, y])))
-  }, 86400000)
-  return cache;
+const ratingCacheSingleton = () => {
+  return {
+    "unforgettablepl": 0,
+    "oviyan_gandhi": 0,
+    "avighnakc": 0,
+    "Dominater069": 0,
+    "Everule": 0,
+    "blue": 0,
+    "evenvalue": 0,
+    "PoPularPlusPlus": 0,
+    "hariaakash646": 0,
+    "astoria": 0,
+    "rm1729": 0,
+    "accord": 0,
+    "saarang": 0,
+    "ak2006": 0,
+    "codula": 0,
+    "OIaspirant2307": 0,
+    "oddvalue": 0,
+    "aaravmalani": 0,
+    "Codula": 0
+  }
 }
 
 declare const globalThis: {
   prismaGlobal: ReturnType<typeof prismaClientSingleton>;
   cacheGlobal: ReturnType<typeof cacheSingleton>;
-  cfCacheGlobal: ReturnType<typeof cfCacheSingleton>;
-
+  ratingCacheGlobal: ReturnType<typeof ratingCacheSingleton>;
 } & typeof global;
 
 
 export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
 export const cache = globalThis.cacheGlobal ?? cacheSingleton();
-export const cfCache = globalThis.cfCacheGlobal ?? cfCacheSingleton();
+export const ratingCache = globalThis.ratingCacheGlobal ?? ratingCacheSingleton();
 
 globalThis.prismaGlobal = prisma;
 globalThis.cacheGlobal = cache;
-globalThis.cfCacheGlobal = cfCache;
+globalThis.ratingCacheGlobal = ratingCache;
 let auths: Record<string, User | undefined> = {}
 export function findUserBySessionId() {
   const store = cookies();
