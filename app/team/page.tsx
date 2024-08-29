@@ -27,7 +27,7 @@ function Tile({ rating, heading, children, user }: Readonly<{
           <h2 className="text-2xl font-bold">{heading}</h2>
           <Link href={"https://codeforces.com/profile/" + user} target="_blank" className="rounded-md w-max flex justify-center items-center gap-1 mb-2 float-right">
             <svg fill="currentColor" className="w-5 h-5" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4.5 7.5A1.5 1.5 0 0 1 6 9v10.5A1.5 1.5 0 0 1 4.5 21h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5A1.5 1.5 0 0 1 15 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5A1.5 1.5 0 0 1 24 12v7.5a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5h3z"/>
+              <path d="M4.5 7.5A1.5 1.5 0 0 1 6 9v10.5A1.5 1.5 0 0 1 4.5 21h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5A1.5 1.5 0 0 1 15 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5A1.5 1.5 0 0 1 24 12v7.5a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5h3z" />
             </svg>
             <Rating rating={rating} className="font-bold" />
           </Link>
@@ -95,17 +95,17 @@ export default function Home() {
       </div>
       <h4 className="text-5xl font-bold mt-8 mb-4">Contributors</h4>
       <div className="flex flex-wrap justify-center w-full items-stretch px-10">
-        <Tile heading="Harsh Sharma" rating={ratingCache["Codula"]} user="codula">
-          INOI&#39;23 Silver
-        </Tile>
-        <Tile heading="OIaspirant2307" rating={ratingCache["OIaspirant2307"]} user="OIaspirant2307">
+        <Tile heading="Harleen Singh" rating={ratingCache["OIaspirant2307"]} user="OIaspirant2307">
           INOI&#39;24 Bronze
-        </Tile>
-        <Tile heading="Kumar Akshat" rating={ratingCache["oddvalue"]} user="oddvalue">
-          Codeforces Problem Tester
         </Tile>
         <Tile heading="Aarav Malani" rating={ratingCache["aaravmalani"]} user="aaravmalani">
           SEO Specialist | Website Co-Developer
+        </Tile>
+        <Tile heading="Harsh Sharma" rating={ratingCache["Codula"]} user="codula">
+          INOI&#39;23 Silver
+        </Tile>
+        <Tile heading="Kumar Akshat" rating={ratingCache["oddvalue"]} user="oddvalue">
+          Codeforces Problem Tester
         </Tile>
       </div>
     </div>
