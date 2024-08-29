@@ -1,3 +1,4 @@
+"use client";
 import { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogProps, DialogTitleProps, DialogTriggerProps } from "@radix-ui/react-dialog";
 import { HTMLAttributes, createContext, useContext } from "react";
 import {
@@ -23,23 +24,16 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "./button";
+import { useDesktop } from "@/lib/hooks";
 
 const DialogContext = createContext(false);
 
 export function Dialog({ ...props }: DialogProps){
+  const desktop = useDesktop();
   return (
-    <>
-      <div className="hidden md:block">
-        <DialogContext.Provider value={true}>
-          <DialogComponent {...props} />
-        </DialogContext.Provider>
-      </div>
-      <div className="md:hidden">
-        <DialogContext.Provider value={false}>
-          <Drawer {...props} />
-        </DialogContext.Provider>
-      </div>
-    </>
+    <DialogContext.Provider value={desktop}>
+      {desktop ? <DialogComponent {...props} /> : <Drawer {...props} />}
+    </DialogContext.Provider>
   )
 }
 
