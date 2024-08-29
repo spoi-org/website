@@ -74,7 +74,7 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
               setTimeout(dismiss, 3000);
             }
             return match ? (
-              <span className="relative">
+              <div className="relative">
                 { /* @ts-ignore */ }
                 <SyntaxHighlighter 
                   {...rest}
@@ -85,7 +85,7 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
                 <Button className="absolute top-0 right-0" onClick={copy}>
                   Copy
                 </Button>
-              </span>
+              </div>
             ) : (
               <code {...rest} className={cn("bg-gray-300 dark:bg-gray-700 p-1 rounded-md relative", className)}>
                 {children}
