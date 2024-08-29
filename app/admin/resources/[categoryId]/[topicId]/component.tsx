@@ -30,7 +30,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ResourceItem, User } from "@prisma/client";
+import { ResourceItem, Topic, User } from "@prisma/client";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -135,13 +135,8 @@ function ResourceDialog({ asChild = false, isPublic = false, title, description,
   )
 }
 
-interface Topic {
-  id: string;
-  name: string;
-}
-
 interface AdminTopicsProps {
-  category: Topic,
+  category: { id: string, name: string },
   topicId: string,
   topics: Topic[],
   resources: (ResourceItem & { authors: User[] })[]

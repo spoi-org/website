@@ -32,6 +32,7 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { withToast, request } from "@/lib/utils";
+import { Category } from "@prisma/client";
 
 interface DialogProps {
   asChild?: boolean;
@@ -90,11 +91,6 @@ function TopicDialog({ asChild = false, name, id, categoryId, categories, title,
       </DialogContent>
     </Dialog>
   )
-}
-
-interface Category {
-  id: string;
-  name: string;
 }
 
 export default function AdminCategories(

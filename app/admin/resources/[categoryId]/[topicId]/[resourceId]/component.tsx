@@ -3,27 +3,14 @@ import LoaderButton from "@/components/ui/loader-button";
 import Rendered from "@/components/ui/rendered";
 import { useToast } from "@/components/ui/use-toast";
 import { withToast, request } from "@/lib/utils";
-import { Problem } from "@prisma/client";
+import { Problem, ResourceItem, User } from "@prisma/client";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
-
-interface Resource {
-  id: string;
-  topicId: string;
-  title: string;
-  description: string | null;
-  content: string;
-}
-
-interface Author {
-  id: string;
-  name: string | null;
-}
 
 interface Props {
   problems: Record<string, Problem>;
   solved: string[];
-  resource: Resource;
-  authors: Author[];
+  resource: ResourceItem;
+  authors: User[];
 }
 
 function TextArea({ contentRef } : { contentRef: MutableRefObject<string> }){
