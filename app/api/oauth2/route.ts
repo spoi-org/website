@@ -36,6 +36,9 @@ export async function GET(request: Request) {
   } else {
     avatar = `https://cdn.discordapp.com/avatars/${req2.id}/${req2.avatar}.png?size=256`;
   }
+  const resp = await fetch(`${process.env.API_URL}?id=${req2.id}`);
+  if (!resp.ok || !(await resp.json()).verified)
+    return redirect("/unauthorized");
   let user = await cache.user.upsert(req2.id, {
     update: {
       data: {
