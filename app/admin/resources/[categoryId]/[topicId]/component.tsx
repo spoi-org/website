@@ -34,6 +34,8 @@ import { ResourceItem, User } from "@prisma/client";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/components/ui/use-toast";
+import { withToast, request } from "@/lib/utils";
 
 function AuthorList({ admins, authors } : {
   admins: User[], authors: React.MutableRefObject<string[]>
@@ -148,8 +150,9 @@ interface AdminTopicsProps {
 
 export default function AdminResources({ category, topicId, topics, resources, admins } : AdminTopicsProps) {
   const router = useRouter();
+  const { toast } = useToast();
   async function createResource(id: string, title: string, description: string | null, topicId: string, pub: boolean, authors: string[]){
-    await fetch("/api/admin/resources", {
+    await request("/api/admin/resources", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -186,7 +189,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
           dialogTitle="Create Resource"
           dialogDescription="Create a new resource"
           button="Create"
-          onClick={createResource}
+          onClick={withToast(toast, createResource, "Created resource successfully!")}
           topics={topics}
           topicId={topicId}
           authors={[]}
@@ -201,7 +204,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
       <ul className="mx-5">
         {resources.map(c => {
           async function editResource(id: string, title: string, description: string | null, topicId: string, pub: boolean, authors: string[]){
-            await fetch(`/api/admin/resources/${c.id}`, {
+            await request(`/api/admin/resources/${c.id}`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json"
@@ -211,7 +214,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
             router.refresh();
           }
           async function deleteResource(){
-            await fetch(`/api/admin/resources/${c.id}`, {
+            await request(`/api/admin/resources/${c.id}`, {
               method: "DELETE"
             });
             router.refresh();
@@ -232,11 +235,11 @@ export default function AdminResources({ category, topicId, topics, resources, a
                   topics={topics}
                   authors={c.authors}
                   admins={admins}
-                  onClick={editResource}
+                  onClick={withToast(toast, editResource, "Edited resource successfully!")}
                 >
                   <FontAwesomeIcon icon={faPenToSquare} className="ml-2 h-4 hover:text-blue-500 transition cursor-pointer" />
                 </ResourceDialog>
-                <AlertDialog onClick={deleteResource}>
+                <AlertDialog onClick={withToast(toast, deleteResource, "Deleted resource successfully!")}>
                   This action cannot be undone. This will permanently delete resource &ldquo;{c.title}&rdquo;.
                 </AlertDialog>
               </span>

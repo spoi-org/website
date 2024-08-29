@@ -10,7 +10,7 @@ import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/pris
 import "katex/dist/katex.min.css";
 import { ComponentProps, HTMLAttributes, useContext, useState } from "react";
 import { ThemeContext } from "@/lib/context";
-import { cn } from "@/lib/utils";
+import { withToast, cn, request } from "@/lib/utils";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "./table";
 import { Problem } from "@prisma/client";
 import { Checkbox } from "./checkbox";
@@ -35,11 +35,11 @@ interface ProblemCheckboxProps {
 function ProblemCheckbox({ problem, solves, setSolves, className } : ProblemCheckboxProps){
   async function onCheck(checked: boolean){
     if (checked === true){
-      fetch(`/api/problems/${problem.id}`, { method: "POST" });
+      request(`/api/problems/${problem.id}`, { method: "POST" });
       setSolves([...solves, problem.id]);
     }
     else {
-      fetch(`/api/problems/${problem.id}`, { method: "DELETE" });
+      request(`/api/problems/${problem.id}`, { method: "DELETE" });
       setSolves(solves.filter(s => s !== problem.id));
     }
   }
@@ -70,8 +70,6 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
             const content = String(children || "").replace(/\n$/, "");
             function copy(){
               navigator.clipboard.writeText(content);
-              const { dismiss } = toast({ title: "Copied!" });
-              setTimeout(dismiss, 3000);
             }
             return match ? (
               <div className="relative">
@@ -82,7 +80,7 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
                   language={match[1]}
                   style={mode ? oneDark : oneLight}
                 >{content}</SyntaxHighlighter>
-                <Button className="absolute top-0 right-0" onClick={copy}>
+                <Button className="absolute top-0 right-0" onClick={withToast(toast, copy, "Copied!")}>
                   Copy
                 </Button>
               </div>

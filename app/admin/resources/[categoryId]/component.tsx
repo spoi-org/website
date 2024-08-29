@@ -30,6 +30,8 @@ import {
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { withToast, request } from "@/lib/utils";
 
 interface DialogProps {
   asChild?: boolean;
@@ -99,8 +101,9 @@ export default function AdminCategories(
   { categoryId, categories, topics } : { categoryId: string, categories: Category[], topics: Category[] }
 ) {
   const router = useRouter();
+  const { toast } = useToast();
   async function createTopic(id: string, name: string, categoryId: string){
-    await fetch("/api/admin/topics", {
+    await request("/api/admin/topics", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -133,7 +136,7 @@ export default function AdminCategories(
           title="Create Topic"
           description="Create a new topic"
           button="Create"
-          onClick={createTopic}
+          onClick={withToast(toast, createTopic, "Created topic successfully!")}
           categories={categories}
           categoryId={categoryId}
           asChild
@@ -146,7 +149,7 @@ export default function AdminCategories(
       <ul className="mx-5">
         {topics.map(c => {
           async function editTopic(id: string, name: string, categoryId: string){
-            await fetch(`/api/admin/topics/${c.id}`, {
+            await request(`/api/admin/topics/${c.id}`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json"
@@ -156,7 +159,7 @@ export default function AdminCategories(
             router.refresh();
           }
           async function deleteTopic(){
-            await fetch(`/api/admin/topics/${c.id}`, {
+            await request(`/api/admin/topics/${c.id}`, {
               method: "DELETE"
             });
             router.refresh();
@@ -173,11 +176,11 @@ export default function AdminCategories(
                   description={`Edit the ${c.name} topic`}
                   button="Save"
                   categories={categories}
-                  onClick={editTopic}
+                  onClick={withToast(toast, editTopic, "Edited topic successfully!")}
                 >
                   <FontAwesomeIcon icon={faPenToSquare} className="ml-2 h-4 hover:text-blue-500 transition cursor-pointer" />
                 </TopicDialog>
-                <AlertDialog onClick={deleteTopic}>
+                <AlertDialog onClick={withToast(toast, deleteTopic, "Deleted topic successfully!")}>
                   This action cannot be undone. This will permanently delete topic &ldquo;{c.name}&rdquo;&nbsp;
                   <span className="font-extrabold">and all resources within it.</span>
                 </AlertDialog>

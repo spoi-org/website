@@ -15,6 +15,8 @@ import {
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { withToast, request } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
 
 interface DialogProps {
   asChild?: boolean;
@@ -69,8 +71,9 @@ interface Category {
 
 export default function AdminCategories({ categories } : { categories: Category[] }) {
   const router = useRouter();
+  const { toast } = useToast();
   async function createCategory(id: string, name: string){
-    await fetch("/api/admin/categories", {
+    await request("/api/admin/categories", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -87,7 +90,7 @@ export default function AdminCategories({ categories } : { categories: Category[
           title="Create Category"
           description="Create a new category"
           button="Create"
-          onClick={createCategory}
+          onClick={withToast(toast, createCategory, "Created category successfully!")}
           asChild
         >
           <Button variant="outline" size="icon" className="ml-2 hover:bg-green-500 hover:text-white transition cursor-pointer">
@@ -98,7 +101,7 @@ export default function AdminCategories({ categories } : { categories: Category[
       <ul className="mx-5">
         {categories.map(c => {
           async function editCategory(id: string, name: string){
-            await fetch(`/api/admin/categories/${c.id}`, {
+            await request(`/api/admin/categories/${c.id}`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json"
@@ -108,7 +111,7 @@ export default function AdminCategories({ categories } : { categories: Category[
             router.refresh();
           }
           async function deleteCategory(){
-            await fetch(`/api/admin/categories/${c.id}`, {
+            await request(`/api/admin/categories/${c.id}`, {
               method: "DELETE"
             });
             router.refresh();
@@ -123,11 +126,11 @@ export default function AdminCategories({ categories } : { categories: Category[
                   title="Edit Category"
                   description={`Edit the ${c.name} category`}
                   button="Save"
-                  onClick={editCategory}
+                  onClick={withToast(toast, editCategory, "Edited category successfully!")}
                 >
                   <FontAwesomeIcon icon={faPenToSquare} className="ml-2 h-4 hover:text-blue-500 transition cursor-pointer" />
                 </CategoryDialog>
-                <AlertDialog onClick={deleteCategory}>
+                <AlertDialog onClick={withToast(toast, deleteCategory, "Deleted category successfully!")}>
                   This action cannot be undone. This will permanently delete category &ldquo;{c.name}&rdquo;&nbsp;
                   <span className="font-extrabold">and all topics and resources within it.</span>
                 </AlertDialog>

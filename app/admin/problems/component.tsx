@@ -12,8 +12,11 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Problem } from "@prisma/client";
+import { useToast } from "@/components/ui/use-toast";
+import { withToast, request } from "@/lib/utils";
 
 export default function AdminProblems({ problems } : { problems: Problem[] }) {
+  const { toast } = useToast();
   const router = useRouter();
   const titleRef = useRef<HTMLInputElement>(null);
   const idRef = useRef<HTMLInputElement>(null);
@@ -32,7 +35,7 @@ export default function AdminProblems({ problems } : { problems: Problem[] }) {
     const url = urlRef.current!.value.trim();
     const ratingEstimate = parseInt(ratingRef.current!.value.trim());
     if (!title || !id || !url || !ratingEstimate) return;
-    await fetch("/api/admin/problems", {
+    await request("/api/admin/problems", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +51,7 @@ export default function AdminProblems({ problems } : { problems: Problem[] }) {
     const url = urlRef.current!.value.trim();
     const ratingEstimate = parseInt(ratingRef.current!.value.trim());
     if (!title || !id || !url || !ratingEstimate) return;
-    await fetch(`/api/admin/problems/${problem.id}`, {
+    await request(`/api/admin/problems/${problem.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +62,7 @@ export default function AdminProblems({ problems } : { problems: Problem[] }) {
   }
   async function deleteProblem(){
     if (!problem) return;
-    await fetch(`/api/admin/problems/${problem.id}`, {
+    await request(`/api/admin/problems/${problem.id}`, {
       method: "DELETE"
     });
     setProblem(undefined);
@@ -111,11 +114,11 @@ export default function AdminProblems({ problems } : { problems: Problem[] }) {
       </div>
       {problem ? (
         <div className="mt-5">
-          <Button onClick={editProblem} className="mr-5">Save Changes</Button>
-          <Button onClick={deleteProblem} variant="destructive">Delete Problem</Button>
+          <Button onClick={withToast(toast, editProblem, "Edited problem successfully!")} className="mr-5">Save Changes</Button>
+          <Button onClick={withToast(toast, deleteProblem, "Deleted problem successfully!")} variant="destructive">Delete Problem</Button>
         </div>
       ) : (
-        <Button onClick={createProblem} className="mt-5">Create Problem</Button>
+        <Button onClick={withToast(toast, createProblem, "Created problem successfully!")} className="mt-5">Create Problem</Button>
       )}
     </div>
   );
