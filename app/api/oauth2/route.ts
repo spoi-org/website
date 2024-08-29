@@ -63,6 +63,6 @@ export async function GET(request: Request) {
   if (!cache.solves.get(user.id))
     cache.solves.insert(user.id, []);
   let store = cookies();
-  store.set("__ssid", ssid.id);
+  store.set("__ssid", ssid.id, { expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30) });
   return redirect("/")
 }

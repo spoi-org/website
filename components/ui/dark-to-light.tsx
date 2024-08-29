@@ -13,7 +13,7 @@ export function Brightness() {
   const { mode, setMode }  = useContext(ThemeContext);
   return (
     <div className={cn(navigationMenuTriggerStyle(), "px-2")}  onClick={()=>{
-      setCookie("mode", !mode + "");
+      setCookie("mode", !mode + "", { expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)});
       setMode(!mode);
     }}>
       <FontAwesomeIcon icon={mode ? faMoon : faSun} className="!h-8 cursor-pointer"/>
@@ -25,7 +25,7 @@ export function BrightnessText(){
   const { mode, setMode }  = useContext(ThemeContext);
   return (
     <div className="cursor-pointer flex justify-center items-center font-bold w-full text-base" onClick={()=>{
-      setCookie("mode", !mode + "");
+      setCookie("mode", !mode + "", { expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)});
       setMode(!mode);
     }}>
       <div className="flex justify-center items-center">
