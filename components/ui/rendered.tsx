@@ -45,6 +45,7 @@ function ProblemCheckbox({ problem, solves, setSolves, className } : ProblemChec
   }
   return (
     <Checkbox
+      aria-label={problem.title + " Checkbox"}
       checked={solves.includes(problem.id)} onCheckedChange={onCheck}
       className={cn("data-[state=checked]:bg-green-500 !text-white rounded-full", className)}
     />

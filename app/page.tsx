@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: "SPOI | Home",
     description: "A training program for Indian students preparing for the International Olympiad in Informatics"
   },
-  
+  keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"
 };
 
 function Tile({ heading, children }: Readonly<{
@@ -26,8 +26,20 @@ function Tile({ heading, children }: Readonly<{
 }
 
 export default function Home() {
+  let jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "image": process.env.URL + "/favicon.ico",
+    "url": process.env.URL,
+    "logo": process.env.URL + "/favicon.ico",
+    "name": "SPOI Mentoring",
+    "description": "A training program for Indian students preparing for the International Olympiad in Informatics",
+  }
   return (
     <>
+      <section>
+        <script dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLd)}} type="application/ld+json" />
+      </section>
       <main className="flex flex-col items-center justify-center">
         <div className="py-5 text-center md:px-10">
           <h1 className="text-6xl font-bold mb-3">SPOI Mentoring</h1>

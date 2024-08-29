@@ -20,40 +20,13 @@ export default async function sitemap({
     console.log(id)
     switch (type) {
         case "resourceItem":
-            return await prisma.resourceItem.findMany({
-                take: 50000,
-                skip: +id2 * 50000,
-                select: {
-                    updatedAt: true,
-                    topic: {
-                        select: {
-                            id: true,
-                            categoryId: true
-                        }
-                    },
-                    id: true
-                }
-            }).then(x => x.map((z) => ({ url: BASE_URL+"/resources/" + z.topic.categoryId + "/" + z.topic.id + "/" + z.id, lastModified: z.updatedAt })))
+            return cache.resourceItem.all().slice(+id2*50000, (1+(+id2))*50000).map((z) => ({ url: BASE_URL+"/resources/" + cache.topic.get(z.topicId)?.categoryId + "/" + z.topicId + "/" + z.id, lastModified: z.updatedAt }))
         case "topic":
-            return await prisma.topic.findMany({
-                take: 50000,
-                skip: +id2 * 50000,
-                select: {
-                    updatedAt: true,
-                    categoryId: true,
-                    id: true
-                }
-            }).then(x => x.map((z) => ({ url: BASE_URL+"/resources/" + z.categoryId + "/" + z.id, lastModified: z.updatedAt })))
+            return cache.topic.all().slice(+id2*50000, (1+(+id2))*50000).map((z) => ({ url: BASE_URL+"/resources/" + z.categoryId + "/" + z.id, lastModified: z.updatedAt }))
+            
         case "category":
-            return await prisma.category.findMany({
-                take: 50000,
-                skip: +id2 * 50000,
-                select: {
-                    updatedAt: true,
-                    id: true
-                }
-            }).then(x => x.map((z) => ({ url: BASE_URL+"/resources/" + z.id, lastModified: z.updatedAt })))
-
+            return cache.category.all().slice(+id2*50000, (1+(+id2))*50000).map((z) => ({ url: BASE_URL+"/resources/" + z.id, lastModified: z.updatedAt }))
+            
     }
     return [];
 }

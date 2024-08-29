@@ -9,7 +9,8 @@ export const metadata: Metadata = {
     type: "website",
     title: "SPOI | Our Team",
     description: "The team behind the training program for Indian students preparing for the International Olympiad in Informatics"
-  }
+  },
+  keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"
 };
 
 function Tile({ rating, heading, children, user }: Readonly<{
@@ -103,7 +104,7 @@ export default function Home() {
           Codeforces Problem Tester
         </Tile>
         <Tile heading="Aarav Malani" rating={1035} user="aaravmalani">
-          Assistant Website Developer
+          SEO Specialist | Website Co-Developer
         </Tile>
       </div>
     </div>

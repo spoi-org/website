@@ -38,6 +38,7 @@ interface NavLinkProps extends NavBaseProps {
 
 interface NavIconProps extends NavBaseProps {
   icon: IconDefinition;
+  altText: string
 }
 
 function NavLink({ href, text }: NavLinkProps) {
@@ -57,7 +58,7 @@ interface LinkProps extends NavLinkProps {
   setOpen: (open: boolean) => void;
 }
 
-function SheetLink({ href, text, icon, setOpen } : LinkProps) {
+function SheetLink({ href, text, icon, setOpen }: LinkProps) {
   return (
     <Link href={href} onClick={() => setOpen(false)}>
       <Button variant="ghost" className="text-xl items-center">
@@ -68,11 +69,11 @@ function SheetLink({ href, text, icon, setOpen } : LinkProps) {
   )
 }
 
-function NavIcon({ href, icon }: NavIconProps) {
+function NavIcon({ href, icon, altText }: NavIconProps) {
   return (
     <NavigationMenuItem>
-      <Link href={href} legacyBehavior passHref>
-        <NavigationMenuLink target="_blank" className={cn(navigationMenuTriggerStyle(), "px-2 block")}>
+      <Link href={href} legacyBehavior passHref aria-label={altText}>
+        <NavigationMenuLink target="_blank" className={cn(navigationMenuTriggerStyle(), "px-2 block")} aria-label={altText}>
           <FontAwesomeIcon icon={icon} className="!h-8 !align-middle" />
         </NavigationMenuLink>
       </Link>
@@ -80,17 +81,17 @@ function NavIcon({ href, icon }: NavIconProps) {
   )
 }
 
-function SheetIcon({ href, icon } : NavIconProps) {
+function SheetIcon({ href, icon, altText }: NavIconProps) {
   return (
-    <Link href={href} target="_blank">
-      <Button variant="outline" className="h-12 w-12">
+    <Link href={href} target="_blank" aria-label={altText}>
+      <Button variant="outline" className="h-12 w-12" aria-label={altText}>
         <FontAwesomeIcon icon={icon} className="text-2xl" />
       </Button>
     </Link>
   )
 }
 
-function MobileMenu({ user, url } : { user?: User, url: string }){
+function MobileMenu({ user, url }: { user?: User, url: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="md:hidden m-5 mb-0 flex justify-between items-center">
@@ -115,9 +116,9 @@ function MobileMenu({ user, url } : { user?: User, url: string }){
             </>
           )}
           <SheetFooter className="flex-row justify-center gap-3 absolute w-full left-0 bottom-3">
-            <SheetIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} />
-            <SheetIcon href="https://github.com/spoi-org/" icon={faGithub} />
-            <SheetIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} />
+            <SheetIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} altText="Youtube Channel" />
+            <SheetIcon href="https://github.com/spoi-org/" icon={faGithub} altText="Github Page" />
+            <SheetIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} altText="Linkedin Page" />
           </SheetFooter>
         </SheetContent>
       </Sheet>
@@ -162,18 +163,18 @@ export default function RootLayoutComponent({
                       <NavLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" />
                     </>
                   )}
-                  <div className="!mx-2 text-gray-300 text-xl select-none">|</div>
-                  <NavIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} />
-                  <NavIcon href="https://github.com/spoi-org/" icon={faGithub} />
-                  <NavIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} />
-                  <div className="!mx-2 text-gray-300 text-xl select-none">|</div>
+                  <li><div className="!mx-2 text-gray-300 text-xl select-none">|</div></li>
+                  <NavIcon href="https://www.youtube.com/channel/UCjfxHo66lLDIZ3jgbsxDtAQ" icon={faYoutube} altText="Youtube Channel" />
+                  <NavIcon href="https://github.com/spoi-org/" icon={faGithub} altText="Github Page" />
+                  <NavIcon href="https://www.linkedin.com/company/shortest-path-to-ioi" icon={faLinkedin} altText="Linkedin Page" />
+                  <li><div className="!mx-2 text-gray-300 text-xl select-none">|</div></li>
                   {user ?
-                  <NavProfile ssid={user} />
-                  : (
-                    <NavigationMenuItem>
-                      <Brightness />
-                    </NavigationMenuItem>
-                  )}
+                    <li><NavProfile ssid={user} /></li>
+                    : (
+                      <NavigationMenuItem>
+                        <Brightness />
+                      </NavigationMenuItem>
+                    )}
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
@@ -183,7 +184,7 @@ export default function RootLayoutComponent({
             </div>
             {!user && <footer className="bg-sky-100 w-full text-center p-5 text-2xl dark:bg-gray-700 flex items-center justify-center">
               <span className="pr-5">Ready to join?</span>
-              <Button><Link href="https://forms.gle/oL1gFnqQoqRPcb3q9">Sign Up</Link></Button>
+              <Link href="https://forms.gle/oL1gFnqQoqRPcb3q9" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Sign Up</Link>
             </footer>}
             <Toaster />
           </body>

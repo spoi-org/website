@@ -26,7 +26,7 @@ export default function NavProfile({ ssid } : NavProfileProps){
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="p-2 outline-none hover:outline-none focus:outline-none">
-          <img src={ssid.avatar} className="h-10 rounded-full hover:brightness-90 transition-all w-10 max-w-10" alt={ssid.dcUserName+"'s Avatar"}/>
+          <img src={ssid.avatar.substring(0,ssid.avatar.length-12)+"webp?size=40"} className="h-10 rounded-full hover:brightness-90 transition-all w-10 max-w-10" alt={ssid.dcUserName+"'s Avatar"}/>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-4">
         <DropdownMenuLabel className="text-base text-center">{ssid.dcUserName}</DropdownMenuLabel>

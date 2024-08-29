@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     title: "SPOI | Resources",
     description: "The resources created by the training program for Indian students preparing for the International Olympiad in Informatics"
   },
+  keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"
   
 };
 

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Rendered from "@/components/ui/rendered";
-import { cache, findUserBySessionId, prisma } from "@/lib/utils.server";
+import { cache, findUserBySessionId } from "@/lib/utils.server";
 import { Metadata } from "next";
 import Link from "next/link";
 export async function generateMetadata({ params }: { params: { resourceId: string } }): Promise<Metadata> {
@@ -14,20 +14,11 @@ export async function generateMetadata({ params }: { params: { resourceId: strin
       description: "" + cache.resourceItem.get(params.resourceId)?.description,
       publishedTime: cache.resourceItem.get(params.resourceId)?.createdAt.toISOString(),
       modifiedTime: cache.resourceItem.get(params.resourceId)?.updatedAt.toISOString(),
-      authors: (await prisma.resourceItem.findUnique({
-        where: {
-          id: params.resourceId
-        }, select: {
-          authors: {
-            select: {
-              name: true
-            }
-          }
 
-        }
-      }))?.authors.map(x => x.name + ""),
+      authors: cache.author.get(params.resourceId)?.map(x => x.name + ""),
       section: cache.topic.get(cache.resourceItem.get(params.resourceId)?.topicId || "")?.name
     },
+    keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"
 
   };
 }
@@ -57,7 +48,7 @@ export default async function ResourceEditor({ params }: { params: { resourceId:
     abstract: resource.description,
     accessMode: "mathOnVisual",
     accessModeSufficient: ["mathOnVisual", "visual", "diagramOnVisual", "textual", "textOnVisual"],
-    author: authors.filter((x)=>x.name).map(x => ({
+    author: authors.filter((x) => x.name).map(x => ({
       '@context': 'https://schema.org',
       '@type': 'Person',
       'name': x.name
@@ -68,12 +59,39 @@ export default async function ResourceEditor({ params }: { params: { resourceId:
     headline: resource.title,
 
   }
+  const jsonLD2 = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Resources",
+      "item": process.env.URL + "/resources/"
+    }, {
+      "@type": "ListItem",
+      "position": 2,
+      "name": cache.category.get(cache.topic.get(resource.topicId)?.categoryId || "")?.name,
+      "item": process.env.URL + "/resources/" + cache.topic.get(resource.topicId)?.categoryId
+    }, {
+      "@type": "ListItem",
+      "position": 3,
+      "name": cache.topic.get(resource.topicId)?.name,
+      "item": process.env.URL + "/resources/" + cache.topic.get(resource.topicId)?.categoryId + "/" + resource.topicId
+    }, {
+      "@type": "ListItem",
+      "position": 4,
+      "name": resource.title
+    }]
+  }
   return (
     <>
       <section>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        /><script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLD2) }}
         />
       </section>
       <div className="text-lg flex-grow mx-[10%]">
