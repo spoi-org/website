@@ -1,5 +1,5 @@
 "use client";
-import { ThemeContext, UserContext } from "../lib/context";
+import { ThemeContext, UserContext } from "@/lib/context";
 import { useState } from "react";
 import { Inter } from "next/font/google";
 import {
@@ -8,22 +8,22 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "../components/ui/navigation-menu";
+} from "@/components/ui/navigation-menu";
 import {
   Sheet,
   SheetContent,
   SheetFooter,
   SheetTrigger,
-} from "../components/ui/sheet";
+} from "@/components/ui/sheet";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition, faGithub, faLinkedin, faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { cn } from "../lib/utils";
-import { Button } from "../components/ui/button";
-import { Brightness } from "../components/ui/dark-to-light";
-import NavProfile from "../components/ui/nav-profile";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Brightness } from "@/components/ui/dark-to-light";
+import NavProfile from "@/components/ui/nav-profile";
 import { User } from "@prisma/client";
-import { Toaster } from "../components/ui/toaster";
+import { Toaster } from "@/components/ui/toaster";
 import { faBars, faBookOpen, faHome, faRightToBracket, faUserPlus, faUserTie, faUsers } from "@fortawesome/free-solid-svg-icons";
 const inter = Inter({ subsets: ["latin"] });
 

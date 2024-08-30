@@ -1,7 +1,7 @@
-import { cache } from "../../../../../lib/utils.server";
+import { cache } from "@/lib/utils.server";
 import AdminResources from "./component";
 import Link from "next/link";
-import { Button } from "../../../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 
 export default async function ResourcesPage({ params } : { params: { categoryId: string, topicId: string } }){
   const categoryName = cache.category.get(params.categoryId)?.name;

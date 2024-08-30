@@ -10,7 +10,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "../../components/ui/drawer";
+} from "@/components/ui/drawer";
 import {
   Dialog as DialogComponent,
   DialogContent as Content,
@@ -20,11 +20,11 @@ import {
   DialogTrigger as Trigger,
   DialogClose as Close,
   DialogFooter as Footer,
-} from "../../components/ui/dialog";
+} from "@/components/ui/dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "./button";
-import { useDesktop } from "../../lib/hooks";
+import { useDesktop } from "@/lib/hooks";
 
 const DialogContext = createContext(false);
 

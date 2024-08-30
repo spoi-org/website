@@ -1,4 +1,4 @@
-import { cache } from "../../../../../lib/utils.server";
+import { cache } from "@/lib/utils.server";
 import { NextResponse } from "next/server";
 import { getBody } from "../utils";
 import { checkAdmin } from "../../utils";

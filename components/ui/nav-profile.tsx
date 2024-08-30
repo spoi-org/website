@@ -1,5 +1,5 @@
 "use client";
-import { BrightnessText } from "../../components/ui/dark-to-light";
+import { BrightnessText } from "@/components/ui/dark-to-light";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { User } from "@prisma/client";

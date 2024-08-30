@@ -1,5 +1,5 @@
-import { Button } from "../../../../../../components/ui/button";
-import { cache, findUserBySessionId } from "../../../../../../lib/utils.server";
+import { Button } from "@/components/ui/button";
+import { cache, findUserBySessionId } from "@/lib/utils.server";
 import Link from "next/link";
 import ResourceEditorComponent from "./component";
 

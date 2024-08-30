@@ -1,5 +1,5 @@
 import "./globals.css";
-import { findUserBySessionId } from "../lib/utils.server";
+import { findUserBySessionId } from "@/lib/utils.server";
 import LayoutComponent from "./component";
 import { cookies } from "next/headers";
 

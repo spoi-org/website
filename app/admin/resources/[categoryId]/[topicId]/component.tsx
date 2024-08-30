@@ -11,14 +11,14 @@ import {
   DialogTitle,
   DialogTrigger,
   AlertDialog
-} from "../../../../../components/ui/responsive-dialog";
+} from "@/components/ui/responsive-dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../../../../components/ui/select";
+} from "@/components/ui/select";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -26,16 +26,16 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "../../../../../components/ui/breadcrumb";
+} from "@/components/ui/breadcrumb";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { Button } from "../../../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ResourceItem, Topic, User } from "@prisma/client";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../../../components/ui/collapsible";
-import { ToggleGroup, ToggleGroupItem } from "../../../../../components/ui/toggle-group";
-import { Checkbox } from "../../../../../components/ui/checkbox";
-import { useToast } from "../../../../../components/ui/use-toast";
-import { withToast, request } from "../../../../../lib/utils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/components/ui/use-toast";
+import { withToast, request } from "@/lib/utils";
 
 function AuthorList({ admins, authors } : {
   admins: User[], authors: React.MutableRefObject<string[]>

@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "../../components/ui/button";
-import { UserContext } from "../../lib/context";
+import { Button } from "@/components/ui/button";
+import { UserContext } from "@/lib/context";
 import Link from "next/link";
 import { useContext } from "react";
 

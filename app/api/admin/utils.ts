@@ -1,4 +1,4 @@
-import { findUserBySessionId } from "../../../lib/utils.server";
+import { findUserBySessionId } from "@/lib/utils.server";
 import { NextResponse } from "next/server";
 
 export function checkAdmin(){

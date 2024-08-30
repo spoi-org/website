@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Rating } from "../../components/ui/rating";
+import { Rating } from "@/components/ui/rating";
 import { Metadata } from "next";
-import { ratingCache } from "../../lib/utils.server";
+import { ratingCache } from "@/lib/utils.server";
 
 export const metadata: Metadata = {
   title: "SPOI - Our Team",

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { cache } from "../../../lib/utils.server";
+import { cache } from "@/lib/utils.server";
 
 export async function GET(request: Request) {
   let params = new URL(request.url).searchParams;
