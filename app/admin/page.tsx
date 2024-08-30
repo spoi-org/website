@@ -1,5 +1,5 @@
 
-import { cache } from "@/lib/utils.server";
+import { cache } from "../../lib/utils.server";
 import AdminHome from "./component";
 
 export default function Admin() {

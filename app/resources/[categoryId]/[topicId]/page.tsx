@@ -1,4 +1,4 @@
-import { cache, findUserBySessionId } from "@/lib/utils.server";
+import { cache, findUserBySessionId } from "../../../../lib/utils.server";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,9 +6,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+} from "../../../../components/ui/breadcrumb";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../components/ui/button";
 import { Metadata } from "next/types";
 export async function generateMetadata({ params }: { params: { topicId: string } }): Promise<Metadata> {
 

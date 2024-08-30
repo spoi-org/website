@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import Rendered from "@/components/ui/rendered";
-import { cache, findUserBySessionId } from "@/lib/utils.server";
+import { Button } from "../../../../../components/ui/button";
+import Rendered from "../../../../../components/ui/rendered";
+import { cache, findUserBySessionId } from "../../../../../lib/utils.server";
 import { Metadata } from "next";
 import Link from "next/link";
 export async function generateMetadata({ params }: { params: { resourceId: string } }): Promise<Metadata> {

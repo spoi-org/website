@@ -11,14 +11,14 @@ import {
   DialogTitle,
   DialogTrigger,
   AlertDialog
-} from "@/components/ui/responsive-dialog";
+} from "../../../../components/ui/responsive-dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../../../../components/ui/select";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -26,12 +26,12 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+} from "../../../../components/ui/breadcrumb";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { withToast, request } from "@/lib/utils";
+import { Button } from "../../../../components/ui/button";
+import { useToast } from "../../../../components/ui/use-toast";
+import { withToast, request } from "../../../../lib/utils";
 import { Category } from "@prisma/client";
 
 interface DialogProps {

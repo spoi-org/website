@@ -1,4 +1,4 @@
-import { cache } from "@/lib/utils.server";
+import { cache } from "../../../lib/utils.server";
 import AdminCategories from "./component";
 
 export default async function CategoriesPage(){

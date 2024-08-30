@@ -1,4 +1,4 @@
-import { cache } from "@/lib/utils.server";
+import { cache } from "../../lib/utils.server";
 import { Metadata } from "next";
 import Link from "next/link";
 

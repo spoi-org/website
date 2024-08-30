@@ -2,12 +2,12 @@
 
 import { NavigationMenuItem } from "@radix-ui/react-navigation-menu"
 import { navigationMenuTriggerStyle } from "./navigation-menu"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons"
 import { useContext } from "react";
 import { setCookie } from 'cookies-next'
-import { ThemeContext } from "@/lib/context"
+import { ThemeContext } from "../../lib/context"
 
 export function Brightness() {
   const { mode, setMode }  = useContext(ThemeContext);

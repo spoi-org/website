@@ -1,4 +1,4 @@
-import { cache } from "@/lib/utils.server";
+import { cache } from "../../lib/utils.server";
 
 const BASE_URL = process.env.URL!;
 

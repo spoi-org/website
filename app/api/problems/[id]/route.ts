@@ -1,4 +1,4 @@
-import { cache, findUserBySessionId } from "@/lib/utils.server";
+import { cache, findUserBySessionId } from "../../../../lib/utils.server";
 import { NextResponse } from "next/server";
 
 function getUser(){

@@ -1,7 +1,7 @@
-import { cache } from "@/lib/utils.server";
+import { cache } from "../../../../lib/utils.server";
 import AdminTopics from "./component";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../components/ui/button";
 
 export default async function TopicsPage({ params } : { params: { categoryId: string } }){
   if (!cache.category.get(params.categoryId)){

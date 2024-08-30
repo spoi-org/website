@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getBody } from "./utils";
-import { cache } from "@/lib/utils.server";
+import { cache } from "../../../../lib/utils.server";
 import { checkAdmin } from "../utils";
 
 export async function POST(req : Request) {

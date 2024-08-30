@@ -1,8 +1,8 @@
 "use client";
-import LoaderButton from "@/components/ui/loader-button";
-import Rendered from "@/components/ui/rendered";
-import { useToast } from "@/components/ui/use-toast";
-import { withToast, request } from "@/lib/utils";
+import LoaderButton from "../../../../../../components/ui/loader-button";
+import Rendered from "../../../../../../components/ui/rendered";
+import { useToast } from "../../../../../../components/ui/use-toast";
+import { withToast, request } from "../../../../../../lib/utils";
 import { Problem, ResourceItem, User } from "@prisma/client";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 

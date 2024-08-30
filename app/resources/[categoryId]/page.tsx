@@ -5,9 +5,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
-import { cache } from "@/lib/utils.server";
+} from "../../../components/ui/breadcrumb";
+import { Button } from "../../../components/ui/button";
+import { cache } from "../../../lib/utils.server";
 import Link from "next/link";
 import { Metadata } from "next/types";
 export async function generateMetadata({ params }: { params: { categoryId: string } }): Promise<Metadata> {

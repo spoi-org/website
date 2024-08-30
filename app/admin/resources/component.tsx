@@ -11,12 +11,12 @@ import {
   DialogTitle,
   DialogTrigger,
   AlertDialog
-} from "@/components/ui/responsive-dialog";
+} from "../../../components/ui/responsive-dialog";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { withToast, request } from "@/lib/utils";
-import { useToast } from "@/components/ui/use-toast";
+import { Button } from "../../../components/ui/button";
+import { withToast, request } from "../../../lib/utils";
+import { useToast } from "../../../components/ui/use-toast";
 import { Category } from "@prisma/client";
 
 interface DialogProps {

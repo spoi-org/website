@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -10,10 +10,10 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command";
+} from "../../../components/ui/command";
 import { Problem } from "@prisma/client";
-import { useToast } from "@/components/ui/use-toast";
-import { withToast, request } from "@/lib/utils";
+import { useToast } from "../../../components/ui/use-toast";
+import { withToast, request } from "../../../lib/utils";
 
 export default function AdminProblems({ problems } : { problems: Problem[] }) {
   const { toast } = useToast();
