@@ -336,15 +336,11 @@ export const ratingCache = globalThis.ratingCacheGlobal ?? ratingCacheSingleton(
 globalThis.prismaGlobal = prisma;
 globalThis.cacheGlobal = cache;
 globalThis.ratingCacheGlobal = ratingCache;
-let auths: Record<string, User | undefined> = {}
+
 export function findUserBySessionId() {
   const store = cookies();
   let sessionId = store.get("__ssid")?.value;
   if (!sessionId)
     return undefined;
-  if (sessionId in auths)
-    return auths[sessionId];
-  auths[sessionId] = cache.user.get(cache.sessionId.get(sessionId)?.userId || "");
-  return auths[sessionId];
+  return cache.user.get(cache.sessionId.get(sessionId)?.userId || "");
 }
-
