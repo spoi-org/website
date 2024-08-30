@@ -31,7 +31,7 @@ model User {
 model SessionId {
   id String @id @default(uuid())
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }
 
@@ -70,10 +70,10 @@ model ResourceItem {
 }
 
 model ResourceAuthors {
-  resource ResourceItem @relation(fields: [resourceId, topicId], references: [id, topicId])
+  resource ResourceItem @relation(fields: [resourceId, topicId], references: [id, topicId], onDelete: Cascade)
   resourceId String
   topicId    String
-  author User @relation(fields: [authorId], references: [id])
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
   @@id([resourceId, topicId, authorId])
 }
