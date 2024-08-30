@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: { topicId: string, 
       publishedTime: resource.createdAt.toISOString(),
       modifiedTime: resource.updatedAt.toISOString(),
 
-      authors: cache.author.get(resource.topicId, resource.id)!.map(x => x.name || ""),
+      authors: cache.author.get(resource.topicId, resource.id).map(x => x.name || ""),
       section: cache.topic.get(resource.topicId)!.name
     },
     keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"
@@ -50,7 +50,7 @@ export default async function ResourceEditor({ params }: { params: { topicId: st
       </div>
     );
   }
-  const authors = cache.author.get(resource.topicId, resource.id)!;
+  const authors = cache.author.get(resource.topicId, resource.id);
   const problems = cache.problem.getCache();
   const solved = cache.solves.get(findUserBySessionId()!.id)!;
 

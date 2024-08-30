@@ -18,7 +18,7 @@ export default async function ResourceEditor({ params } : { params: { topicId: s
       </div>
     );
   }
-  const authors = cache.author.get(resource.topicId, resource.id) || [];
+  const authors = cache.author.get(resource.topicId, resource.id);
   const problems = cache.problem.getCache();
   const solved = cache.solves.get(findUserBySessionId()!.id)!;
   return <ResourceEditorComponent resource={resource!} authors={authors} problems={problems} solved={solved} />

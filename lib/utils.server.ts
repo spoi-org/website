@@ -164,8 +164,8 @@ class AuthorCache {
     }
   }
 
-  get(topicId: string, id: string): User[] | undefined {
-    return (this.cache[topicId] || {})[id];
+  get(topicId: string, id: string): User[] {
+    return (this.cache[topicId] || {})[id] || [];
   }
 
   insert(topicId: string, id: string, authors: User[]) {

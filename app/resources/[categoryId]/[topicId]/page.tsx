@@ -106,7 +106,7 @@ export default async function ResourcesPage({ params }: { params: { categoryId: 
         </h1>
         <ul className="mx-5">
           {resources.map(c => {
-            const authors = cache.author.get(c.topicId, c.id)!;
+            const authors = cache.author.get(c.topicId, c.id);
             return (
               <Link key={c.id} href={`/resources/${params.categoryId}/${params.topicId}/${c.id}`}>
                 <li className="shadow-md rounded-lg bg-sky-100 dark:bg-gray-800 py-5 px-8 hover:scale-105 transition mb-5">
