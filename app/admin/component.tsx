@@ -1,24 +1,35 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import LoaderButton from "@/components/ui/loader-button";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useToast } from "@/components/ui/use-toast";
+import { request, withToast } from "@/lib/utils";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { User } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function AdminHome({ users } : { users: User[] }){
   const [skip, setSkip] = useState(0);
   const pages = Math.ceil(users.length/10);
+  const { toast } = useToast();
+  const router = useRouter();
+  const refreshCache = withToast(toast, async () => {
+    await request("/api/admin/cache", { method: "POST" });
+    router.refresh();
+  }, "Refreshed cache successfully!");
   return (
     <div className="flex flex-wrap flex-col justify-center items-center">
       <div className="mb-4">
         <a href="/admin/resources" className="mr-5">
           <Button>Resources</Button>
         </a>
-        <a href="/admin/problems">
+        <a href="/admin/problems" className="mr-5">
           <Button>Problems</Button>
         </a>
+        <LoaderButton onClick={refreshCache} loadingText="Refreshing cache...">Refresh Cache</LoaderButton>
       </div>
       <div className="md:w-[80%]">
         <Table>
