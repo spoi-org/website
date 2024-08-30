@@ -3,8 +3,8 @@ import { cache, findUserBySessionId } from "@/lib/utils.server";
 import Link from "next/link";
 import ResourceEditorComponent from "./component";
 
-export default async function ResourceEditor({ params } : { params: { resourceId: string } }){
-  const resource = cache.resourceItem.get(params.resourceId);
+export default async function ResourceEditor({ params } : { params: { topicId: string, resourceId: string } }){
+  const resource = cache.resourceItem.get(params.topicId, params.resourceId);
   if (!resource){
     return (
       <div className="flex flex-col items-center justify-center h-full flex-grow gap-y-3">
@@ -18,8 +18,8 @@ export default async function ResourceEditor({ params } : { params: { resourceId
       </div>
     );
   }
-  const authors = cache.author.get(params.resourceId);
+  const authors = cache.author.get(resource.topicId, resource.id) || [];
   const problems = cache.problem.getCache();
   const solved = cache.solves.get(findUserBySessionId()!.id)!;
-  return <ResourceEditorComponent resource={resource!} authors={authors!} problems={problems} solved={solved} />
+  return <ResourceEditorComponent resource={resource!} authors={authors} problems={problems} solved={solved} />
 }

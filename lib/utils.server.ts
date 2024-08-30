@@ -1,5 +1,5 @@
 import {
-  Category, PrismaClient, Problem, ResourceItem, SessionId, Topic, User, Comment, Prisma
+  Category, PrismaClient, Problem, ResourceItem, SessionId, Topic, User, Prisma
 } from '@prisma/client'
 import { cookies } from 'next/headers';
 
@@ -65,64 +65,162 @@ class Cache<
   async delete(id: string) {
     // @ts-ignore
     await prisma[this.resource].delete({ where: { id } });
+    this.remove(id);
+  }
+
+  remove(id: string) {
     delete this.cache[id];
   }
 
   count() {
-    return Object.keys(this.cache).length
+    return Object.keys(this.cache).length;
+  }
+}
 
+class ResourceCache {
+  private cache: Record<string, Record<string, ResourceItem>> = {};
+
+  async init() {
+    const data = await prisma.resourceItem.findMany();
+    this.cache = {};
+    for (const d of data) {
+      if (!(d.topicId in this.cache))
+        this.cache[d.topicId] = {};
+      this.cache[d.topicId][d.id] = d;
+    }
+  }
+
+  get(topicId: string, id: string): ResourceItem | undefined {
+    return (this.cache[topicId] || {})[id];
+  }
+
+  getTopic(topicId: string) : ResourceItem[] {
+    if (!(topicId in this.cache))
+      this.cache[topicId] = {};
+    return Object.values(this.cache[topicId]);
+  }
+
+  all(): ResourceItem[] {
+    return Object.values(this.cache).flatMap(Object.values);
+  }
+
+  getCache() {
+    return this.cache;
+  }
+
+  async insert(args: Prisma.ResourceItemCreateArgs) {
+    const data = await prisma.resourceItem.create(args);
+    if (!(data.topicId in this.cache))
+      this.cache[data.topicId] = {};
+    return this.cache[data.topicId][data.id] = data;
+  }
+
+  async update(topicId: string, id: string, args: Omit<Prisma.ResourceItemUpdateArgs, "where">) {
+    const data = (await prisma.resourceItem.update({ where: { id_topicId: { topicId, id } }, ...args }));
+    if (!(topicId in this.cache))
+      this.cache[topicId] = {};
+    if (!(data.topicId in this.cache))
+      this.cache[data.topicId] = {};
+    if (id !== data.id || topicId !== data.topicId)
+      delete this.cache[topicId][id];
+    return this.cache[data.topicId][data.id] = data;
+  }
+
+  async delete(topicId: string, id: string) {
+    await prisma.resourceItem.delete({ where: { id_topicId: { topicId, id }  }});
+    if (this.cache[topicId])
+      delete this.cache[topicId][id];
+  }
+
+  updateTopic(oldTopicId: string, newTopicId: string){
+    this.cache[newTopicId] = this.cache[oldTopicId];
+    delete this.cache[oldTopicId];
+  }
+
+  deleteTopic(topicId: string){
+    delete this.cache[topicId];
+  }
+
+  count() {
+    return Object.keys(this.cache).length;
   }
 }
 
 // does not handle user updates
 class AuthorCache {
-  private cache: Record<string, User[]> = {};
+  private cache: Record<string, Record<string, User[]>> = {};
 
   async init() {
-    const data = await prisma.resourceItem.findMany({
-      select: { id: true, authors: true }
+    const data = await prisma.resourceAuthors.findMany({
+      select: { resourceId: true, topicId: true, author: true }
     });
-    this.cache = Object.fromEntries(data.map(d => [d.id, d.authors]));
+    this.cache = {};
+    for (const { resourceId, topicId, author } of data) {
+      if (!(resourceId in this.cache))
+        this.cache[resourceId] = {};
+      if (!(topicId in this.cache[resourceId]))
+        this.cache[resourceId][topicId] = [];
+      this.cache[resourceId][topicId].push(author);
+    }
   }
 
-  get(id: string): User[] | undefined {
-    return this.cache[id];
+  get(topicId: string, id: string): User[] | undefined {
+    return (this.cache[topicId] || {})[id];
   }
 
-  insert(id: string, authors: User[]) {
-    this.cache[id] = authors;
+  insert(topicId: string, id: string, authors: User[]) {
+    if (!(topicId in this.cache))
+      this.cache[topicId] = {};
+    this.cache[topicId][id] = authors;
   }
 
-  async update(id: string, authors: string[]) {
-    const toRemove = [];
-    for (const author of this.cache[id])
+  async update(topicId: string, id: string, authors: string[]) {
+    if (!(topicId in this.cache))
+      this.cache[topicId] = {};
+    if (!(id in this.cache[topicId]))
+      this.cache[topicId][id] = [];
+    const toRemove: string[] = [];
+    for (const author of this.cache[topicId][id])
       if (!authors.includes(author.id))
-        toRemove.push({ id: author.id });
-    const toAdd = [];
+        toRemove.push(author.id);
+    const toAdd: string[] = [];
     for (const author of authors)
-      if (!this.cache[id].find(a => a.id === author))
-        toAdd.push({ id: author });
-    if (toAdd.length === 0 && toRemove.length === 0) return;
-    const data = await prisma.resourceItem.update({
-      where: { id },
-      data: {
-        authors: {
-          disconnect: toRemove,
-          connect: toAdd
+      if (!this.cache[topicId][id].find(a => a.id === author))
+        toAdd.push(author);
+    if (toRemove.length > 0) {
+      await prisma.resourceAuthors.deleteMany({
+        where: {
+          resourceId: id,
+          topicId,
+          authorId: { in: toRemove }
         }
-      },
-      include: {
-        authors: true
-      }
-    });
-    this.cache[id] = data.authors;
+      });
+      this.cache[topicId][id] = this.cache[topicId][id].filter(a => !toRemove.includes(a.id));
+    }
+    if (toAdd.length > 0) {
+      const data = await prisma.resourceAuthors.createManyAndReturn({
+        data: toAdd.map(aid => ({ resourceId: id, topicId, authorId: aid })),
+        include: {
+          author: true
+        }
+      });
+      for (const { author } of data)
+        this.cache[topicId][id].push(author);
+    }
   }
 
-  delete(id: string) {
-    delete this.cache[id];
+  updateTopic(oldTopicId: string, newTopicId: string){
+    this.cache[newTopicId] = this.cache[oldTopicId];
+    delete this.cache[oldTopicId];
   }
-  count() {
-    return Object.keys(this.cache).length
+
+  deleteTopic(topicId: string){
+    delete this.cache[topicId];
+  }
+
+  delete(topicId: string, id: string) {
+    if (this.cache[topicId])
+      delete this.cache[topicId][id];
   }
 }
 
@@ -181,10 +279,6 @@ class SolverCache {
   delete(id: string) {
     delete this.cache[id];
   }
-
-  count() {
-    return Object.keys(this.cache).length
-  }
 }
 
 function cacheSingleton() {
@@ -193,9 +287,8 @@ function cacheSingleton() {
     sessionId: new Cache<SessionId, Prisma.SessionIdCreateArgs, Omit<Prisma.SessionIdUpdateArgs, "where">>("sessionId"),
     category: new Cache<Category, Prisma.CategoryCreateArgs, Omit<Prisma.CategoryUpdateArgs, "where">>("category"),
     topic: new Cache<Topic, Prisma.TopicCreateArgs, Omit<Prisma.TopicUpdateArgs, "where">>("topic"),
-    resourceItem: new Cache<ResourceItem, Prisma.ResourceItemCreateArgs, Omit<Prisma.ResourceItemUpdateArgs, "where">>("resourceItem"),
     problem: new Cache<Problem, Prisma.ProblemCreateArgs, Omit<Prisma.ProblemUpdateArgs, "where">>("problem"),
-    comment: new Cache<Comment, Prisma.CommentCreateArgs, Omit<Prisma.CommentUpdateArgs, "where">>("comment"),
+    resourceItem: new ResourceCache(),
     author: new AuthorCache(),
     solves: new SolverCache()
   }

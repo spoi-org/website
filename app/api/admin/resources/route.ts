@@ -16,13 +16,11 @@ export async function POST(req : Request) {
         topicId: body.topicId,
         description: body.description,
         content: body.content || `This is the content for resource ${body.title}`,
-        public: body.public,
-        authors: {
-          connect: body.authors?.map(a => ({ id: a }))
-        }
+        public: body.public
       }
     });
-    cache.author.insert(data.id, []);
+    if (body.authors)
+      await cache.author.update(data.topicId, data.id, body.authors);
   } catch (e){
     return NextResponse.json({
       error: "Resource already exists"

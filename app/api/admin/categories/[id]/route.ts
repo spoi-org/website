@@ -35,6 +35,11 @@ export async function DELETE(req: Request, { params } : { params: { id: string }
       error: "Category not found"
     }, { status: 404 });
   }
+  cache.topic.filter(t => t.categoryId === params.id).forEach(t => {
+    cache.topic.remove(t.id);
+    cache.resourceItem.deleteTopic(t.id);
+    cache.author.deleteTopic(t.id);
+  });
   return NextResponse.json({
     success: true
   });

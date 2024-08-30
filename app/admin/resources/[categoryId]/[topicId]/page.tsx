@@ -33,9 +33,9 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
   }
   const topics = cache.topic.all();
   const admins = cache.user.filter(u => u.admin);
-  const resources = cache.resourceItem.filter(r => r.topicId == params.topicId).map(r => ({
+  const resources = cache.resourceItem.getTopic(params.topicId)!.map(r => ({
     ...r,
-    authors: cache.author.get(r.id)!
+    authors: cache.author.get(r.topicId, r.id) || []
   }));
 
   return (

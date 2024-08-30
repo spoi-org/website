@@ -50,7 +50,7 @@ export default function ResourceEditorComponent({ resource, authors, problems, s
   });
 
   async function save(){
-    await request(`/api/admin/resources/${resource.id}`, {
+    await request(`/api/admin/resources/${resource.topicId}/${resource.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"

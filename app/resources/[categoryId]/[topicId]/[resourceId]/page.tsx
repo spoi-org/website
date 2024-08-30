@@ -3,27 +3,40 @@ import Rendered from "@/components/ui/rendered";
 import { cache, findUserBySessionId } from "@/lib/utils.server";
 import { Metadata } from "next";
 import Link from "next/link";
-export async function generateMetadata({ params }: { params: { resourceId: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { topicId: string, resourceId: string } }): Promise<Metadata> {
+  const resource = cache.resourceItem.get(params.topicId, params.resourceId);
+
+  if (resource === undefined) {
+    return {
+      title: "404 - Resource not found",
+      description: "The resource you are looking for does not exist",
+      openGraph: {
+        type: "website",
+        title: "404 - Resource not found",
+        description: "The resource you are looking for does not exist",
+      },
+      keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"
+    };
+  }
 
   return {
-    title: "SPOI - " + cache.resourceItem.get(params.resourceId)?.title,
-    description: "" + cache.resourceItem.get(params.resourceId)?.description,
+    title: "SPOI - " + resource.title,
+    description: resource.description,
     openGraph: {
       type: "article",
-      title: cache.resourceItem.get(params.resourceId)?.title,
-      description: "" + cache.resourceItem.get(params.resourceId)?.description,
-      publishedTime: cache.resourceItem.get(params.resourceId)?.createdAt.toISOString(),
-      modifiedTime: cache.resourceItem.get(params.resourceId)?.updatedAt.toISOString(),
+      title: resource.title,
+      description: resource.description || "",
+      publishedTime: resource.createdAt.toISOString(),
+      modifiedTime: resource.updatedAt.toISOString(),
 
-      authors: cache.author.get(params.resourceId)?.map(x => x.name + ""),
-      section: cache.topic.get(cache.resourceItem.get(params.resourceId)?.topicId || "")?.name
+      authors: cache.author.get(resource.topicId, resource.id)!.map(x => x.name || ""),
+      section: cache.topic.get(resource.topicId)!.name
     },
     keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"
-
   };
 }
-export default async function ResourceEditor({ params }: { params: { resourceId: string } }) {
-  const resource = cache.resourceItem.get(params.resourceId);
+export default async function ResourceEditor({ params }: { params: { topicId: string, resourceId: string } }) {
+  const resource = cache.resourceItem.get(params.topicId, params.resourceId);
   if (resource === undefined || (!resource.public && !findUserBySessionId()!.admin)) {
     return (
       <div className="flex flex-col items-center justify-center h-full flex-grow gap-y-3">
@@ -37,7 +50,7 @@ export default async function ResourceEditor({ params }: { params: { resourceId:
       </div>
     );
   }
-  const authors = cache.author.get(params.resourceId)!;
+  const authors = cache.author.get(resource.topicId, resource.id)!;
   const problems = cache.problem.getCache();
   const solved = cache.solves.get(findUserBySessionId()!.id)!;
 

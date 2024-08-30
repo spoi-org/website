@@ -21,6 +21,10 @@ export async function PATCH(req : Request, { params } : { params: { id: string }
       error: "Topic not found"
     }, { status: 404 });
   }
+  if (body.id !== params.id){
+    cache.resourceItem.updateTopic(params.id, body.id);
+    cache.author.updateTopic(params.id, body.id);
+  }
   return NextResponse.json({
     success: true
   });
@@ -36,6 +40,8 @@ export async function DELETE(req: Request, { params } : { params: { id: string }
       error: "Topic not found"
     }, { status: 404 });
   }
+  cache.resourceItem.deleteTopic(params.id);
+  cache.author.deleteTopic(params.id);
   return NextResponse.json({
     success: true
   });

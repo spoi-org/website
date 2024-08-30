@@ -199,7 +199,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
       <ul className="mx-5">
         {resources.map(c => {
           async function editResource(id: string, title: string, description: string | null, topicId: string, pub: boolean, authors: string[]){
-            await request(`/api/admin/resources/${c.id}`, {
+            await request(`/api/admin/resources/${c.topicId}/${c.id}`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json"
@@ -209,7 +209,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
             router.refresh();
           }
           async function deleteResource(){
-            await request(`/api/admin/resources/${c.id}`, {
+            await request(`/api/admin/resources/${c.topicId}/${c.id}`, {
               method: "DELETE"
             });
             router.refresh();
