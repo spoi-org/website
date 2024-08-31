@@ -50,7 +50,7 @@ function AuthorList({ admins, authors } : {
         <FontAwesomeIcon icon={open ? faChevronDown : faChevronRight} className="ml-2" />
       </CollapsibleTrigger>
       <CollapsibleContent asChild>
-        <ToggleGroup type="multiple" value={authorIds} onValueChange={setAuthorIds} className="justify-start">
+        <ToggleGroup type="multiple" value={authorIds} onValueChange={setAuthorIds} className="justify-start flex-wrap">
           {admins.map(a => (
             <ToggleGroupItem key={a.id} value={a.id}>{a.name || a.dcUserName}</ToggleGroupItem>
           ))}
