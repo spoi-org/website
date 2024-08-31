@@ -36,7 +36,7 @@ export default async function ResourcesPage({ params } : { params: { categoryId:
   const resources = cache.resourceItem.getTopic(params.topicId)!.map(r => ({
     ...r,
     authors: cache.author.get(r.topicId, r.id)
-  }));
+  })).sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
 
   return (
     <AdminResources

@@ -53,7 +53,9 @@ export default async function ResourcesPage({ params }: { params: { categoryId: 
     )
   }
   const admin = findUserBySessionId()!.admin;
-  const resources = cache.resourceItem.getTopic(params.topicId)!.filter(r => (r.public || admin));
+  const resources = cache.resourceItem.getTopic(params.topicId)
+                      .filter(r => (r.public || admin))
+                      .sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
   const topics = cache.topic.all();
   const topicName = topics.find(c => c.id === params.topicId)?.name;
   const jsonLD2 = {

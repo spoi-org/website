@@ -40,7 +40,7 @@ export default async function Topics({ params }: { params: { categoryId: string 
     );
   }
 
-  const topics = cache.topic.filter(t => t.categoryId == params.categoryId);
+  const topics = cache.topic.filter(t => t.categoryId == params.categoryId).sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
   const categoryName = cache.category.filter(c => c.id === params.categoryId)[0]?.name;
   const jsonLD2 = {
     "@context": "https://schema.org",

@@ -17,7 +17,9 @@ export default async function TopicsPage({ params } : { params: { categoryId: st
       </div>
     );
   }
-  const topics = cache.topic.filter(t => t.categoryId == params.categoryId);
+  const topics = cache.topic
+                  .filter(t => t.categoryId == params.categoryId)
+                  .sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
   const categories = cache.category.all();
   return <AdminTopics categoryId={params.categoryId} categories={categories} topics={topics!} />
 }
