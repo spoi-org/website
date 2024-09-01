@@ -189,6 +189,7 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
           a: ({ className, ...props }) => <a className={cn("underline hover:text-gray-500 dark:hover:text-gray-300 transition", className)} {...props} />,
           blockquote: ({ className, ...props }) => <blockquote className={cn("border-l-4 pl-4 my-5 text-gray-500 text-base", className)} {...props} />,
           hr: ({ className, ...props }) => <hr className={cn("my-5 border-gray-300 dark:border-gray-700", className)} {...props} />,
+          p: ({ className, ...props }) => <p className={cn("mb-5", className)} {...props} />
         }}
       />
     )
