@@ -13,7 +13,7 @@ interface Props {
   authors: User[];
 }
 
-function TextArea({ contentRef } : { contentRef: MutableRefObject<string> }){
+function TextArea({ contentRef }: { contentRef: MutableRefObject<string> }) {
   const [content, setContent] = useState(contentRef.current);
   useEffect(() => {
     contentRef.current = content;
@@ -23,18 +23,18 @@ function TextArea({ contentRef } : { contentRef: MutableRefObject<string> }){
   );
 }
 
-export default function ResourceEditorComponent({ resource, authors, problems, solved } : Props){
+export default function ResourceEditorComponent({ resource, authors, problems, solved }: Props) {
   const { toast } = useToast();
   const currContent = useRef(resource.content);
   const [content, setContent] = useState(resource.content);
-  function onBeforeUnload(event: BeforeUnloadEvent){
-    if (content !== currContent.current){
+  function onBeforeUnload(event: BeforeUnloadEvent) {
+    if (content !== currContent.current) {
       event.preventDefault();
       return "You have unsaved changes. Are you sure you want to leave?";
     }
   }
-  function onLinkClick(event: MouseEvent){
-    if (content !== currContent.current){
+  function onLinkClick(event: MouseEvent) {
+    if (content !== currContent.current) {
       const leave = confirm("You have unsaved changes. Are you sure you want to leave?");
       if (!leave) event.preventDefault();
     }
@@ -49,7 +49,7 @@ export default function ResourceEditorComponent({ resource, authors, problems, s
     };
   });
 
-  async function save(){
+  async function save() {
     await request(`/api/admin/resources/${resource.topicId}/${resource.id}`, {
       method: "PATCH",
       headers: {
@@ -59,6 +59,22 @@ export default function ResourceEditorComponent({ resource, authors, problems, s
     });
     setContent(currContent.current);
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "s") {
+        event.preventDefault();
+        withToast(toast, save, "Saved Problem successfully!")();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [content]);
+
   return (
     <div className="grid grid-cols-2 flex-grow">
       <div className="relative w-full h-full">
