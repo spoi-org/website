@@ -8,7 +8,13 @@ interface CFUser {
 
 async function ratingsTask(){
   const resp = await fetch(`https://codeforces.com/api/user.info?handles=${Object.keys(ratingCache).join(";")}`);
-  const data = await resp.json();
+  let data;
+  try {
+    data = await resp.json();
+  } catch {
+    console.error("[cf] ERROR: Codeforces API down");
+    return;
+  }
   if (data.status !== "OK") {
     console.error(`[cf] ERROR: ${data.comment}`);
     return;

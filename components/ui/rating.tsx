@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
 
 export interface RatingProps extends ComponentProps<"div"> {
-  rating: number;
+  rating?: number;
 }
 
 const rankToColor: Record<number, string> = {
@@ -15,6 +15,9 @@ const rankToColor: Record<number, string> = {
 }
 
 export function Rating({ rating, ...props }: RatingProps) {
+  if (rating === undefined) {
+    return <span {...props} />;
+  }
   let color = rankToColor[0];
   let last = rankToColor[0];
   for (const key in rankToColor) {
