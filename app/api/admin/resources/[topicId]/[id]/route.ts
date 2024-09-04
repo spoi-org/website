@@ -26,8 +26,10 @@ export async function PATCH(req : Request, { params } : { params: { topicId: str
       error: "Resource not found"
     }, { status: 404 });
   }
-  if (body.id !== params.id || body.topicId !== params.topicId)
+  if (body.id !== params.id || body.topicId !== params.topicId) {
+    cache.author.insert(body.topicId, body.id, cache.author.get(params.topicId, params.id));
     cache.author.delete(params.topicId, params.id);
+  }
   if (body.authors)
     await cache.author.update(body.topicId, body.id, body.authors);
   return NextResponse.json({
