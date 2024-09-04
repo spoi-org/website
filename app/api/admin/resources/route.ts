@@ -12,6 +12,7 @@ export async function POST(req : Request) {
     const data = await cache.resourceItem.insert({
       data: {
         title: body.title,
+        order: body.order,
         id: body.id,
         topicId: body.topicId,
         description: body.description,

@@ -13,6 +13,7 @@ export async function PATCH(req : Request, { params } : { params: { topicId: str
       data: {
         id: body.id,
         title: body.title,
+        order: body.order,
         description: body.description,
         content: body.content,
         topicId: body.topicId,

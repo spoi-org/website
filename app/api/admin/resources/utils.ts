@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 interface Body {
   title: string;
+  order: string;
   id: string;
   topicId: string;
   description: string;
@@ -19,7 +20,7 @@ export async function getBody(req: Request) : Promise<Body | NextResponse> {
       error: "Invalid JSON"
     }, {status: 400});
   }
-  const fields = ["title", "id", "topicId", "description", "content"];
+  const fields = ["title", "id", "topicId", "description", "content", "order"];
   for (const field of fields){
     if (typeof body[field] !== "string"){
       if (field === "description" && body.description === null) continue;

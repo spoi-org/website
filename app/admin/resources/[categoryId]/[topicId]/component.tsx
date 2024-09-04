@@ -63,6 +63,7 @@ function AuthorList({ admins, authors } : {
 interface DialogProps {
   asChild?: boolean;
   title?: string;
+  order?: string;
   id?: string;
   description?: string;
   isPublic?: boolean;
@@ -74,19 +75,30 @@ interface DialogProps {
   children: React.ReactNode;
   authors: User[];
   admins: User[];
-  onClick: (id: string, title: string, description: string | null, categoryId: string, pub: boolean, authors: string[]) => any;
+  onClick: (body: Record<string, any>) => any;
 }
 
-function ResourceDialog({ asChild = false, isPublic = false, title, description, id, topicId, topics, authors, admins, dialogTitle, dialogDescription, button, children, onClick } : DialogProps){
+function ResourceDialog({ asChild = false, isPublic = false, title, order, description, id, topicId, topics, authors, admins, dialogTitle, dialogDescription, button, children, onClick } : DialogProps){
   const titleRef = useRef<HTMLInputElement>(null);
+  const orderRef = useRef<HTMLInputElement>(null);
   const idRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
   const authorsRef = useRef<string[]>(authors.map(a => a.id));
   const [topic, setTopic] = useState<string | undefined>(topicId);
   const [pub, setPub] = useState(isPublic);
   function handleClick(){
-    if (!titleRef.current!.value.trim() || !idRef.current!.value.trim() || !topic) return;
-    onClick(idRef.current!.value.trim(), titleRef.current!.value.trim(), descRef.current!.value.trim() || null, topic!, pub, authorsRef.current);
+    const newTitle = titleRef.current!.value.trim();
+    const newId = idRef.current!.value.trim();
+    if (!newTitle || !newId || !topic) return;
+    onClick({
+      id: newId,
+      title: newTitle,
+      order: orderRef.current!.value.trim() || newId,
+      description: descRef.current!.value.trim() || null,
+      topicId: topic!,
+      public: pub,
+      authors: authorsRef.current
+    });
   }
   return (
     <Dialog>
@@ -101,6 +113,10 @@ function ResourceDialog({ asChild = false, isPublic = false, title, description,
         <div className="mt-1">
           <label htmlFor={`name-${id}`} className="block font-bold">Name</label>
           <input ref={titleRef} id={`name-${id}`} type="text" defaultValue={title} className="w-full p-2 border border-gray-300 rounded-lg dark:bg-[#101720] mt-1" />
+        </div>
+        <div className="mt-1">
+          <label htmlFor={`order-${id}`} className="block font-bold">Order</label>
+          <input ref={orderRef} id={`order-${id}`} type="text" defaultValue={order} className="w-full p-2 border border-gray-300 rounded-lg dark:bg-[#101720] mt-1" />
         </div>
         <div className="mt-1">
           <label htmlFor={`id-${id}`} className="block font-bold">ID</label>
@@ -146,13 +162,13 @@ interface AdminTopicsProps {
 export default function AdminResources({ category, topicId, topics, resources, admins } : AdminTopicsProps) {
   const router = useRouter();
   const { toast } = useToast();
-  async function createResource(id: string, title: string, description: string | null, topicId: string, pub: boolean, authors: string[]){
+  async function createResource(body: Record<string, any>){
     await request("/api/admin/resources", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ id, title, description, topicId, public: pub, authors })
+      body: JSON.stringify(body)
     });
     router.refresh();
   }
@@ -198,13 +214,13 @@ export default function AdminResources({ category, topicId, topics, resources, a
       </h1>
       <ul className="mx-5">
         {resources.map(c => {
-          async function editResource(id: string, title: string, description: string | null, topicId: string, pub: boolean, authors: string[]){
+          async function editResource(body: Record<string, any>){
             await request(`/api/admin/resources/${c.topicId}/${c.id}`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json"
               },
-              body: JSON.stringify({id, title, description, topicId, public: pub, authors})
+              body: JSON.stringify(body)
             });
             router.refresh();
           }
@@ -220,6 +236,7 @@ export default function AdminResources({ category, topicId, topics, resources, a
               <span className="flex justify-end items-center">
                 <ResourceDialog
                   title={c.title}
+                  order={c.order}
                   id={c.id}
                   topicId={topicId}
                   description={c.description || undefined}
