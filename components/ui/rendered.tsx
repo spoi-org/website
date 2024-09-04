@@ -8,7 +8,7 @@ import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import "katex/dist/katex.min.css";
-import { ComponentProps, HTMLAttributes, useContext, useState } from "react";
+import { ComponentProps, HTMLAttributes, ReactNode, createElement, useContext, useState } from "react";
 import { ThemeContext } from "@/lib/context";
 import { withToast, cn, request } from "@/lib/utils";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "./table";
@@ -52,10 +52,10 @@ function ProblemCheckbox({ problem, solves, setSolves, className } : ProblemChec
   )
 }
 
-function hid({ children } : ComponentProps<"h1">) : string {
+function hid(children : ReactNode) : string {
   if (Array.isArray(children)) {
     return children.map((c, i) => {
-      const h = hid({ children: c });
+      const h = hid(c);
       return (h !== "" && i > 0) ? "-" + h : h;
     }).join("");
   }
@@ -63,6 +63,20 @@ function hid({ children } : ComponentProps<"h1">) : string {
     return String(children).toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-").replace(/-+$/, "");
   }
   return "";
+}
+
+function Heading({ children, level, ...props } : ComponentProps<"h1"> & { level: number }) {
+  const id = props.id = hid(children);
+  return (
+    <>
+      <div className="flex items-center group">
+        {createElement(`h${level}` as "h1", props, children)}
+        <a href={`#${id}`} className="opacity-0 group-hover:opacity-100 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition ml-2">
+          <FontAwesomeIcon icon={faLink} />
+        </a>
+      </div>
+    </>
+  )
 }
 
 export default function Rendered({ className, problems, solved, ...opts } : RenderedProps){
@@ -189,12 +203,12 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
           td: ({ className, ...props }) => <TableCell className={cn("border-2", className)} {...props} />,
           caption: (props: HTMLAttributes<HTMLTableCaptionElement>) => <TableCaption {...props} />,
           // headings
-          h1: ({ className, ...props }) => <h1 className={cn("text-3xl font-bold mb-1", className)} id={hid(props)} {...props} />,
-          h2: ({ className, ...props }) => <h2 className={cn("text-2xl font-bold", className)} id={hid(props)} {...props} />,
-          h3: ({ className, ...props }) => <h3 className={cn("text-xl font-bold", className)} id={hid(props)} {...props} />,
-          h4: ({ className, ...props }) => <h4 className={cn("text-base", className)} id={hid(props)} {...props} />,
-          h5: ({ className, ...props }) => <h5 className={cn("text-sm", className)} id={hid(props)} {...props} />,
-          h6: ({ className, ...props }) => <h6 className={cn("text-xs", className)} id={hid(props)} {...props} />,
+          h1: ({ className, ...props }) => <Heading level={1} className={cn("text-3xl font-bold mb-1", className)} {...props} />,
+          h2: ({ className, ...props }) => <Heading level={2} className={cn("text-2xl font-bold", className)} {...props} />,
+          h3: ({ className, ...props }) => <Heading level={3} className={cn("text-xl font-bold", className)} {...props} />,
+          h4: ({ className, ...props }) => <h4 className={cn("text-base", className)} {...props} />,
+          h5: ({ className, ...props }) => <h5 className={cn("text-sm", className)} {...props} />,
+          h6: ({ className, ...props }) => <h6 className={cn("text-xs", className)} {...props} />,
           // lists
           ul: ({ className, ...props }) => <ul className={cn("list-disc pl-5 my-2 rendered-list", className)} {...props} />,
           ol: ({ className, ...props }) => <ol className={cn("list-decimal pl-5 my-2 rendered-list", className)} {...props} />,
