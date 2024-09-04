@@ -156,11 +156,11 @@ class AuthorCache {
     });
     this.cache = {};
     for (const { resourceId, topicId, author } of data) {
-      if (!(resourceId in this.cache))
-        this.cache[resourceId] = {};
-      if (!(topicId in this.cache[resourceId]))
-        this.cache[resourceId][topicId] = [];
-      this.cache[resourceId][topicId].push(author);
+      if (!(topicId in this.cache))
+        this.cache[topicId] = {};
+      if (!(resourceId in this.cache[topicId]))
+        this.cache[topicId][resourceId] = [];
+      this.cache[topicId][resourceId].push(author);
     }
   }
 
