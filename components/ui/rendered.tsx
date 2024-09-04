@@ -52,6 +52,19 @@ function ProblemCheckbox({ problem, solves, setSolves, className } : ProblemChec
   )
 }
 
+function hid({ children } : ComponentProps<"h1">) : string {
+  if (Array.isArray(children)) {
+    return children.map((c, i) => {
+      const h = hid({ children: c });
+      return (h !== "" && i > 0) ? "-" + h : h;
+    }).join("");
+  }
+  if (typeof children !== "object") {
+    return String(children).toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-").replace(/-+$/, "");
+  }
+  return "";
+}
+
 export default function Rendered({ className, problems, solved, ...opts } : RenderedProps){
   const { mode }  = useContext(ThemeContext);
   const { toast } = useToast();
@@ -176,12 +189,12 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
           td: ({ className, ...props }) => <TableCell className={cn("border-2", className)} {...props} />,
           caption: (props: HTMLAttributes<HTMLTableCaptionElement>) => <TableCaption {...props} />,
           // headings
-          h1: ({ className, ...props }) => <h1 className={cn("text-3xl font-bold mb-1", className)} {...props} />,
-          h2: ({ className, ...props }) => <h2 className={cn("text-2xl font-bold", className)} {...props} />,
-          h3: ({ className, ...props }) => <h3 className={cn("text-xl font-bold", className)} {...props} />,
-          h4: ({ className, ...props }) => <h4 className={cn("text-base", className)} {...props} />,
-          h5: ({ className, ...props }) => <h5 className={cn("text-sm", className)} {...props} />,
-          h6: ({ className, ...props }) => <h6 className={cn("text-xs", className)} {...props} />,
+          h1: ({ className, ...props }) => <h1 className={cn("text-3xl font-bold mb-1", className)} id={hid(props)} {...props} />,
+          h2: ({ className, ...props }) => <h2 className={cn("text-2xl font-bold", className)} id={hid(props)} {...props} />,
+          h3: ({ className, ...props }) => <h3 className={cn("text-xl font-bold", className)} id={hid(props)} {...props} />,
+          h4: ({ className, ...props }) => <h4 className={cn("text-base", className)} id={hid(props)} {...props} />,
+          h5: ({ className, ...props }) => <h5 className={cn("text-sm", className)} id={hid(props)} {...props} />,
+          h6: ({ className, ...props }) => <h6 className={cn("text-xs", className)} id={hid(props)} {...props} />,
           // lists
           ul: ({ className, ...props }) => <ul className={cn("list-disc pl-5 my-2 rendered-list", className)} {...props} />,
           ol: ({ className, ...props }) => <ol className={cn("list-decimal pl-5 my-2 rendered-list", className)} {...props} />,
