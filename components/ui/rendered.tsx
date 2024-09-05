@@ -213,7 +213,11 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
           ul: ({ className, ...props }) => <ul className={cn("list-disc pl-5 my-2 rendered-list", className)} {...props} />,
           ol: ({ className, ...props }) => <ol className={cn("list-decimal pl-5 my-2 rendered-list", className)} {...props} />,
           // others
-          a: ({ className, ...props }) => <a className={cn("underline hover:text-gray-500 dark:hover:text-gray-300 transition", className)} target="_blank" {...props} />,
+          a: ({ className, ...props }) => {
+            if (!props.href?.startsWith("#") && props.target === undefined)
+              props.target = "_blank";
+            return <a className={cn("underline hover:text-gray-500 dark:hover:text-gray-300 transition", className)} {...props} />;
+          },
           blockquote: ({ className, ...props }) => <blockquote className={cn("border-l-4 pl-4 my-5 text-gray-500 text-base", className)} {...props} />,
           hr: ({ className, ...props }) => <hr className={cn("my-5 border-gray-300 dark:border-gray-700", className)} {...props} />,
           p: ({ className, ...props }) => <p className={cn("mb-5", className)} {...props} />
