@@ -48,7 +48,7 @@ export default function Home() {
       <h4 className="text-5xl font-bold mt-8 mb-4">Founders</h4>
       <div className="flex flex-wrap justify-center w-full items-stretch px-10">
         <Tile heading="Samik Goyal" rating={ratingCache["unforgettablepl"]} user="unforgettablepl">
-          IOI&#39;24 Silver Medalist | IOITC&#39;24
+          IOI&#39;24 Silver | IOITC&#39;24
         </Tile>
         <Tile heading="Oviyan Gandhi" rating={ratingCache["oviyan_gandhi"]} user="oviyan_gandhi">
           IOITC&#39;24 | INOI&#39;24 Gold
@@ -72,7 +72,7 @@ export default function Home() {
           IOITC&#39;24 | INOI&#39;24 Silver
         </Tile>
         <Tile heading="Yash Haresh Thakker" rating={ratingCache["PoPularPlusPlus"]} user="PoPularPlusPlus">
-          IOI&#39;24 Bronze Medalist | 3x INOI Gold
+          IOI&#39;24 Bronze | 3x INOI Gold
         </Tile>
         <Tile heading="Hari Aakash K" rating={ratingCache["hariaakash646"]} user="hariaakash646">
           IOITC&#39;24 | INOI&#39;24 Gold
