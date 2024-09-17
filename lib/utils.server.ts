@@ -9,7 +9,7 @@ class Cache<
   UpdateArgs
 > {
   private resource: string;
-  private cache: Record<string, T> = {};
+  protected cache: Record<string, T> = {};
 
   constructor(resource: string) {
     this.resource = resource;
@@ -77,6 +77,19 @@ class Cache<
   }
 }
 
+class TopicCache extends Cache<Topic, Prisma.TopicCreateArgs, Omit<Prisma.TopicUpdateArgs, "where">> {
+  constructor(){
+    super("topic");
+  }
+
+  updateCategory(id: string, newId: string) {
+    Object.values(this.cache).forEach(t => {
+      if (t.categoryId === id)
+        t.categoryId = newId;
+    });
+  }
+}
+
 class ResourceCache {
   private cache: Record<string, Record<string, ResourceItem>> = {};
 
@@ -134,6 +147,7 @@ class ResourceCache {
 
   updateTopic(oldTopicId: string, newTopicId: string){
     this.cache[newTopicId] = this.cache[oldTopicId];
+    Object.values(this.cache[newTopicId]).forEach(r => r.topicId = newTopicId);
     delete this.cache[oldTopicId];
   }
 
@@ -286,7 +300,7 @@ function cacheSingleton() {
     user: new Cache<User, Prisma.UserCreateArgs, Omit<Prisma.UserUpdateArgs, "where">>("user"),
     sessionId: new Cache<SessionId, Prisma.SessionIdCreateArgs, Omit<Prisma.SessionIdUpdateArgs, "where">>("sessionId"),
     category: new Cache<Category, Prisma.CategoryCreateArgs, Omit<Prisma.CategoryUpdateArgs, "where">>("category"),
-    topic: new Cache<Topic, Prisma.TopicCreateArgs, Omit<Prisma.TopicUpdateArgs, "where">>("topic"),
+    topic: new TopicCache(),
     problem: new Cache<Problem, Prisma.ProblemCreateArgs, Omit<Prisma.ProblemUpdateArgs, "where">>("problem"),
     resourceItem: new ResourceCache(),
     author: new AuthorCache(),

@@ -20,6 +20,8 @@ export async function PATCH(req : Request, { params } : { params: { id: string }
       error: "Category not found"
     }, { status: 404 });
   }
+  if (params.id !== body.id)
+    cache.topic.updateCategory(params.id, body.id);
   return NextResponse.json({
     success: true
   });
