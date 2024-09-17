@@ -13,12 +13,12 @@ import { Metadata } from "next/types";
 export async function generateMetadata({ params }: { params: { categoryId: string } }): Promise<Metadata> {
 
   return {
-    title: "SPOI - " + cache.topic.get(params.categoryId)?.name,
-    description: "A list of topics with the category " + cache.topic.get(params.categoryId)?.name,
+    title: "SPOI - " + cache.category.get(params.categoryId)?.name,
+    description: "A list of topics with the category " + cache.category.get(params.categoryId)?.name,
     openGraph: {
       type: "website",
-      title: "SPOI - " + cache.topic.get(params.categoryId)?.name,
-      description: "A list of topics with the category " + cache.topic.get(params.categoryId)?.name,
+      title: "SPOI - " + cache.category.get(params.categoryId)?.name,
+      description: "A list of topics with the category " + cache.category.get(params.categoryId)?.name,
 
     },
     keywords: "inoi,ioi,ioitc,indian olympiad,competitive programming,spoi,iarcs,newbie,learn"
