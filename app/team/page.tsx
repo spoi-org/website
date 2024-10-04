@@ -83,14 +83,8 @@ export default function Home() {
         <Tile heading="Rushil Mathur" rating={ratingCache["rm1729"]} user="rm1729">
           IMO&#39;24 Gold | IOITC&#39;24
         </Tile>
-        <Tile heading="Vibhaas Nirantar Srivastava" rating={ratingCache["accord"]} user="accord">
-          INOI&#39;22 Bronze
-        </Tile>
         <Tile heading="Saarang Srinivasan" rating={ratingCache["saarang"]} user="saarang">
           IOITC&#39;22 | INOI&#39;22 Gold
-        </Tile>
-        <Tile heading="Adhish Kancharla" rating={ratingCache["ak2006"]} user="ak2006">
-          IOITC&#39;23 | INOI&#39;24 Silver
         </Tile>
       </div>
       <h4 className="text-5xl font-bold mt-8 mb-4">Contributors</h4>
@@ -101,8 +95,8 @@ export default function Home() {
         <Tile heading="Aarav Malani" rating={ratingCache["aaravmalani"]} user="aaravmalani">
           SEO Specialist | Website Co-Developer
         </Tile>
-        <Tile heading="Harsh Sharma" rating={ratingCache["Codula"]} user="codula">
-          INOI&#39;23 Silver
+        <Tile heading="Samvar Shah" rating={ratingCache["samvar_0907"]} user="samvar_0907">
+          Graph Lecture Instructor
         </Tile>
         <Tile heading="Kumar Akshat" rating={ratingCache["oddvalue"]} user="oddvalue">
           Codeforces Problem Tester
