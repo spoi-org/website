@@ -111,7 +111,7 @@ function MobileMenu({ user, url }: { user?: User, url: string }) {
             </>
           ) : (
             <>
-              <SheetLink href="https://forms.gle/oL1gFnqQoqRPcb3q9" text="Sign Up" icon={faUserPlus} setOpen={setOpen} />
+              <SheetLink href="https://forms.gle/MPjcro9EUQkRtVQz5" text="Sign Up" icon={faUserPlus} setOpen={setOpen} />
               <SheetLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" icon={faRightToBracket} setOpen={setOpen} />
             </>
           )}
@@ -122,7 +122,7 @@ function MobileMenu({ user, url }: { user?: User, url: string }) {
             <Link href="https://codeforces.com/blog/entry/132041" target="_blank" aria-label="Codeforces Blog">
               <Button variant="outline" className="h-12 w-12 p-3" aria-label="Codeforces Blog">
                 <svg fill="currentColor" className="text-2xl" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4.5 7.5A1.5 1.5 0 0 1 6 9v10.5A1.5 1.5 0 0 1 4.5 21h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5A1.5 1.5 0 0 1 15 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5A1.5 1.5 0 0 1 24 12v7.5a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5h3z"/>
+                  <path d="M4.5 7.5A1.5 1.5 0 0 1 6 9v10.5A1.5 1.5 0 0 1 4.5 21h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5A1.5 1.5 0 0 1 15 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5A1.5 1.5 0 0 1 24 12v7.5a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5h3z" />
                 </svg>
               </Button>
             </Link>
@@ -166,7 +166,7 @@ export default function RootLayoutComponent({
                     </>
                   ) : (
                     <>
-                      <NavLink href="https://forms.gle/oL1gFnqQoqRPcb3q9" text="Sign Up" />
+                      <NavLink href="https://forms.gle/MPjcro9EUQkRtVQz5" text="Sign Up" />
                       <NavLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" />
                     </>
                   )}
@@ -178,7 +178,7 @@ export default function RootLayoutComponent({
                     <Link href="https://codeforces.com/blog/entry/132041" legacyBehavior passHref>
                       <NavigationMenuLink target="_blank" className={cn(navigationMenuTriggerStyle(), "px-2 block")} aria-label="Codeforces Blog">
                         <svg fill="currentColor" className="w-8 h-8" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M4.5 7.5A1.5 1.5 0 0 1 6 9v10.5A1.5 1.5 0 0 1 4.5 21h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5A1.5 1.5 0 0 1 15 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5A1.5 1.5 0 0 1 24 12v7.5a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5h3z"/>
+                          <path d="M4.5 7.5A1.5 1.5 0 0 1 6 9v10.5A1.5 1.5 0 0 1 4.5 21h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5A1.5 1.5 0 0 1 15 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5A1.5 1.5 0 0 1 24 12v7.5a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5h3z" />
                         </svg>
                       </NavigationMenuLink>
                     </Link>
@@ -196,7 +196,7 @@ export default function RootLayoutComponent({
             </div>
             {!user && <footer className="bg-sky-100 w-full text-center p-5 text-2xl dark:bg-gray-700 flex items-center justify-center">
               <span className="pr-5">Ready to join?</span>
-              <Button asChild><Link href="https://forms.gle/oL1gFnqQoqRPcb3q9">Sign Up</Link></Button>
+              <Button asChild><Link href="https://forms.gle/MPjcro9EUQkRtVQz5">Sign Up</Link></Button>
             </footer>}
             <Toaster />
           </body>
