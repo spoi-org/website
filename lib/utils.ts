@@ -2,6 +2,28 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+const formatted: Record<string, string> = {
+  codeforces: "Codeforces",
+  codechef: "CodeChef",
+  usaco: "USACO",
+  atcoder: "AtCoder",
+  spoj: "SPOJ",
+  leetcode: "LeetCode",
+  hackerrank: "HackerRank",
+  hackerearth: "HackerEarth",
+  topcoder: "TopCoder",
+  kickstart: "Kick Start",
+  codejam: "Code Jam",
+  cses: "CSES",
+  oj: "oj.uz",
+  codebreaker: "Codebreaker"
+};
+
+export function getSource(url: string): string | null {
+  const match = url.match(/(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+)\./);
+  return match ? (formatted[match[1]] || match[1]) : null;
+}
+
 export function withToast(toast: any, action: (...args: any[]) => any, title: string) {
   return async (...args: any[]) => {
     try {

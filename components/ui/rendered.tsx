@@ -10,7 +10,7 @@ import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/pris
 import "katex/dist/katex.min.css";
 import { ComponentProps, HTMLAttributes, ReactNode, createElement, useContext, useState } from "react";
 import { ThemeContext } from "@/lib/context";
-import { withToast, cn, request } from "@/lib/utils";
+import { withToast, cn, request, getSource } from "@/lib/utils";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "./table";
 import { Problem } from "@prisma/client";
 import { Checkbox } from "./checkbox";
@@ -137,13 +137,21 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
             const problem = problems[children as string];
             if (problem === undefined)
               return <div className={cn("text-red-500", className)} {...props}>Problem not found</div>;
+            const source = getSource(problem.url);
             return (
               <span className={cn("flex justify-center items-center", className)} {...props}>
                 <span className="border-2 rounded-md bg-sky-100 dark:bg-gray-800 hover:-translate-y-1 transition p-5 flex justify-center items-center w-full md:w-[80%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%]">
                   <a href={problem.url} target="_blank" className="flex-1 text-xl font-bold">
                     <span className="inline-flex flex-col">
                       {problem.title}
-                      <Rating rating={problem.ratingEstimate} className="text-base" />
+                      <span>
+                        {source && (
+                          <span className="text-base text-gray-500 dark:text-gray-400 mr-2">
+                            {source}
+                          </span>
+                        )}
+                        <Rating rating={problem.ratingEstimate} className="text-base" />
+                      </span>
                     </span>
                     <FontAwesomeIcon icon={faLink} className="ml-2" />
                   </a>
@@ -159,6 +167,7 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
                   <Table className={cn("my-5 border", className)} {...props}>
                     <TableHeader>
                       <TableRow>
+                        <TableHead>Source</TableHead>
                         <TableHead>Problem</TableHead>
                         <TableHead>Rating</TableHead>
                         <TableHead className="text-center">Solved</TableHead>
@@ -184,6 +193,7 @@ export default function Rendered({ className, problems, solved, ...opts } : Rend
             }
             return (
               <TableRow {...props}>
+                <TableCell>{getSource(problem.url)}</TableCell>
                 <TableCell>
                   <a href={problem.url} target="_blank">{problem.title}</a>
                 </TableCell>
