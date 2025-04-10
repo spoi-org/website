@@ -93,10 +93,7 @@ export default function Home() {
           INOI&#39;24 Bronze
         </Tile>
         <Tile heading="Aarav Malani" rating={ratingCache["aaravmalani"]} user="aaravmalani">
-          SEO Specialist | Website Co-Developer
-        </Tile>
-        <Tile heading="Samvar Shah" rating={ratingCache["samvar_0907"]} user="samvar_0907">
-          Graph Lecture Instructor
+          SEO Specialist | Website Lead Developer
         </Tile>
         <Tile heading="Kumar Akshat" rating={ratingCache["oddvalue"]} user="oddvalue">
           Codeforces Problem Tester
