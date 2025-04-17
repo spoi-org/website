@@ -329,11 +329,10 @@ const ratingCacheSingleton = () => {
     "saarang": 0,
     "ak2006": 0,
     "codula": 0,
-    "OIaspirant2307": 0,
+    "RandomSoul2307": 0,
     "oddvalue": 0,
     "aaravmalani": 0,
     "Codula": 0,
-    "samvar_0907": 0
   }
 }
 

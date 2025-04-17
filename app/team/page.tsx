@@ -89,7 +89,7 @@ export default function Home() {
       </div>
       <h4 className="text-5xl font-bold mt-8 mb-4">Contributors</h4>
       <div className="flex flex-wrap justify-center w-full items-stretch px-10">
-        <Tile heading="Harleen Singh" rating={ratingCache["OIaspirant2307"]} user="OIaspirant2307">
+        <Tile heading="Harleen Singh" rating={ratingCache["RandomSoul2307"]} user="RandomSoul2307">
           INOI&#39;24 Bronze
         </Tile>
         <Tile heading="Aarav Malani" rating={ratingCache["aaravmalani"]} user="aaravmalani">
