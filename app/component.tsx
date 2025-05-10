@@ -111,7 +111,7 @@ function MobileMenu({ user, url }: { user?: User, url: string }) {
             </>
           ) : (
             <>
-              <SheetLink href="https://forms.gle/MPjcro9EUQkRtVQz5" text="Sign Up" icon={faUserPlus} setOpen={setOpen} />
+              <SheetLink href="https://forms.gle/28XwPzMSssHcUSCAA" text="Sign Up" icon={faUserPlus} setOpen={setOpen} />
               <SheetLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" icon={faRightToBracket} setOpen={setOpen} />
             </>
           )}
@@ -166,7 +166,7 @@ export default function RootLayoutComponent({
                     </>
                   ) : (
                     <>
-                      <NavLink href="https://forms.gle/MPjcro9EUQkRtVQz5" text="Sign Up" />
+                      <NavLink href="https://forms.gle/28XwPzMSssHcUSCAA" text="Sign Up" />
                       <NavLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" />
                     </>
                   )}
@@ -196,7 +196,7 @@ export default function RootLayoutComponent({
             </div>
             {!user && <footer className="bg-sky-100 w-full text-center p-5 text-2xl dark:bg-gray-700 flex items-center justify-center">
               <span className="pr-5">Ready to join?</span>
-              <Button asChild><Link href="https://forms.gle/MPjcro9EUQkRtVQz5">Sign Up</Link></Button>
+              <Button asChild><Link href="https://forms.gle/28XwPzMSssHcUSCAA">Sign Up</Link></Button>
             </footer>}
             <Toaster />
           </body>
