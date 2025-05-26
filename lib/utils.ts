@@ -20,8 +20,10 @@ const formatted: Record<string, string> = {
 };
 
 export function getSource(url: string): string | null {
-  const match = url.match(/(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+)\./);
-  return match ? (formatted[match[1]] || match[1]) : null;
+  const match = url.match(/(?:https?:\/\/)?([a-zA-Z0-9-]+)\.(?:([a-zA-Z0-9-]+)?\.)?/);
+  if (!match) return null;
+  const key = match[2] || match[1];
+  return formatted[key] || key;
 }
 
 export function withToast(toast: any, action: (...args: any[]) => any, title: string) {
