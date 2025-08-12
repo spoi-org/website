@@ -107,6 +107,7 @@ function MobileMenu({ user, url }: { user?: User, url: string }) {
           {user ? (
             <>
               <SheetLink href="/resources" text="Resources" icon={faBookOpen} setOpen={setOpen} />
+              <SheetLink href="/checklist" text="Checklist" icon={faBookOpen} setOpen={setOpen} />
               {user.admin && <SheetLink href="/admin" text="Admin" icon={faUserTie} setOpen={setOpen} />}
             </>
           ) : (
@@ -163,6 +164,7 @@ export default function RootLayoutComponent({
                   {user ? (
                     <>
                       <NavLink href="/resources" text="Resources" />
+                      <NavLink href="/checklist" text="Checklist" />
                       {user.admin && <NavLink href="/admin" text="Admin" />}
                     </>
                   ) : (
