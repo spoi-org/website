@@ -111,6 +111,7 @@ function MobileMenu({ user, url }: { user?: User, url: string }) {
             </>
           ) : (
             <>
+              <SheetLink href="/checklist" text="Checklist" icon={faBookOpen} setOpen={setOpen} />
               <SheetLink href="https://forms.gle/28XwPzMSssHcUSCAA" text="Sign Up" icon={faUserPlus} setOpen={setOpen} />
               <SheetLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" icon={faRightToBracket} setOpen={setOpen} />
             </>
@@ -156,7 +157,7 @@ export default function RootLayoutComponent({
           <body className={cn(inter.className, "flex flex-col min-h-screen m-0 bg-sky-50 dark:bg-[#101720]")}>
             <div className="hidden md:flex justify-center p-3 sticky top-0 z-[49] w-full">
               <NavigationMenu className="border p-2 rounded-md bg-white dark:bg-gray-900">
-                <NavigationMenuList>
+                <NavigationMenuList className="flex-wrap">
                   <NavLink href="/" text="Home" />
                   <NavLink href="/team" text="Our Team" />
                   {user ? (
@@ -166,6 +167,7 @@ export default function RootLayoutComponent({
                     </>
                   ) : (
                     <>
+                      <NavLink href="/checklist" text="Checklist" />
                       <NavLink href="https://forms.gle/28XwPzMSssHcUSCAA" text="Sign Up" />
                       <NavLink href={`https://discord.com/oauth2/authorize?client_id=1274686791542116404&response_type=code&redirect_uri=${url}/api/oauth2&scope=identify`} text="Log In" />
                     </>
